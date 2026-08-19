@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
             section.style.visibility = index === 0 ? "visible" : "hidden";
         });
 
-        // 배경색 어둡게 조정
+        // 배경색 어둡게 조정하기
         document.body.style.backgroundColor = "#e5e6ea";
     };
 
