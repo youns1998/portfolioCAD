@@ -1,0 +1,594 @@
+/* 프로젝트 내부 페이지 전용 CSS */
+
+
+/* =========================
+   Project Header
+========================= */
+
+.project-header {
+    background: #fff;
+
+    border-bottom:
+        1px solid #e5e5e5;
+}
+
+
+.project-header-inner {
+    min-height: 76px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+
+.project-brand {
+    font-family:
+        'Playfair Display', serif;
+
+    font-size:
+        1.35rem;
+
+    font-weight:
+        700;
+
+    color:
+        #2c3e50;
+
+    text-decoration:
+        none;
+
+    white-space:
+        nowrap;
+}
+
+
+.project-brand:hover {
+    color:
+        #2c3e50;
+}
+
+
+/* =========================
+   Project Navigation
+========================= */
+
+.project-nav {
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
+}
+
+
+.project-nav a {
+    color:
+        #6c757d;
+
+    text-decoration:
+        none;
+
+    font-size:
+        0.95rem;
+
+    font-weight:
+        600;
+
+    padding:
+        26px 0 22px;
+
+    border-bottom:
+        3px solid transparent;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.project-nav a:hover {
+    color:
+        #2c3e50;
+}
+
+
+.project-nav a.active {
+    color:
+        #2c3e50;
+
+    border-bottom-color:
+        #2c3e50;
+}
+
+
+/* =========================
+   Project Hero
+========================= */
+
+.project-hero-media {
+    min-height:
+        420px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        #eef1f4;
+
+    border-radius:
+        16px;
+
+    padding:
+        32px;
+}
+
+
+.project-hero-image {
+    max-width:
+        100%;
+
+    max-height:
+        320px;
+
+    width:
+        auto;
+
+    height:
+        auto;
+
+    display:
+        block;
+
+    object-fit:
+        contain;
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.08);
+
+    background:
+        white;
+}
+
+
+/* =========================
+   Project Header Mobile
+========================= */
+
+@media (max-width: 768px) {
+
+    .project-header-inner {
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+        padding-top:
+            18px;
+
+        padding-bottom:
+            12px;
+
+        gap:
+            10px;
+    }
+
+
+    .project-nav {
+        width:
+            100%;
+
+        gap:
+            18px;
+
+        overflow-x:
+            auto;
+
+        white-space:
+            nowrap;
+    }
+
+
+    .project-nav a {
+        padding:
+            8px 0 10px;
+    }
+
+
+    .project-hero-media {
+        min-height:
+            280px;
+
+        padding:
+            20px;
+    }
+
+
+    .project-hero-image {
+        max-height:
+            220px;
+    }
+
+}
+/* =========================
+   Drawings
+========================= */
+
+.drawing-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+
+.drawing-sidebar {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+
+.drawing-sidebar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+}
+
+
+.drawing-tree {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.drawing-tree li + li {
+    margin-top: 6px;
+}
+
+
+.drawing-tree button {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: #6c757d;
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-family: inherit;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.drawing-tree button:hover {
+    background: #f1f3f5;
+    color: #2c3e50;
+}
+
+
+.drawing-content {
+    min-width: 0;
+}
+
+
+.drawing-placeholder {
+    min-height: 500px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: #fff;
+
+    border:
+        1px solid #e5e5e5;
+
+    border-radius:
+        12px;
+
+    color:
+        #6c757d;
+
+    text-align:
+        center;
+
+    padding:
+        40px;
+}
+
+
+/* Drawings Mobile */
+
+@media (max-width: 768px) {
+
+    .drawing-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+
+    .drawing-sidebar {
+        padding: 16px;
+    }
+
+
+    .drawing-tree {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+    }
+
+
+    .drawing-tree li + li {
+        margin-top: 0;
+    }
+
+
+    .drawing-tree button {
+        white-space: nowrap;
+    }
+
+
+    .drawing-placeholder {
+        min-height: 320px;
+    }
+
+}
+
+/* =========================
+   Drawing Gallery
+========================= */
+
+.drawing-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+
+.drawing-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+.drawing-thumbnail {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: #eef1f4;
+}
+
+
+.drawing-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: white;
+}
+
+
+.drawing-image-placeholder {
+    position: absolute;
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    color: #6c757d;
+
+    text-align: center;
+}
+
+
+.drawing-card-body {
+    padding: 18px;
+}
+
+
+.drawing-card-body h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+
+.drawing-card-body p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+
+.drawing-tree button.active {
+    background: #2c3e50;
+    color: #fff;
+}
+
+
+@media (max-width: 768px) {
+
+    .drawing-gallery {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* Drawing Subtree */
+
+.drawing-subtree {
+    list-style: none;
+    margin: 4px 0 10px 14px;
+    padding: 0 0 0 12px;
+    border-left: 1px solid #dfe3e6;
+}
+
+.drawing-subtree li + li {
+    margin-top: 2px;
+}
+
+.drawing-subtree button {
+    font-size: 0.88rem;
+    padding: 7px 10px;
+    color: #8a939b;
+}
+
+.drawing-subtree button:hover {
+    color: #2c3e50;
+    background: #f5f6f7;
+}
+
+.drawing-subtree button.active {
+    background: #e9ecef;
+    color: #2c3e50;
+}
+
+/* =========================
+   Drawing Viewer
+========================= */
+
+.drawing-card {
+    cursor: pointer;
+}
+
+
+.drawing-viewer {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+
+    background: rgba(20, 25, 30, 0.8);
+
+    z-index: 2000;
+}
+
+
+.drawing-viewer.active {
+    display: flex;
+}
+
+
+.drawing-viewer-panel {
+    position: relative;
+
+    width: min(1200px, 100%);
+    max-height: 90vh;
+
+    overflow: auto;
+
+    background: #fff;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+
+.drawing-viewer-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+
+    width: 42px;
+    height: 42px;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    color: #2c3e50;
+
+    font-size: 1.8rem;
+    line-height: 1;
+
+    z-index: 2;
+}
+
+
+.drawing-viewer-image-wrap {
+    min-height: 500px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+
+    background: #eef1f4;
+}
+
+
+.drawing-viewer-image {
+    max-width: 100%;
+    max-height: 70vh;
+
+    object-fit: contain;
+
+    background: #fff;
+}
+
+
+.drawing-viewer-info {
+    padding: 24px 30px;
+}
+
+
+.drawing-viewer-info h2 {
+    margin-bottom: 8px;
+}
+
+
+.drawing-viewer-info p {
+    margin: 0;
+
+    color: #6c757d;
+}
+
+
+@media (max-width: 768px) {
+
+    .drawing-viewer {
+        padding: 14px;
+    }
+
+
+    .drawing-viewer-image-wrap {
+        min-height: 300px;
+
+        padding: 20px;
+    }
+
+
+    .drawing-viewer-info {
+        padding: 20px;
+    }
+
+}

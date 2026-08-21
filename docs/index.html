@@ -4,372 +4,323 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Youns Journey</title>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <!-- 스크롤 진행률 표시   -->
-    <div class="scroll-progress"></div>
 
-    <!-- 첫 번째 섹션 (Home) -->
-    <section id="home" class="vh-100 position-relative section active">
+<body>
+
+    <!-- Home -->
+    <section id="home" class="vh-100 position-relative section">
         <video autoplay loop muted playsinline id="background-video">
             <source src="video/210592.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
+
         <div class="content-center text-center text-white">
             <h1 class="display-4 mb-4 animate-on-scroll">Youns Journey</h1>
+
             <nav class="d-flex justify-content-center gap-4 animate-on-scroll">
-                <button data-target="about" class="btn btn-outline-light px-4">About Me</button>
-                <button data-target="skills" class="btn btn-outline-light px-4">Skills</button>
-                <button data-target="project1" class="btn btn-outline-light px-4">Projects</button>
-                <button data-target="contact" class="btn btn-outline-light px-4">Contact</button>
+                <a href="#about" class="btn btn-outline-light px-4">
+                    About Me
+                </a>
+
+                <a href="#skills" class="btn btn-outline-light px-4">
+                    Skills
+                </a>
+
+                <a href="#projects" class="btn btn-outline-light px-4">
+                    Projects
+                </a>
+
+                <a href="#contact" class="btn btn-outline-light px-4">
+                    Contact
+                </a>
             </nav>
         </div>
     </section>
 
+
     <main>
-        <!-- About Section -->
+
+        <!-- About -->
         <section id="about" class="section d-flex align-items-center justify-content-center">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="mb-5 animate-on-scroll">About Me</h2>
+
+                    <h2 class="mb-5 animate-on-scroll">
+                        About Me
+                    </h2>
+
                     <div class="row justify-content-center">
                         <div class="col-md-8">
+
                             <div class="card mx-auto shadow hover-float animate-on-scroll">
                                 <div class="card-body">
-                                    <img src="images/최윤성.jpg" alt="Profile Photo" class="rounded-circle mb-4 profile-image" width="200" height="250">
-                                    <p class="lead">안녕하세요? 성장하는 개발자 최윤성입니다.</p>
-                                    <p>개발자로써의 첫 발걸음을 함께하고 싶습니다.</p>
-                                    <h3 class="mt-4">Education</h3>
+
+                                    <img
+                                        src="images/최윤성.jpg"
+                                        alt="Profile Photo"
+                                        class="rounded-circle mb-4 profile-image"
+                                        width="200"
+                                        height="250"
+                                    >
+
+                                    <p class="lead">
+                                        안녕하세요? 성장하는 개발자 최윤성입니다.
+                                    </p>
+
+                                    <p>
+                                        개발자로써의 첫 발걸음을 함께하고 싶습니다.
+                                    </p>
+
+                                    <h3 class="mt-4">
+                                        Education
+                                    </h3>
+
                                     <ul class="list-unstyled">
-                                        <li><strong>2016 - 2022:</strong> 충북대학교 컴퓨터공학과 졸업</li>
-                                        <li><strong>2024:</strong> spring 학습 중 ~</li>
+                                        <li>
+                                            <strong>2016 - 2022:</strong>
+                                            충북대학교 컴퓨터공학과 졸업
+                                        </li>
+
+                                        <li>
+                                            <strong>2024:</strong>
+                                            spring 학습 중 ~
+                                        </li>
                                     </ul>
+
                                 </div>
                             </div>
+
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- Skills Section -->
+
+        <!-- Skills -->
         <section id="skills" class="section d-flex align-items-center justify-content-center">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="mb-5 animate-on-scroll">Skills</h2>
+
+                    <h2 class="mb-5 animate-on-scroll">
+                        Skills
+                    </h2>
+
                     <div class="row justify-content-center">
+
                         <div class="col-md-4">
                             <div class="card shadow hover-float animate-on-scroll">
                                 <div class="card-body">
-                                    <i class="fab fa-html5 fa-3x mb-3 skill-icon" style="color: #e34f26;"></i>
-                                    <h3 class="mb-2">Frontend</h3>
-                                    <p>HTML5, CSS3, JavaScript, Bootstrap </p>
+
+                                    <i
+                                        class="fab fa-html5 fa-3x mb-3 skill-icon"
+                                        style="color: #e34f26;"
+                                    ></i>
+
+                                    <h3 class="mb-2">
+                                        Frontend
+                                    </h3>
+
+                                    <p>
+                                        HTML5, CSS3, JavaScript, Bootstrap
+                                    </p>
+
                                     &nbsp;
-                                    
+
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="col-md-4">
                             <div class="card shadow hover-float animate-on-scroll">
                                 <div class="card-body">
-                                    <i class="fas fa-code fa-3x mb-3 skill-icon" style="color: #6c757d;"></i>
-                                    <h3 class="mb-2">Backend</h3>
-                                    <p>Java, Spring Boot, JavaScript/Node.js, Python, C++</p>
+
+                                    <i
+                                        class="fas fa-code fa-3x mb-3 skill-icon"
+                                        style="color: #6c757d;"
+                                    ></i>
+
+                                    <h3 class="mb-2">
+                                        Backend
+                                    </h3>
+
+                                    <p>
+                                        Java, Spring Boot, JavaScript/Node.js, Python, C++
+                                    </p>
+
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="col-md-4">
                             <div class="card shadow hover-float animate-on-scroll">
                                 <div class="card-body">
-                                    <i class="fas fa-database fa-3x mb-3 skill-icon" style="color: #f0db4f;"></i>
-                                    <h3 class="mb-2">Database</h3>
-                                    <p>OracleDB, MySQL, Firebase, Oracle cloud</p>
+
+                                    <i
+                                        class="fas fa-database fa-3x mb-3 skill-icon"
+                                        style="color: #f0db4f;"
+                                    ></i>
+
+                                    <h3 class="mb-2">
+                                        Database
+                                    </h3>
+
+                                    <p>
+                                        OracleDB, MySQL, Firebase, Oracle cloud
+                                    </p>
+
                                 </div>
                             </div>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- Projects Section -->
-        <!-- 프로젝트 1: 카카오 지도 기반 여행 플래너 -->
-        <section id="project1" class="section d-flex align-items-center justify-content-center">
+        <!-- Architecture Projects -->
+        <section id="projects" class="section d-flex align-items-center justify-content-center">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="mb-5 animate-on-scroll">Project: 여행 경로 플래너</h2>
-                    <div class="row justify-content-center">
-                        <div class="col-md-10">
-                            <div class="card shadow project-detail-card animate-on-scroll">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-5 text-center mb-4">
-                                            <i class="fas fa-map-marked-alt fa-5x mb-4 project-icon" style="color: #4caf50;"></i>
-                                            <h3 class="mb-3">지도 기반 여행 계획 서비스</h3>
-                                            <div class="mt-4">
-                                                <a href="https://github.com/youns1998/travel-planner-frontend" class="btn btn-outline-primary">🔗 깃허브 보기</a>
-                                              </div>
-                                            <div class="tech-stack mt-4">
-                                                <h5 class="text-center mb-3">기술 스택</h5>
-                                                <div class="d-flex flex-wrap gap-2 justify-content-start">
-                                                    <span class="badge bg-primary">HTML/CSS</span>
-                                                    <span class="badge bg-success">JavaScript</span>
-                                                    <span class="badge bg-info">jQuery</span>
-                                                    <span class="badge bg-warning">카카오 지도 API</span>
-                                                    <span class="badge bg-secondary">Bootstrap 5</span>
-                                                    <span class="badge bg-danger">한국관광공사 API</span>
-                                                    <span class="badge bg-dark">Axios</span>
-                                                </div>
-                                            </div>
 
-                                            
-                                        </div>
-                                        <div class="col-md-7 text-start">
-                                            <div class="project-full-description">
-                                                <p>
-                                                    <strong>여행 경로 플래너</strong>는 사용자가 쉽게 여행 일정을 계획하고 관리할 수 있는 웹 서비스입니다.
-                                                    카카오 지도 API를 활용하여 여행지를 검색하고 경로를 시각화하여 효율적인 여행 계획을 수립할 수 있습니다.
-                                                </p>
-                                                <p>
-                                                    직관적인 드래그 앤 드롭 인터페이스로 일정을 관리하고, 관광지 정보, 이동 시간, 거리 계산 등
-                                                    실질적인 여행 계획에 필요한 정보를 제공합니다. 한국관광공사 오픈 API를 연동하여
-                                                    신뢰할 수 있는 관광지 정보를 제공합니다.
-                                                </p>
-                                            </div>
-                                            
-                                            
-                                            
-                                            <div class="features mt-4">
-                                                <h5 class="tech-title">주요 기능</h5>
-                                                <ul class="feature-list">
-                                                    <li>지도 기반 여행지 검색 및 일정 설계</li>
-                                                    <li>드래그 앤 드롭으로 일정 순서 변경</li>
-                                                    <li>이동 거리 및 소요 시간 자동 계산</li>
-                                                    <li>관광지/맛집/숙소 카테고리별 정보 제공</li>
-                                                    <li>일정 저장 및 PDF 출력 기능</li>
-                                                    <li>모바일 반응형 디자인</li>
-                                                </ul>
-                                            </div>
-                                            
-                                            <div class="achievements mt-4">
-                                                <h5 class="tech-title">개발 포인트</h5>
-                                                <ul class="achievement-list">
-                                                    <li>카카오 지도 API를 활용한 지도 렌더링 및 마커 처리</li>
-                                                    <li>외부 관광 데이터 연동 및 효율적인 데이터 캐싱</li>
-                                                    <li>사용자 위치 기반 주변 정보 검색 기능 구현</li>
-                                                    <li>LocalStorage를 활용한 사용자 데이터 관리</li>
-                                                    <li>크로스 브라우저 호환성 및 모바일 최적화</li>
-                                                </ul>
-                                            </div>
-                                            
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 프로젝트 2: 회원 관리 시스템 -->
-        <section id="project2" class="section d-flex align-items-center justify-content-center">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="mb-5 animate-on-scroll">Project: 회원 관리 시스템</h2>
-                    <div class="row justify-content-center">
-                        <div class="col-md-10">
-                            <div class="card shadow project-detail-card animate-on-scroll">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-5 text-center mb-4">
-                                            <i class="fas fa-users-cog fa-5x mb-4 project-icon" style="color: #f44336;"></i>
-                                            <h3 class="mb-3">Spring Boot 기반 회원 관리</h3>
-                                            <div class="mt-4">
-                                                <a href="https://github.com/youns1998/travel-planner-backend" class="btn btn-outline-primary">🔗 깃허브 보기</a>
-                                            </div>
-                                            <div class="tech-stack mt-4">
-                                                <h5 class="text-center mb-3">기술 스택</h5>
-                                                <div class="d-flex flex-wrap gap-2 justify-content-start">
-                                                    <span class="badge bg-primary">Java 11</span>
-                                                    <span class="badge bg-success">Spring Boot 2.6</span>
-                                                    <span class="badge bg-info">Spring Security</span>
-                                                    <span class="badge bg-warning">MySQL 8.0</span>
-                                                    <span class="badge bg-secondary">JPA/Hibernate</span>
-                                                    <span class="badge bg-danger">JWT</span>
-                                                    <span class="badge bg-dark">Maven</span>
-                                                    <span class="badge bg-primary">Thymeleaf</span>
-                                                </div>
-                                            </div>
+                    <h2 class="mb-5 animate-on-scroll">
+                        Architecture Projects
+                    </h2>
 
-                                            
-                                        </div>
-                                        <div class="col-md-7 text-start">
-                                            <div class="project-full-description">
-                                                <p>
-                                                    <strong>회원 관리 시스템</strong>은 Spring Boot 프레임워크를 활용한 안정적인 회원 정보 관리 웹 애플리케이션입니다.
-                                                    회원 가입, 로그인, 프로필 관리, 권한 설정 등 기본적인 회원 관리 기능을 제공합니다.
-                                                </p>
-                                                <p>
-                                                    이 프로젝트는 보안이 중요한 회원 정보를 안전하게 관리하는 것에 중점을 두었습니다.
-                                                    Spring Security를 활용하여 JWT 기반 인증 시스템을 구현했으며,
-                                                    JPA를 이용해 데이터를 효율적으로 관리하고 RESTful API 설계 원칙을 준수하였습니다.
-                                                </p>
-                                            </div>
-                                                    
-                                                    
-                                                    
-                                                    <div class="features mt-4">
-                                                        <h5 class="tech-title">주요 기능</h5>
-                                                        <ul class="feature-list">
-                                                            <li>이메일 인증 회원가입 및 소셜 로그인</li>
-                                                            <li>JWT 기반 인증 및 권한 관리</li>
-                                                            <li>회원 정보 CRUD 기능</li>
-                                                            <li>관리자 대시보드</li>
-                                                            <li>사용자 활동 로그 기록</li>
-                                                            <li>비밀번호 암호화 및 보안 강화</li>
-                                                        </ul>
-                                                    </div>
-                                                    
-                                                    <div class="achievements mt-4">
-                                                        <h5 class="tech-title">개발 포인트</h5>
-                                                        <ul class="achievement-list">
-                                                            <li>계층형 아키텍처(Controller-Service-Repository) 설계</li>
-                                                            <li>Spring Security와 JWT를 활용한 안전한 인증 시스템 구현</li>
-                                                            <li>JPA를 활용한 효율적인 데이터베이스 연동</li>
-                                                            <li>단위 테스트 및 통합 테스트 작성</li>
-                                                            <li>RESTful API 문서화 (Swagger)</li>
-                                                        </ul>
-                                                    </div>
-                                                    
-                                                    
-                                        </div>
+                    <div class="row justify-content-center g-4">
+
+                        <!-- Project 01 -->
+                        <div class="col-md-5">
+                            <a href="projects/project-01/index.html"
+                            class="project-card-link">
+
+                                <div class="card project-card shadow animate-on-scroll">
+
+                                    <div class="project-thumbnail">
+                                        <span>PROJECT 01</span>
                                     </div>
+
+                                    <div class="card-body">
+                                        <h3>Project 01</h3>
+
+                                        <p>
+                                            Architecture / CAD / BIM
+                                        </p>
+
+                                        <span class="project-view">
+                                            View Project →
+                                        </span>
+                                    </div>
+
                                 </div>
-                            </div>
+
+                            </a>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 프로젝트 3: 실시간 화상 회의 -->
-        <section id="project3" class="section d-flex align-items-center justify-content-center">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="mb-5 animate-on-scroll">Project: 실시간 화상 회의</h2>
-                    <div class="row justify-content-center">
-                        <div class="col-md-10">
-                            <div class="card shadow project-detail-card animate-on-scroll">
+
+
+                        <!-- Project 02 -->
+                        <div class="col-md-5">
+
+                            <div class="card project-card shadow animate-on-scroll">
+
+                                <div class="project-thumbnail">
+                                    <span>PROJECT 02</span>
+                                </div>
+
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-5 text-center mb-4">
-                                            <i class="fas fa-video fa-5x mb-4 project-icon" style="color: #68a063;"></i>
-                                            <h3 class="mb-3">WebRTC 기반 화상 회의</h3>
-                                            <div class="mt-4">
-                                                <a href="https://github.com/youns1998/peerweb" class="btn btn-outline-primary">🔗 깃허브 보기</a>
-                                            </div>
-                                            <div class="tech-stack mt-4">
-                                                <h5 class="text-center mb-3">기술 스택</h5>
-                                                <div class="d-flex flex-wrap gap-2 justify-content-start">
-                                                    <span class="badge bg-primary">HTML/CSS</span>
-                                                    <span class="badge bg-success">JavaScript</span>
-                                                    <span class="badge bg-info">WebRTC</span>
-                                                    <span class="badge bg-warning">Node.js</span>
-                                                    <span class="badge bg-secondary">Socket.IO</span>
-                                                    <span class="badge bg-danger">Express.js</span>
-                                                    <span class="badge bg-dark">AWS EC2</span>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="col-md-7 text-start">
-                                            <div class="project-full-description">
-                                                <p>
-                                                    <strong>실시간 화상 회의</strong>는 WebRTC 기술을 활용한 브라우저 기반 화상 회의 서비스입니다.
-                                                    별도의 플러그인 설치 없이 웹 브라우저에서 바로 화상 통화와 화면 공유가 가능합니다.
-                                                </p>
-                                                <p>
-                                                    현재는 튜토리얼 기반의 기본 기능만 구현한 상태이며, 개발을 지속적으로 진행 중입니다.
-                                                </p>
-                                                <p>
-                                                    이 프로젝트에서는 Node.js와 Socket.IO를 활용하여 시그널링 서버를 구축하고,
-                                                    WebRTC의 P2P 연결을 통해 저지연 고품질 화상 통화를 구현했습니다.
-                                                    또한 채팅, 화면 공유, 회의실 생성 등의 기능을 제공하여 실용적인 화상 회의 솔루션을 개발했습니다.
-                                                </p>
-                                            </div>
-                                                    
-                                                    
-                                                    
-                                                    <div class="features mt-4">
-                                                        <h5 class="tech-title">주요 기능</h5>
-                                                        <ul class="feature-list">
-                                                            <li>실시간 화상 통화 (최대 4인)</li>
-                                                            <li>화면 공유 및 녹화 기능</li>
-                                                            <li>실시간 채팅</li>
-                                                            <li>회의실 ID 생성 및 참여</li>
-                                                            <li>마이크/카메라 설정</li>
-                                                            <li>모바일 웹 지원</li>
-                                                        </ul>
-                                                    </div>
-                                                    
-                                                    <div class="achievements mt-4">
-                                                        <h5 class="tech-title">개발 포인트</h5>
-                                                        <ul class="achievement-list">
-                                                            <li>WebRTC를 활용한 P2P 연결 구현</li>
-                                                            <li>Socket.IO를 이용한 실시간 시그널링 서버 개발</li>
-                                                            <li>미디어 스트림 처리 및 최적화</li>
-                                                            <li>네트워크 상태에 따른 적응형 화질 조정</li>
-                                                            <li>AWS EC2 인스턴스에 서비스 배포</li>
-                                                        </ul>
-                                                    </div>
-                                                    
-                                        </div>
-                                    </div>
+                                    <h3>Project 02</h3>
+
+                                    <p>
+                                        Coming Soon
+                                    </p>
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </section>
 
+
         
-        <!-- Contact Section -->
+
+        <!-- Contact -->
         <section id="contact" class="section d-flex align-items-center justify-content-center">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="mb-5 animate-on-scroll">Contact</h2>
+
+                    <h2 class="mb-5 animate-on-scroll">
+                        Contact
+                    </h2>
+
                     <div class="row justify-content-center">
                         <div class="col-md-6">
+
                             <div class="card contact-card shadow hover-float animate-on-scroll">
-                                <div class="card-body">  
-                                    <p class="lead">Email: <a href="mailto:youns1998@gmail.com" class="contact-link">youns1998@gmail.com</a></p>
-                                    <p class="lead">GitHub: <a href="https://github.com/youns1998" target="_blank" class="contact-link">https://github.com/youns1998</a></p>
+                                <div class="card-body">
+
+                                    <p class="lead">
+                                        Email:
+                                        <a
+                                            href="mailto:youns1998@gmail.com"
+                                            class="contact-link"
+                                        >
+                                            youns1998@gmail.com
+                                        </a>
+                                    </p>
+
+                                    <p class="lead">
+                                        GitHub:
+                                        <a
+                                            href="https://github.com/youns1998"
+                                            target="_blank"
+                                            class="contact-link"
+                                        >
+                                            https://github.com/youns1998
+                                        </a>
+                                    </p>
+
                                 </div>
                             </div>
+
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
+
     </main>
+
 
     <footer class="bg-dark text-white text-center py-3">
         <p>&copy; 2025 Youns Journey. All Rights Reserved.</p>
     </footer>
 
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- Custom JS -->
     <script src="js/script.js"></script>
-     
+
 </body>
 </html>
