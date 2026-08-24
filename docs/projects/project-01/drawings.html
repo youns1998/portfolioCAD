@@ -3,227 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Drawings | Project 01 | Youns Journey</title>
-
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <!-- Common CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../css/style.css">
-
-    <!-- Project CSS -->
     <link rel="stylesheet" href="../../css/project.css">
 </head>
-
-<body>
-
-    <!-- Project Header -->
-    <header class="project-header">
-        <div class="container project-header-inner">
-
-            <a href="../../index.html" class="project-brand">
-                Youns Journey
-            </a>
-
-            <nav class="project-nav">
-                <a href="index.html">Overview</a>
-                <a href="drawings.html" class="active">Drawings</a>
-                <a href="bim.html">BIM</a>
-                <a href="visualization.html">Visualization</a>
-                <a href="automation.html">Automation</a>
-            </nav>
-
-        </div>
-    </header>
-
-
-
-
+<body data-page="drawings" data-project-label="Project 01" data-project-path="." data-site-path="../..">
+    <header class="project-header" data-project-header></header>
     <main>
-
-        <!-- Drawing Page Title -->
-        <section class="py-5">
+        <section class="project-page-heading">
             <div class="container">
-
-                <p class="text-uppercase text-muted mb-2">
-                    Project 01
-                </p>
-
-                <h1 class="mb-3">
-                    Drawings
-                </h1>
-
-                <p class="lead text-muted">
-                    Architectural drawings and design development.
-                </p>
-
+                <p class="project-kicker">Project 01</p>
+                <h1>Drawings</h1>
+                <p class="project-intro">Architectural drawings and design development.</p>
             </div>
         </section>
-
-
-        <!-- Drawing Browser -->
-        <section class="pb-5">
-            <div class="container">
-
-                <div class="drawing-layout">
-
-                    <!-- Drawing Categories -->
-                    <aside class="drawing-sidebar">
-
-                        <h2 class="drawing-sidebar-title">
-                            Drawings
-                        </h2>
-
-                        <ul class="drawing-tree">
-
-                            <!-- Plans -->
-                            <li>
-                                <button
-                                    type="button"
-                                    data-category="Plans"
-                                    class="active"
-                                >
-                                    Plans
-                                </button>
-
-                                <ul class="drawing-subtree">
-
-                                    <li>
-                                        <button
-                                            type="button"
-                                            data-category="Plans"
-                                            data-subcategory="1F"
-                                        >
-                                            1F
-                                        </button>
-                                    </li>
-
-                                    <li>
-                                        <button
-                                            type="button"
-                                            data-category="Plans"
-                                            data-subcategory="2F"
-                                        >
-                                            2F
-                                        </button>
-                                    </li>
-
-                                    <li>
-                                        <button
-                                            type="button"
-                                            data-category="Plans"
-                                            data-subcategory="Roof"
-                                        >
-                                            Roof
-                                        </button>
-                                    </li>
-
-                                </ul>
-                            </li>
-
-
-                            <!-- Sections -->
-                            <li>
-                                <button
-                                    type="button"
-                                    data-category="Sections"
-                                >
-                                    Sections
-                                </button>
-                            </li>
-
-
-                            <!-- Elevations -->
-                            <li>
-                                <button
-                                    type="button"
-                                    data-category="Elevations"
-                                >
-                                    Elevations
-                                </button>
-                            </li>
-
-
-                            <!-- Details -->
-                            <li>
-                                <button
-                                    type="button"
-                                    data-category="Details"
-                                >
-                                    Details
-                                </button>
-                            </li>
-
-                        </ul>
-
-                    </aside>
-
-
-                    <!-- Drawing Gallery -->
-                    <section class="drawing-content">
-
-                        <div
-                            id="drawing-gallery"
-                            class="drawing-gallery"
-                        ></div>
-
-                    </section>
-
-                </div>
-
-            </div>
+        <section class="project-content-section">
+            <div class="container" data-drawing-browser></div>
         </section>
-
-
-
-        <div id="drawing-viewer" class="drawing-viewer">
-            <div class="drawing-viewer-panel">
-
-                <button
-                    type="button"
-                    id="drawing-viewer-close"
-                    class="drawing-viewer-close"
-                >
-                    ×
-                </button>
-
-                <div class="drawing-viewer-image-wrap">
-                    <img
-                        id="drawing-viewer-image"
-                        class="drawing-viewer-image"
-                        src=""
-                        alt=""
-                    >
-                </div>
-
-                <div class="drawing-viewer-info">
-                    <h2 id="drawing-viewer-title"></h2>
-                    <p id="drawing-viewer-description"></p>
-                </div>
-
-            </div>
-        </div>
-
-
     </main>
-
-
-    <footer class="bg-dark text-white text-center py-3">
-        <p class="mb-0">
-            &copy; 2026 Youns Journey
-        </p>
-    </footer>
-
-
-    <!-- Drawing Data -->
+    <footer class="project-footer" data-project-footer></footer>
+    <script src="../../js/project-shell.js"></script>
     <script src="data/drawings.js"></script>
-
-    <!-- Drawing Browser -->
+    <script src="../../js/media-gallery.js"></script>
     <script src="../../js/drawing-browser.js"></script>
-
 </body>
 </html>
