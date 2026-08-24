@@ -1,15 +1,19 @@
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("[data-content-template]").forEach((root) => {
-        const data = window[root.dataset.contentTemplate];
-        const items = data?.items || [];
+(function () {
+    const mount = (root, data = {}) => {
+        if (!root) return;
+        const items = Array.isArray(data.items) ? data.items : [];
+        root.replaceChildren();
+        root.classList.remove("content-card-grid");
 
         if (!items.length) {
             root.innerHTML = `
                 <div class="content-empty-state" role="status">
-                    <p class="content-empty-state-title">${data?.emptyTitle || "Content coming soon"}</p>
-                    <p>${data?.emptyMessage || "This template is ready for project content."}</p>
+                    <p class="content-empty-state-title"></p>
+                    <p class="content-empty-state-message"></p>
                 </div>
             `;
+            root.querySelector(".content-empty-state-title").textContent = data.emptyTitle || "Content coming soon";
+            root.querySelector(".content-empty-state-message").textContent = data.emptyMessage || "This template is ready for project content.";
             return;
         }
 
@@ -29,8 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 link.textContent = item.linkLabel || "Open resource";
                 article.append(link);
             }
-
             root.append(article);
         });
+    };
+
+    window.ContentTemplate = { mount };
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("[data-content-template]").forEach((root) => {
+            mount(root, window[root.dataset.contentTemplate]);
+        });
     });
-});
+})();

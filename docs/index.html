@@ -18,7 +18,7 @@
 <body>
 
     <!-- Home -->
-    <section id="home" class="vh-100 position-relative section">
+    <section id="home" class="vh-100 position-relative section" aria-label="Youns Journey introduction">
         <video autoplay loop muted playsinline id="background-video">
             <source src="video/210592.mp4" type="video/mp4">
             Your browser does not support the video tag.
@@ -27,36 +27,48 @@
         <div class="content-center text-center text-white">
             <h1 class="display-4 mb-4 animate-on-scroll">Youns Journey</h1>
 
-            <nav class="d-flex justify-content-center gap-4 animate-on-scroll">
+            <nav class="d-flex justify-content-center gap-4 animate-on-scroll" aria-label="Hero navigation">
                 <a href="#about" class="btn btn-outline-light px-4">
-                    About Me
+                    소개
                 </a>
 
                 <a href="#skills" class="btn btn-outline-light px-4">
-                    Skills
+                    기술 및 도구
                 </a>
 
                 <a href="#projects" class="btn btn-outline-light px-4">
-                    Projects
+                    포트폴리오
                 </a>
 
                 <a href="#contact" class="btn btn-outline-light px-4">
-                    Contact
+                    연락처
                 </a>
             </nav>
         </div>
     </section>
 
+    <nav class="site-nav" aria-label="Portfolio section navigation">
+        <div class="site-nav-inner">
+            <a href="#home" class="site-nav-brand">Youns Journey</a>
+            <div class="site-nav-links">
+                <a href="#about">소개</a>
+                <a href="#skills">기술 및 도구</a>
+                <a href="#projects">포트폴리오</a>
+                <a href="#contact">연락처</a>
+            </div>
+        </div>
+    </nav>
 
-    <main>
+    <main class="site-content">
 
         <!-- About -->
         <section id="about" class="section d-flex align-items-center justify-content-center">
             <div class="container">
                 <div class="text-center">
 
-                    <h2 class="mb-5 animate-on-scroll">
-                        About Me
+                    <p class="home-section-kicker animate-on-scroll">01 / 소개</p>
+                    <h2 class="home-section-title mb-5 animate-on-scroll">
+                        소개
                     </h2>
 
                     <div class="row justify-content-center">
@@ -67,22 +79,22 @@
 
                                     <img
                                         src="images/최윤성.jpg"
-                                        alt="Profile Photo"
+                                        alt="최윤성 프로필 사진"
                                         class="rounded-circle mb-4 profile-image"
                                         width="200"
                                         height="250"
                                     >
 
                                     <p class="lead">
-                                        안녕하세요? 성장하는 개발자 최윤성입니다.
+                                        건축과 소프트웨어를 함께 탐구하는 최윤성입니다.
                                     </p>
 
                                     <p>
-                                        개발자로써의 첫 발걸음을 함께하고 싶습니다.
+                                        설계부터 도면화, BIM, 시각화, 반복 업무의 자동화까지 하나의 흐름으로 연결합니다.
                                     </p>
 
                                     <h3 class="mt-4">
-                                        Education
+                                        학력
                                     </h3>
 
                                     <ul class="list-unstyled">
@@ -113,8 +125,9 @@
             <div class="container">
                 <div class="text-center">
 
-                    <h2 class="mb-5 animate-on-scroll">
-                        Skills
+                    <p class="home-section-kicker animate-on-scroll">02 / 기술 및 도구</p>
+                    <h2 class="home-section-title mb-5 animate-on-scroll">
+                        기술 및 도구
                     </h2>
 
                     <div class="row justify-content-center">
@@ -123,17 +136,16 @@
                             <div class="card shadow hover-float animate-on-scroll">
                                 <div class="card-body">
 
-                                    <i
-                                        class="fab fa-html5 fa-3x mb-3 skill-icon"
-                                        style="color: #e34f26;"
-                                    ></i>
+                                    <i class="fas fa-drafting-compass fa-3x mb-3 skill-icon" style="color: #4f6576;"></i>
 
                                     <h3 class="mb-2">
-                                        Frontend
+                                        건축설계 · BIM
                                     </h3>
 
+                                    <span class="skill-subtitle">Architectural Design / BIM</span>
+
                                     <p>
-                                        HTML5, CSS3, JavaScript, Bootstrap
+                                        AutoCAD / Revit / BIM / 건축 도면
                                     </p>
 
                                     &nbsp;
@@ -147,17 +159,16 @@
                             <div class="card shadow hover-float animate-on-scroll">
                                 <div class="card-body">
 
-                                    <i
-                                        class="fas fa-code fa-3x mb-3 skill-icon"
-                                        style="color: #6c757d;"
-                                    ></i>
+                                    <i class="fas fa-cube fa-3x mb-3 skill-icon" style="color: #7b6f64;"></i>
 
                                     <h3 class="mb-2">
-                                        Backend
+                                        인테리어 · 시각화
                                     </h3>
 
+                                    <span class="skill-subtitle">Interior / Visualization</span>
+
                                     <p>
-                                        Java, Spring Boot, JavaScript/Node.js, Python, C++
+                                        AutoCAD / SketchUp / Materials / Rendering
                                     </p>
 
                                 </div>
@@ -169,17 +180,16 @@
                             <div class="card shadow hover-float animate-on-scroll">
                                 <div class="card-body">
 
-                                    <i
-                                        class="fas fa-database fa-3x mb-3 skill-icon"
-                                        style="color: #f0db4f;"
-                                    ></i>
+                                    <i class="fas fa-code fa-3x mb-3 skill-icon" style="color: #59636d;"></i>
 
                                     <h3 class="mb-2">
-                                        Database
+                                        자동화 · 개발
                                     </h3>
 
+                                    <span class="skill-subtitle">Automation / Development</span>
+
                                     <p>
-                                        OracleDB, MySQL, Firebase, Oracle cloud
+                                        CAD Automation / BIM · Dynamo / Python / Data Processing
                                     </p>
 
                                 </div>
@@ -192,69 +202,83 @@
             </div>
         </section>
 
-        <!-- Architecture Projects -->
-        <section id="projects" class="section d-flex align-items-center justify-content-center">
+        <!-- Portfolio Preview -->
+        <section id="projects" class="section portfolio-overview">
             <div class="container">
-                <div class="text-center">
+                <header class="portfolio-overview-heading animate-on-scroll">
+                    <p class="selected-work-kicker">03 / 포트폴리오</p>
+                    <h2>주요 작업 분야</h2>
+                    <p>Home에서는 분야별 작업 범위만 간결하게 소개합니다. 건축설계 · BIM의 더 보기를 선택하면 별도 선택 과정 없이 전체 포트폴리오로 이동합니다.</p>
+                </header>
 
-                    <h2 class="mb-5 animate-on-scroll">
-                        Architecture Projects
-                    </h2>
-
-                    <div class="row justify-content-center g-4">
-
-                        <!-- Project 01 -->
-                        <div class="col-md-5">
-                            <a href="projects/project-01/index.html"
-                            class="project-card-link">
-
-                                <div class="card project-card shadow animate-on-scroll">
-
-                                    <div class="project-thumbnail">
-                                        <span>PROJECT 01</span>
-                                    </div>
-
-                                    <div class="card-body">
-                                        <h3>Project 01</h3>
-
-                                        <p>
-                                            Architecture / CAD / BIM
-                                        </p>
-
-                                        <span class="project-view">
-                                            View Project →
-                                        </span>
-                                    </div>
-
-                                </div>
-
-                            </a>
-                        </div>
-
-
-                        <!-- Project 02 -->
-                        <div class="col-md-5">
-
-                            <div class="card project-card shadow animate-on-scroll">
-
-                                <div class="project-thumbnail">
-                                    <span>PROJECT 02</span>
-                                </div>
-
-                                <div class="card-body">
-                                    <h3>Project 02</h3>
-
-                                    <p>
-                                        Coming Soon
-                                    </p>
-                                </div>
-
+                <div class="portfolio-summary-list">
+                    <article class="portfolio-summary animate-on-scroll">
+                        <header class="portfolio-summary-heading">
+                            <span>01</span>
+                            <div>
+                                <p>Architectural Design / BIM</p>
+                                <h3>건축설계 · BIM</h3>
                             </div>
-
+                        </header>
+                        <div class="portfolio-summary-content">
+                            <p>CAD 도면에서 BIM 모델과 시각화까지, 건축설계 과정을 하나의 연속된 흐름으로 정리합니다.</p>
+                            <dl>
+                                <div><dt>주요 도구</dt><dd>AutoCAD · Revit · BIM</dd></div>
+                                <div><dt>작업 범위</dt><dd>Architectural Drawing · BIM · Visualization</dd></div>
+                            </dl>
+                            <a class="portfolio-more-link" href="projects/project-01/index.html">더 보기 <span aria-hidden="true">→</span></a>
                         </div>
+                    </article>
 
-                    </div>
+                    <article class="portfolio-summary animate-on-scroll">
+                        <header class="portfolio-summary-heading">
+                            <span>02</span>
+                            <div>
+                                <p>Interior / Visualization</p>
+                                <h3>인테리어 · 시각화</h3>
+                            </div>
+                        </header>
+                        <div class="portfolio-summary-content">
+                            <p>공간 계획에서 CAD, SketchUp과 렌더링으로 이어지는 작업 영역입니다.</p>
+                            <dl>
+                                <div><dt>주요 도구</dt><dd>AutoCAD · SketchUp · Rendering</dd></div>
+                                <div><dt>작업 범위</dt><dd>Space Planning · CAD · Visualization</dd></div>
+                            </dl>
+                            <span class="portfolio-summary-status">Full Portfolio 준비 중</span>
+                        </div>
+                    </article>
 
+                    <article class="portfolio-summary animate-on-scroll">
+                        <header class="portfolio-summary-heading">
+                            <span>03</span>
+                            <div>
+                                <p>Automation / Development</p>
+                                <h3>자동화 · 개발</h3>
+                            </div>
+                        </header>
+                        <div class="portfolio-summary-content">
+                            <p>설계와 도면 작업에서 반복되는 문제를 Python과 CAD/BIM 자동화로 연결합니다.</p>
+                            <dl>
+                                <div><dt>주요 도구</dt><dd>Python · CAD/BIM Automation</dd></div>
+                                <div><dt>작업 범위</dt><dd>Workflow · Data Processing · Documentation</dd></div>
+                            </dl>
+                            <span class="portfolio-summary-status">Full Portfolio 준비 중</span>
+                        </div>
+                    </article>
+
+                    <article class="portfolio-summary portfolio-summary-secondary animate-on-scroll">
+                        <header class="portfolio-summary-heading">
+                            <span>04</span>
+                            <div>
+                                <p>Software / ETC.</p>
+                                <h3>소프트웨어 · 기타</h3>
+                            </div>
+                        </header>
+                        <div class="portfolio-summary-content">
+                            <p>건축 작업과 연결되는 소프트웨어 경험 및 기타 작업을 정리할 영역입니다.</p>
+                            <span class="portfolio-summary-status">공개 작업 정리 중</span>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
@@ -267,8 +291,9 @@
             <div class="container">
                 <div class="text-center">
 
-                    <h2 class="mb-5 animate-on-scroll">
-                        Contact
+                    <p class="home-section-kicker animate-on-scroll">04 / 연락처</p>
+                    <h2 class="home-section-title mb-5 animate-on-scroll">
+                        연락처
                     </h2>
 
                     <div class="row justify-content-center">

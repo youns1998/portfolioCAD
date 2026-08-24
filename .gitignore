@@ -16,3 +16,6 @@ Thumbs.db
 # Logs / temp
 *.log
 *.tmp
+
+# Local-only architecture reference material
+docs/projects/project-01/assets/drawings/private/
