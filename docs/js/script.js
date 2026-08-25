@@ -1,4 +1,64 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const renderPortfolioPreviews = () => {
+        document.querySelectorAll("[data-portfolio-project]").forEach((root) => {
+            const project = window.portfolioProjects?.[root.dataset.portfolioProject];
+            const mountRoot = root.querySelector("[data-portfolio-preview]");
+            if (!project || !mountRoot) return;
+
+            const limit = Number.isInteger(project.previewLimit) && project.previewLimit > 0 ? project.previewLimit : 3;
+            const mediaEntries = (project.sections || []).flatMap((section) =>
+                (section.items || []).map((item) => ({ item, section }))
+            );
+            const featuredItems = mediaEntries.filter(({ item }) => item.featured === true).slice(0, limit);
+
+            mountRoot.replaceChildren();
+            mountRoot.hidden = featuredItems.length === 0;
+            featuredItems.forEach(({ item, section }) => {
+                const article = document.createElement("article");
+                article.className = "portfolio-featured-item";
+
+                const media = document.createElement("div");
+                media.className = "portfolio-featured-media";
+                const mediaPath = item.thumbnail || (item.type === "image" ? item.file : "");
+                if (mediaPath) {
+                    const image = document.createElement("img");
+                    image.src = `${project.homeBasePath || ""}${mediaPath}`;
+                    image.alt = item.alt || item.title || "";
+                    image.loading = "lazy";
+                    image.addEventListener("error", () => {
+                        image.remove();
+                        media.textContent = String(item.type || "media").toUpperCase();
+                        media.classList.add("portfolio-featured-media-fallback");
+                    }, { once: true });
+                    media.append(image);
+                } else {
+                    media.textContent = String(item.type || "media").toUpperCase();
+                    media.classList.add("portfolio-featured-media-fallback");
+                }
+
+                const copy = document.createElement("div");
+                const category = document.createElement("p");
+                category.textContent = [section.label, item.category, item.subcategory].filter(Boolean).join(" / ");
+                const title = document.createElement("strong");
+                title.textContent = item.title || "Untitled";
+                copy.append(category, title);
+                article.append(media, copy);
+                mountRoot.append(article);
+            });
+
+            const actionRoot = root.querySelector("[data-portfolio-action]");
+            if (actionRoot && mediaEntries.length && project.homePath) {
+                const link = document.createElement("a");
+                link.className = "portfolio-more-link";
+                link.href = project.homePath;
+                link.innerHTML = '더 보기 <span aria-hidden="true">→</span>';
+                actionRoot.replaceChildren(link);
+            }
+        });
+    };
+
+    renderPortfolioPreviews();
+
     const animatedElements = [...document.querySelectorAll(".animate-on-scroll")];
     const sections = [...document.querySelectorAll("#home, .site-content > .section")];
     const navigationLinks = [...document.querySelectorAll(
@@ -66,7 +126,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    if ("IntersectionObserver" in window) {
+    const progressLabels = {
+        home: "Home",
+        about: "소개",
+        skills: "기술 및 도구",
+        projects: "포트폴리오",
+        contact: "연락처"
+    };
+    const progress = window.SectionProgress?.init({
+        sections: sections.map((element) => ({ element, label: progressLabels[element.id] })),
+        label: "홈 섹션 진행",
+        onChange: setActiveSection
+    });
+
+    if (!progress && "IntersectionObserver" in window) {
         const sectionObserver = new IntersectionObserver(() => {
             const focusLine = window.innerHeight * 0.4;
             const activeSection = sections.find((section) => {

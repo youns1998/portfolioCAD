@@ -75,12 +75,6 @@
         return canvas;
     };
 
-    const renderPdfThumbnail = (file, page, options = {}) => renderPdfPageToCanvas(file, page, {
-        className: "pdf-thumbnail-canvas",
-        maxPixelRatio: 1.5,
-        ...options
-    });
-
     const renderPdfViewer = (file, page, options = {}) => renderPdfPageToCanvas(file, page, {
         className: "pdf-page-canvas",
         maxPixelRatio: 2,
@@ -88,10 +82,7 @@
     });
 
     window.PdfPageRenderer = {
-        isValidPage,
-        loadPdfDocument,
         renderPdfPageToCanvas,
-        renderPdfThumbnail,
         renderPdfViewer
     };
 })();

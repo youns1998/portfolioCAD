@@ -189,6 +189,116 @@ body {
 }
 
 /* =========================
+   Shared Section Progress
+========================= */
+
+.section-progress {
+    --section-progress: 0;
+    position: fixed;
+    top: 50%;
+    right: clamp(12px, 1.8vw, 30px);
+    z-index: 850;
+    width: 164px;
+    transform: translateY(-50%);
+    color: #64717a;
+}
+
+.section-progress-current {
+    display: none;
+}
+
+.section-progress-rail {
+    position: absolute;
+    top: 8px;
+    right: 5px;
+    bottom: 8px;
+    width: 1px;
+    overflow: hidden;
+    background: #cbd1d5;
+    pointer-events: none;
+}
+
+.section-progress-rail span {
+    display: block;
+    width: 100%;
+    height: calc(var(--section-progress) * 100%);
+    background: #263f52;
+    transition: height 0.24s ease;
+}
+
+.section-progress-list {
+    position: relative;
+    display: grid;
+    gap: 14px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.section-progress-list a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 11px;
+    gap: 10px;
+    align-items: center;
+    min-height: 18px;
+    color: inherit;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.055em;
+    text-decoration: none;
+}
+
+.section-progress-label {
+    grid-column: 1;
+    grid-row: 1;
+    overflow: hidden;
+    opacity: 0.38;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transform: translateX(3px);
+    transition: color 0.22s ease, opacity 0.22s ease, transform 0.22s ease;
+}
+
+.section-progress-dot {
+    position: relative;
+    z-index: 1;
+    grid-column: 2;
+    grid-row: 1;
+    width: 9px;
+    height: 9px;
+    border: 1px solid #9da7ae;
+    border-radius: 50%;
+    background: #fff;
+    transition: background-color 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
+}
+
+.section-progress-list a:hover .section-progress-label,
+.section-progress-list a:focus-visible .section-progress-label,
+.section-progress-list a.is-active .section-progress-label {
+    color: #1f3545;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.section-progress-list a.is-active .section-progress-label {
+    font-weight: 700;
+}
+
+.section-progress-list a.is-active .section-progress-dot {
+    border-color: #263f52;
+    background: #263f52;
+    box-shadow: 0 0 0 3px rgb(38 63 82 / 13%);
+    transform: scale(1.2);
+}
+
+.section-progress-list a:focus-visible {
+    border-radius: 2px;
+    outline: 2px solid #263f52;
+    outline-offset: 4px;
+}
+
+/* =========================
    White Content Canvas
 ========================= */
 
@@ -275,8 +385,7 @@ body {
    Common Card
 ========================= */
 
-.card,
-.project-detail-card {
+.card {
     background: #fff;
 
     border-radius: 15px;
@@ -292,8 +401,7 @@ body {
 }
 
 
-.card:hover,
-.project-detail-card:hover {
+.card:hover {
     transform: translateY(-10px);
 
     box-shadow:
@@ -317,34 +425,6 @@ body {
 
 .profile-image:hover {
     transform: scale(1.05);
-}
-
-
-/* =========================
-   Tech Stack
-========================= */
-
-.tech-stack .badge {
-    margin: 0.3rem;
-
-    padding: 0.5rem 1rem;
-
-    border-radius: 15px;
-
-    font-size: 0.85rem;
-
-    box-shadow:
-        0 3px 5px rgba(0, 0, 0, 0.1);
-
-    transition: all 0.3s ease;
-}
-
-
-.tech-stack .badge:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 5px 10px rgba(0, 0, 0, 0.15);
 }
 
 
@@ -498,6 +578,61 @@ body {
     line-height: 1.8;
 }
 
+.portfolio-featured {
+    display: grid;
+    gap: 1px;
+    margin-top: 30px;
+    border: 1px solid #dce1e4;
+    background: #dce1e4;
+}
+
+.portfolio-featured[hidden] { display: none; }
+
+.portfolio-featured-item {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    padding: 14px;
+    background: #fff;
+}
+
+.portfolio-featured-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #eef1f3;
+}
+
+.portfolio-featured-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.portfolio-featured-media-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7b8790;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.portfolio-featured-item p {
+    margin: 0 0 5px;
+    color: #87929a;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.portfolio-featured-item strong {
+    color: #2d414f;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+}
+
 .portfolio-summary-content dl {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -564,6 +699,89 @@ body {
 
 @media (max-width: 768px) {
 
+    .section-progress {
+        top: var(--section-progress-mobile-top, 72px);
+        right: 12px;
+        width: min(184px, calc(100vw - 24px));
+        padding: 8px 10px 7px;
+        border: 1px solid rgb(205 211 215 / 88%);
+        background: rgb(255 255 255 / 94%);
+        box-shadow: 0 5px 18px rgb(25 39 49 / 8%);
+        transform: none;
+        backdrop-filter: blur(8px);
+    }
+
+    body[data-project-id] {
+        --section-progress-mobile-top: 126px;
+    }
+
+    .section-progress-current {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        padding: 0 0 6px;
+        margin: 0 0 4px;
+        color: #263f52;
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-align: right;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .section-progress-current::before,
+    .section-progress-current::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 1px;
+        background: #d4d9dc;
+        content: "";
+    }
+
+    .section-progress-current::after {
+        right: auto;
+        width: calc(var(--section-progress) * 100%);
+        background: #263f52;
+        transition: width 0.24s ease;
+    }
+
+    .section-progress-rail {
+        display: none;
+    }
+
+    .section-progress-list {
+        display: flex;
+        justify-content: flex-end;
+        gap: 5px;
+    }
+
+    .section-progress-list a {
+        display: grid;
+        width: 20px;
+        min-height: 20px;
+        place-items: center;
+    }
+
+    .section-progress-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+    }
+
+    .section-progress-dot {
+        grid-column: 1;
+        width: 7px;
+        height: 7px;
+    }
+
     .site-nav-inner {
         width: calc(100% - 32px);
         min-height: 60px;
@@ -625,18 +843,6 @@ body {
     }
 
 
-    .project-detail-card {
-        padding: 1.5rem;
-    }
-
-
-    .tech-stack .badge {
-        font-size: 0.75rem;
-
-        padding:
-            0.4rem 0.7rem;
-    }
-
 }
 
 
@@ -685,8 +891,7 @@ body {
     }
 
 
-    .card,
-    .project-detail-card {
+    .card {
         padding: 1.5rem;
 
         margin-bottom: 1.5rem;
@@ -699,42 +904,6 @@ body {
         height: 120px;
     }
 
-
-    .project-detail-card .row {
-        flex-direction: column;
-    }
-
-
-    .project-detail-card .col-md-5,
-    .project-detail-card .col-md-7 {
-        width: 100%;
-
-        max-width: 100%;
-    }
-
-
-    .project-icon {
-        font-size: 3rem;
-    }
-
-
-    .tech-stack {
-        display: flex;
-
-        flex-wrap: wrap;
-
-        justify-content: center;
-    }
-
-
-    .tech-stack .badge {
-        font-size: 0.7rem;
-
-        padding:
-            0.3rem 0.6rem;
-
-        margin: 0.2rem;
-    }
 
 }
 
@@ -767,22 +936,8 @@ body {
     }
 
 
-    .card,
-    .project-detail-card {
+    .card {
         padding: 1rem;
-    }
-
-
-    .project-full-description,
-    .features,
-    .achievements {
-        margin-top: 1rem;
-    }
-
-
-    .feature-list li,
-    .achievement-list li {
-        margin-bottom: 0.5rem;
     }
 
 }
@@ -837,13 +992,6 @@ and (orientation: portrait) {
     }
 
 
-    .tech-stack .badge {
-        font-size: 0.8rem;
-
-        padding:
-            0.4rem 0.8rem;
-    }
-
 }
 
 
@@ -885,24 +1033,8 @@ and (orientation: landscape) {
     }
 
 
-    .card,
-    .project-detail-card {
+    .card {
         margin-bottom: 1rem;
-    }
-
-
-    .project-detail-card .row {
-        flex-direction: row;
-    }
-
-
-    .project-detail-card .col-md-5 {
-        width: 40%;
-    }
-
-
-    .project-detail-card .col-md-7 {
-        width: 60%;
     }
 
 }

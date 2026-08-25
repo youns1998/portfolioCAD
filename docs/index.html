@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
     <title>Youns Journey</title>
 
     <!-- Bootstrap CSS -->
@@ -212,7 +213,7 @@
                 </header>
 
                 <div class="portfolio-summary-list">
-                    <article class="portfolio-summary animate-on-scroll">
+                    <article class="portfolio-summary animate-on-scroll" data-portfolio-project="architecture">
                         <header class="portfolio-summary-heading">
                             <span>01</span>
                             <div>
@@ -222,6 +223,7 @@
                         </header>
                         <div class="portfolio-summary-content">
                             <p>CAD 도면에서 BIM 모델과 시각화까지, 건축설계 과정을 하나의 연속된 흐름으로 정리합니다.</p>
+                            <div class="portfolio-featured" data-portfolio-preview hidden></div>
                             <dl>
                                 <div><dt>주요 도구</dt><dd>AutoCAD · Revit · BIM</dd></div>
                                 <div><dt>작업 범위</dt><dd>Architectural Drawing · BIM · Visualization</dd></div>
@@ -230,7 +232,7 @@
                         </div>
                     </article>
 
-                    <article class="portfolio-summary animate-on-scroll">
+                    <article class="portfolio-summary animate-on-scroll" data-portfolio-project="interior">
                         <header class="portfolio-summary-heading">
                             <span>02</span>
                             <div>
@@ -240,15 +242,16 @@
                         </header>
                         <div class="portfolio-summary-content">
                             <p>공간 계획에서 CAD, SketchUp과 렌더링으로 이어지는 작업 영역입니다.</p>
+                            <div class="portfolio-featured" data-portfolio-preview hidden></div>
                             <dl>
                                 <div><dt>주요 도구</dt><dd>AutoCAD · SketchUp · Rendering</dd></div>
                                 <div><dt>작업 범위</dt><dd>Space Planning · CAD · Visualization</dd></div>
                             </dl>
-                            <span class="portfolio-summary-status">Full Portfolio 준비 중</span>
+                            <div data-portfolio-action><span class="portfolio-summary-status">Full Portfolio 준비 중</span></div>
                         </div>
                     </article>
 
-                    <article class="portfolio-summary animate-on-scroll">
+                    <article class="portfolio-summary animate-on-scroll" data-portfolio-project="automation">
                         <header class="portfolio-summary-heading">
                             <span>03</span>
                             <div>
@@ -258,11 +261,12 @@
                         </header>
                         <div class="portfolio-summary-content">
                             <p>설계와 도면 작업에서 반복되는 문제를 Python과 CAD/BIM 자동화로 연결합니다.</p>
+                            <div class="portfolio-featured" data-portfolio-preview hidden></div>
                             <dl>
                                 <div><dt>주요 도구</dt><dd>Python · CAD/BIM Automation</dd></div>
                                 <div><dt>작업 범위</dt><dd>Workflow · Data Processing · Documentation</dd></div>
                             </dl>
-                            <span class="portfolio-summary-status">Full Portfolio 준비 중</span>
+                            <div data-portfolio-action><span class="portfolio-summary-status">Full Portfolio 준비 중</span></div>
                         </div>
                     </article>
 
@@ -345,6 +349,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom JS -->
+    <script src="projects/project-01/data/project.js"></script>
+    <script src="projects/project-02/data/project.js"></script>
+    <script src="projects/project-03/data/project.js"></script>
+    <script src="js/section-progress.js"></script>
     <script src="js/script.js"></script>
 
 </body>

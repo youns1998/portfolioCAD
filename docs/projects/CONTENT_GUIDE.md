@@ -1,87 +1,147 @@
-# Project content guide
+# Portfolio content guide
 
-Project 01 is the reference template. Media paths in its data files are relative to the Project 01 HTML pages, not to the data file.
+Each Portfolio has one content source: its `data/project.js`. Project 01 is the reference implementation.
 
-## Add a Drawing
+The shared flow is:
 
-1. Put the full-size image or PDF in `project-01/assets/drawings/`.
-2. Add an optional preview image only when the source needs one. PDF pages render directly when `page` is present.
-3. Add an item to `project-01/data/drawings.js`.
-4. Reuse an existing `category`, or add a category definition to `categories`. The values must match exactly.
+```text
+project.js data → project-shell.js → media-gallery.js → Full Portfolio / Viewer
+                ↘ Home featured preview
+```
+
+Do not add content markup to an HTML page. Do not copy the Viewer or navigation code into a project folder.
+
+## Media item model
+
+The minimum recommended fields are `id`, `title`, `type`, and `file`.
 
 ```js
 {
-    id: "unique-drawing-id",
-    title: "Drawing title",
+    id: "plan-1f",
+    title: "1층 평면도",
+    type: "pdf", // "pdf" or "image"
+    file: "assets/drawings/project-drawings.pdf",
+
     drawingNumber: "A-101", // optional
-    category: "Plans",
+    category: "Plans", // optional
     subcategory: "1F", // optional
-    type: "image", // use "pdf" for a PDF
-    thumbnail: "assets/drawings/card-image.jpg", // optional
-    file: "assets/drawings/full-image.jpg",
-    page: 4, // optional PDF start page; omit to open from page 1
-    description: "Verified description"
+    page: 4, // optional, positive PDF page number
+    thumbnail: "assets/drawings/plan-1f.jpg", // optional
+    description: "검증된 설명", // optional
+    featured: true // optional; Home preview only
 }
 ```
 
-Multiple items may reference the same PDF with different positive integer `page` values. Invalid or omitted `page` values open the PDF without a page fragment.
+Item order in the array is the Full Portfolio order. Do not sort filenames alphabetically and do not add `order` unless array order becomes insufficient.
 
-For a PDF with a valid `page`, the shared PDF.js renderer draws that page in both the continuous sheet and the Viewer. A supplied PNG/JPG `thumbnail` still takes precedence. PDFs without a valid `page` retain the browser-native iframe fallback and start at page 1.
+## Add a PDF
 
-`layout: "document"` enables the continuous A4 landscape presentation, sticky navigation, smooth sheet navigation, and scroll spy. Drawings, BIM, and Visualization use this presentation in the Architecture/BIM Full Portfolio.
-
-Never register files from `assets/drawings/private/` as Portfolio items or move extracted pages into a public assets directory.
-
-## Add BIM content
-
-1. Create `project-01/assets/bim/` and add the media files.
-2. Add category definitions and items to `project-01/data/bim.js`.
-3. Use the same item fields as Drawings. Set paths such as `assets/bim/model-view.jpg`.
-
-When BIM items exist, the Full Portfolio automatically adds the BIM section and its minimal anchor link. Images, page-mapped PDFs, and browser-native PDFs are supported.
-
-## Add a Visualization
-
-1. Create `project-01/assets/visualizations/` and add the media files.
-2. Add category definitions and items to `project-01/data/visualizations.js`.
-3. Use the same item fields as Drawings, with paths such as `assets/visualizations/exterior-01.jpg`.
-
-Visualization uses the same gallery and viewer as Drawings and BIM.
-
-## Add Automation content
-
-Add an entry to `project-01/data/automation.js`:
+1. Put the PDF in the matching Project 01 asset folder, for example `project-01/assets/drawings/`.
+2. Open `project-01/data/project.js`.
+3. Add one item to the appropriate section's `items` array.
 
 ```js
 {
-    title: "Workflow or tool name",
-    description: "Verified purpose and result",
-    link: "assets/automation/example-file.ext", // optional
-    linkLabel: "Open resource" // optional
+    id: "section-a",
+    title: "단면도 A",
+    category: "Sections",
+    type: "pdf",
+    file: "assets/drawings/section-a.pdf"
 }
 ```
 
-Create `project-01/assets/automation/` when an entry needs a local downloadable file. Automation entries render as content cards rather than gallery items.
+No HTML, navigation, CSS, or renderer edit is required.
 
-## Update the Overview and Full Portfolio order
+## Add a page from a multi-page PDF
 
-Edit `project-01/data/project.js` using verified information only. Omit unknown facts instead of adding `Not provided` values.
+Several items may reference the same PDF. Add a positive `page` number to each item.
 
-The same file defines the continuous section order. Project 01 uses `layout: "continuous"`; the shared shell renders its Overview first, followed by each non-empty media section in array order. Empty sections and their anchor links stay out of the public document.
+```js
+{
+    id: "section-a-page-11",
+    title: "단면도 A",
+    category: "Sections",
+    type: "pdf",
+    file: "assets/drawings/project-drawings.pdf",
+    page: 11
+}
+```
+
+The shared PDF.js renderer draws the selected page inline and in the Viewer. A PDF without `page` uses the browser PDF viewer and opens from page 1. `thumbnail` is optional and takes precedence for an inline preview.
+
+## Add an image
+
+1. Put the image in the appropriate asset folder, such as `project-01/assets/visualizations/`.
+2. Add an item to the matching section in `project-01/data/project.js`.
+
+```js
+{
+    id: "exterior-render",
+    title: "외부 렌더링",
+    category: "Exterior",
+    type: "image",
+    file: "assets/visualizations/exterior.jpg",
+    featured: true
+}
+```
+
+PDF and image items can be mixed in the same section and use the same Viewer and missing-media fallback.
+
+## Delete content
+
+1. Delete the item from `data/project.js`.
+2. Delete its asset only when no other item references that file.
+
+The item then disappears from the Home preview, Full Portfolio, category navigation, subcategory navigation, and Viewer entry points automatically.
+
+## Category and subcategory rules
+
+- `categories` is optional configuration for labels and preferred navigation order.
+- Only categories that have at least one item are rendered.
+- Only subcategories that have at least one item are rendered.
+- A category or subcategory found in an item but omitted from the config is inferred at its first data occurrence.
+- Removing every matching item hides the navigation entry and heading. Adding an item restores them.
+- Full Portfolio items always preserve their original array order after preview selection or navigation.
+
+## Featured and preview rules
+
+- `featured: true` adds the item to the Home preview.
+- Removing `featured` leaves the item in the Full Portfolio but removes it from Home.
+- Home renders at most `previewLimit` featured items; Project 01 uses 3.
+- Project 02 and 03 keep their preparation status while empty; adding the first item automatically replaces it with a `더 보기` link from `homePath`.
+- Home never embeds a full PDF. It uses an optional thumbnail or a lightweight PDF label.
+- Fixed marketing copy may remain in `docs/index.html`; media title, type, and file stay only in `project.js`.
+
+## Full Portfolio and large collections
+
+Sections are rendered only when their `items` array is non-empty. Section navigation follows that same rule.
+
+The shared media renderer initially shows all items for a small collection. Above `initialVisible` (default 8), it shows a representative sequence that includes the first item from each category, then featured items, then fills the remaining slots in data order. `전체 자료 보기` reveals the complete collection without a nested route.
+
+PDF page rendering is lazy and starts only near the viewport. Images also use native lazy loading.
+
+## Private assets
+
+Never register, move, copy, thumbnail, or publish anything under `assets/**/private/`.
+
+The private directory remains ignored by Git and its contents must not appear in Portfolio data or tests.
+
+## Overview, sections, and new projects
+
+Edit a project's `overview` and `sections` in that project's single `data/project.js`. Omit unknown facts instead of writing `Not provided` or speculative content.
 
 - `project-01`: Architecture / BIM reference implementation
 - `project-02`: Interior / Visualization extension shell
 - `project-03`: Automation / Development extension shell
 
-Use `type: "media"` for PDF/image collections and `type: "content"` for case-study text. Do not describe placeholders as completed work.
+To extend a project, add asset folders and section items; its HTML shell and shared renderer stay unchanged. A new project needs one minimal HTML shell, one `data/project.js`, and the existing shared CSS/JS includes.
 
-## Shared system files
+## Shared runtime files
 
-- `js/project-shell.js`: continuous Project 01 document, reusable project header, legacy hash routes, content mounting, footer, and image fallback
-- `js/pdf-page-renderer.js`: reusable PDF.js loader, document cache, and single-page canvas renderer
-- `js/media-gallery.js`: gallery/document presentations, sticky navigation, scroll spy, image/PDF viewer, empty states, and missing-media fallback
-- `js/drawing-browser.js`: compatibility entry point connecting Drawings to the shared gallery
-- `js/content-template.js`: Automation content cards and empty state
-- `css/project.css`: shared Project page styles
+- `js/project-shell.js`: Overview, non-empty continuous sections, project navigation, deep links, footer, and hero fallback
+- `js/media-gallery.js`: data-driven category headings/navigation, progressive detail reveal, PDF/image inline media, Viewer, ESC close, and missing-media fallback
+- `js/pdf-page-renderer.js`: shared PDF.js loader, document cache, and selected-page canvas renderer
+- `js/section-progress.js`: Home and Full Portfolio section-based progress, accessible anchor navigation, and responsive current-section UI
+- `css/project.css`: shared Portfolio and Viewer presentation
 
-Do not copy the gallery or viewer code into an individual page. Extend the shared module only when every consuming page needs the behavior.
+There are no separate Drawings/BIM/Visualization HTML pages or per-media renderers. Content changes belong in `data/project.js` only.
