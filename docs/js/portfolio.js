@@ -39,17 +39,6 @@
     const list = document.getElementById("project-list");
     if (!list) return;
     list.replaceChildren();
-    const featured = projects.flatMap((project) => project.documents.map((item) => ({ project, item })))
-      .find(({ item }) => item.thumbnail);
-    const heroVisual = document.querySelector(".hero-aside");
-    if (featured && heroVisual) {
-      heroVisual.classList.add("is-document");
-      const preview = node("img");
-      preview.src = asset(featured.item.thumbnail);
-      preview.alt = featured.item.title + " PDF 도면 미리보기";
-      const caption = node("span", "hero-document-caption", featured.item.title + " / PDF DRAWING");
-      heroVisual.replaceChildren(preview, caption);
-    }
     projects.forEach((project, index) => {
       const article = node("article", "project-card");
       const figure = node("div", "project-card-visual");
