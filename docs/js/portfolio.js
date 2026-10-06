@@ -218,4 +218,20 @@
   if (year) year.textContent = new Date().getFullYear();
   if (page === "home") renderHome();
   if (page === "detail") renderDetail();
+
+  if (page === "home" && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const sections = document.querySelectorAll("[data-reveal], .project-card");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -24px 0px" });
+    sections.forEach((section) => {
+      section.classList.add("reveal");
+      observer.observe(section);
+    });
+    document.documentElement.classList.add("motion-ready");
+  }
 })();
