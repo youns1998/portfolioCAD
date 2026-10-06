@@ -1,359 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:,">
-    <title>Youns Journey</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="최윤성의 건축 도면과 CAD 개발 작업 포트폴리오">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/portfolio.css">
+  <title>최윤성 | Architecture & CAD Portfolio</title>
 </head>
-
-<body>
-
-    <!-- Home -->
-    <section id="home" class="vh-100 position-relative section" aria-label="Youns Journey introduction">
-        <video autoplay loop muted playsinline id="background-video">
-            <source src="video/210592.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-
-        <div class="content-center text-center text-white">
-            <h1 class="display-4 mb-4 animate-on-scroll">Youns Journey</h1>
-
-            <nav class="d-flex justify-content-center gap-4 animate-on-scroll" aria-label="Hero navigation">
-                <a href="#about" class="btn btn-outline-light px-4">
-                    소개
-                </a>
-
-                <a href="#skills" class="btn btn-outline-light px-4">
-                    기술 및 도구
-                </a>
-
-                <a href="#projects" class="btn btn-outline-light px-4">
-                    포트폴리오
-                </a>
-
-                <a href="#contact" class="btn btn-outline-light px-4">
-                    연락처
-                </a>
-            </nav>
-        </div>
-    </section>
-
-    <nav class="site-nav" aria-label="Portfolio section navigation">
-        <div class="site-nav-inner">
-            <a href="#home" class="site-nav-brand">Youns Journey</a>
-            <div class="site-nav-links">
-                <a href="#about">소개</a>
-                <a href="#skills">기술 및 도구</a>
-                <a href="#projects">포트폴리오</a>
-                <a href="#contact">연락처</a>
-            </div>
-        </div>
+<body data-page="home">
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="최윤성 포트폴리오 처음으로">YOUNS <span>PORTFOLIO</span></a>
+    <nav aria-label="주 메뉴">
+      <a href="#work">프로젝트</a>
+      <a href="#about">소개</a>
+      <a href="#contact">연락처</a>
     </nav>
-
-    <main class="site-content">
-
-        <!-- About -->
-        <section id="about" class="section d-flex align-items-center justify-content-center">
-            <div class="container">
-                <div class="text-center">
-
-                    <p class="home-section-kicker animate-on-scroll">01 / 소개</p>
-                    <h2 class="home-section-title mb-5 animate-on-scroll">
-                        소개
-                    </h2>
-
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-
-                            <div class="card mx-auto shadow hover-float animate-on-scroll">
-                                <div class="card-body">
-
-                                    <img
-                                        src="images/최윤성.jpg"
-                                        alt="최윤성 프로필 사진"
-                                        class="rounded-circle mb-4 profile-image"
-                                        width="200"
-                                        height="250"
-                                    >
-
-                                    <p class="lead">
-                                        건축과 소프트웨어를 함께 탐구하는 최윤성입니다.
-                                    </p>
-
-                                    <p>
-                                        설계부터 도면화, BIM, 시각화, 반복 업무의 자동화까지 하나의 흐름으로 연결합니다.
-                                    </p>
-
-                                    <h3 class="mt-4">
-                                        학력
-                                    </h3>
-
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <strong>2016 - 2022:</strong>
-                                            충북대학교 컴퓨터공학과 졸업
-                                        </li>
-
-                                        <li>
-                                            <strong>2024:</strong>
-                                            spring 학습 중 ~
-                                        </li>
-                                    </ul>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Skills -->
-        <section id="skills" class="section d-flex align-items-center justify-content-center">
-            <div class="container">
-                <div class="text-center">
-
-                    <p class="home-section-kicker animate-on-scroll">02 / 기술 및 도구</p>
-                    <h2 class="home-section-title mb-5 animate-on-scroll">
-                        기술 및 도구
-                    </h2>
-
-                    <div class="row justify-content-center">
-
-                        <div class="col-md-4">
-                            <div class="card shadow hover-float animate-on-scroll">
-                                <div class="card-body">
-
-                                    <i class="fas fa-drafting-compass fa-3x mb-3 skill-icon" style="color: #4f6576;"></i>
-
-                                    <h3 class="mb-2">
-                                        건축설계 · BIM
-                                    </h3>
-
-                                    <span class="skill-subtitle">Architectural Design / BIM</span>
-
-                                    <p>
-                                        AutoCAD / Revit / BIM / 건축 도면
-                                    </p>
-
-                                    &nbsp;
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-4">
-                            <div class="card shadow hover-float animate-on-scroll">
-                                <div class="card-body">
-
-                                    <i class="fas fa-cube fa-3x mb-3 skill-icon" style="color: #7b6f64;"></i>
-
-                                    <h3 class="mb-2">
-                                        인테리어 · 시각화
-                                    </h3>
-
-                                    <span class="skill-subtitle">Interior / Visualization</span>
-
-                                    <p>
-                                        AutoCAD / SketchUp / Materials / Rendering
-                                    </p>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-4">
-                            <div class="card shadow hover-float animate-on-scroll">
-                                <div class="card-body">
-
-                                    <i class="fas fa-code fa-3x mb-3 skill-icon" style="color: #59636d;"></i>
-
-                                    <h3 class="mb-2">
-                                        자동화 · 개발
-                                    </h3>
-
-                                    <span class="skill-subtitle">Automation / Development</span>
-
-                                    <p>
-                                        CAD Automation / BIM · Dynamo / Python / Data Processing
-                                    </p>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Portfolio Preview -->
-        <section id="projects" class="section portfolio-overview">
-            <div class="container">
-                <header class="portfolio-overview-heading animate-on-scroll">
-                    <p class="selected-work-kicker">03 / 포트폴리오</p>
-                    <h2>주요 작업 분야</h2>
-                    <p>Home에서는 분야별 작업 범위만 간결하게 소개합니다. 건축설계 · BIM의 더 보기를 선택하면 별도 선택 과정 없이 전체 포트폴리오로 이동합니다.</p>
-                </header>
-
-                <div class="portfolio-summary-list">
-                    <article class="portfolio-summary animate-on-scroll" data-portfolio-project="architecture">
-                        <header class="portfolio-summary-heading">
-                            <span>01</span>
-                            <div>
-                                <p>Architectural Design / BIM</p>
-                                <h3>건축설계 · BIM</h3>
-                            </div>
-                        </header>
-                        <div class="portfolio-summary-content">
-                            <p>CAD 도면에서 BIM 모델과 시각화까지, 건축설계 과정을 하나의 연속된 흐름으로 정리합니다.</p>
-                            <div class="portfolio-featured" data-portfolio-preview hidden></div>
-                            <dl>
-                                <div><dt>주요 도구</dt><dd>AutoCAD · Revit · BIM</dd></div>
-                                <div><dt>작업 범위</dt><dd>Architectural Drawing · BIM · Visualization</dd></div>
-                            </dl>
-                            <a class="portfolio-more-link" href="projects/project-01/index.html">더 보기 <span aria-hidden="true">→</span></a>
-                        </div>
-                    </article>
-
-                    <article class="portfolio-summary animate-on-scroll" data-portfolio-project="interior">
-                        <header class="portfolio-summary-heading">
-                            <span>02</span>
-                            <div>
-                                <p>Interior / Visualization</p>
-                                <h3>인테리어 · 시각화</h3>
-                            </div>
-                        </header>
-                        <div class="portfolio-summary-content">
-                            <p>공간 계획에서 CAD, SketchUp과 렌더링으로 이어지는 작업 영역입니다.</p>
-                            <div class="portfolio-featured" data-portfolio-preview hidden></div>
-                            <dl>
-                                <div><dt>주요 도구</dt><dd>AutoCAD · SketchUp · Rendering</dd></div>
-                                <div><dt>작업 범위</dt><dd>Space Planning · CAD · Visualization</dd></div>
-                            </dl>
-                            <div data-portfolio-action><span class="portfolio-summary-status">Full Portfolio 준비 중</span></div>
-                        </div>
-                    </article>
-
-                    <article class="portfolio-summary animate-on-scroll" data-portfolio-project="automation">
-                        <header class="portfolio-summary-heading">
-                            <span>03</span>
-                            <div>
-                                <p>Automation / Development</p>
-                                <h3>자동화 · 개발</h3>
-                            </div>
-                        </header>
-                        <div class="portfolio-summary-content">
-                            <p>설계와 도면 작업에서 반복되는 문제를 Python과 CAD/BIM 자동화로 연결합니다.</p>
-                            <div class="portfolio-featured" data-portfolio-preview hidden></div>
-                            <dl>
-                                <div><dt>주요 도구</dt><dd>Python · CAD/BIM Automation</dd></div>
-                                <div><dt>작업 범위</dt><dd>Workflow · Data Processing · Documentation</dd></div>
-                            </dl>
-                            <div data-portfolio-action><span class="portfolio-summary-status">Full Portfolio 준비 중</span></div>
-                        </div>
-                    </article>
-
-                    <article class="portfolio-summary portfolio-summary-secondary animate-on-scroll">
-                        <header class="portfolio-summary-heading">
-                            <span>04</span>
-                            <div>
-                                <p>Software / ETC.</p>
-                                <h3>소프트웨어 · 기타</h3>
-                            </div>
-                        </header>
-                        <div class="portfolio-summary-content">
-                            <p>건축 작업과 연결되는 소프트웨어 경험 및 기타 작업을 정리할 영역입니다.</p>
-                            <span class="portfolio-summary-status">공개 작업 정리 중</span>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-
-        
-
-        <!-- Contact -->
-        <section id="contact" class="section d-flex align-items-center justify-content-center">
-            <div class="container">
-                <div class="text-center">
-
-                    <p class="home-section-kicker animate-on-scroll">04 / 연락처</p>
-                    <h2 class="home-section-title mb-5 animate-on-scroll">
-                        연락처
-                    </h2>
-
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-
-                            <div class="card contact-card shadow hover-float animate-on-scroll">
-                                <div class="card-body">
-
-                                    <p class="lead">
-                                        Email:
-                                        <a
-                                            href="mailto:youns1998@gmail.com"
-                                            class="contact-link"
-                                        >
-                                            youns1998@gmail.com
-                                        </a>
-                                    </p>
-
-                                    <p class="lead">
-                                        GitHub:
-                                        <a
-                                            href="https://github.com/youns1998"
-                                            target="_blank"
-                                            class="contact-link"
-                                        >
-                                            https://github.com/youns1998
-                                        </a>
-                                    </p>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2025 Youns Journey. All Rights Reserved.</p>
-    </footer>
-
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom JS -->
-    <script src="projects/project-01/data/project.js"></script>
-    <script src="projects/project-02/data/project.js"></script>
-    <script src="projects/project-03/data/project.js"></script>
-    <script src="js/section-progress.js"></script>
-    <script src="js/script.js"></script>
-
+  </header>
+  <main id="top">
+    <section class="hero page-width" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Architecture · CAD · Development</p>
+        <h1 id="hero-title">도면으로 보여주는<br><em>설계의 과정.</em></h1>
+        <p class="hero-description">건축 도면과 CAD 작업을 문서 중심으로 정리한 최윤성의 포트폴리오입니다. 프로젝트를 선택하면 결과물을 사이트에서 바로 볼 수 있습니다.</p>
+        <a class="button button-dark" href="#work">결과물 보기 <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-aside" aria-label="포트폴리오 분야">
+        <span class="hero-index">01 / PORTFOLIO</span>
+        <div class="blueprint-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p>DRAWINGS<br>DETAILS<br>WORKFLOW</p>
+      </div>
+    </section>
+    <section id="work" class="work-section">
+      <div class="page-width">
+        <div class="section-heading">
+          <div><p class="eyebrow">SELECTED WORK / 01</p><h2>프로젝트와 결과물</h2></div>
+          <p>실제 문서와 공개된 구현을 기준으로 정리했습니다.</p>
+        </div>
+        <div id="project-list" class="project-list" aria-live="polite"></div>
+      </div>
+    </section>
+    <section id="about" class="about-section page-width">
+      <div class="section-heading"><div><p class="eyebrow">ABOUT / 02</p><h2>소개</h2></div></div>
+      <div class="about-grid">
+        <div class="portrait-wrap"><img src="images/최윤성.jpg" alt="최윤성 프로필 사진" loading="lazy"></div>
+        <div class="about-copy">
+          <p class="about-lead">컴퓨터공학을 바탕으로 건축 설계 도구와 소프트웨어를 함께 익히는 최윤성입니다.</p>
+          <p>AutoCAD 도면, Revit BIM 모델, SketchUp 시각화로 이어지는 설계 흐름을 익히고 있습니다. Spring 기반 웹 개발과 Python 자동화도 학습하며 두 영역을 연결하고 있습니다.</p>
+          <dl class="about-facts">
+            <div><dt>학력</dt><dd>충북대학교 컴퓨터공학과 졸업 · 2016–2022</dd></div>
+            <div><dt>도구</dt><dd>AutoCAD · Revit · SketchUp · Python · Spring</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+    <section id="contact" class="contact-section">
+      <div class="page-width contact-grid">
+        <div><p class="eyebrow">CONTACT / 03</p><h2>함께 이야기해요.</h2><p>포트폴리오와 작업에 관한 문의를 환영합니다.</p></div>
+        <div class="contact-links"><a href="mailto:youns1998@gmail.com">youns1998@gmail.com <span aria-hidden="true">↗</span></a><a href="https://github.com/youns1998" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer page-width"><span>© <span id="year"></span> 최윤성</span><a href="#top">맨 위로 ↑</a></footer>
+  <script src="data/projects.js"></script>
+  <script src="js/portfolio.js"></script>
 </body>
 </html>
