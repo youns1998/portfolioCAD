@@ -96,7 +96,7 @@ try {
         Assert-Js "Home images load at $width px" '[...document.images].every(i => i.complete && i.naturalWidth > 0)'
         Assert-Js "Home fits viewport at $width px" 'document.documentElement.scrollWidth <= innerWidth'
         Assert-Js "Header scroll offset matches height at $width px" 'Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) - document.querySelector("header").getBoundingClientRect().height) < 1'
-        Assert-Js "Cafe lists three upcoming assets at $width px" 'document.querySelectorAll("[data-project=\"comic-cafe\"] .project-upcoming li").length === 3'
+        Assert-Js "Interior precedes CAD at $width px" 'document.querySelectorAll(".project-card")[0].dataset.project === "comic-cafe" && document.querySelectorAll(".project-card")[1].dataset.project === "two-story-house"'
         Assert-Js "Pending video does not create an empty player at $width px" '!document.querySelector("video") && !document.querySelector(".video-toggle")'
     }
 
@@ -120,23 +120,29 @@ try {
             Assert-Js "Detail renders $project at $width px" 'document.querySelector("h1").textContent === window.portfolioProjects.find(p => p.id === new URLSearchParams(location.search).get("project")).title'
             Assert-Js "Detail fits viewport: $project at $width px" 'document.documentElement.scrollWidth <= innerWidth'
             if ($project -eq 'comic-cafe') {
-                Assert-Js "Cafe reserves two PDF slots at $width px" 'document.querySelectorAll(".upcoming-card").length === 2 && !document.querySelector(".upcoming-card a")'
-                Assert-Js "Cafe reserves its isometric video at $width px" '!!document.querySelector("#isometric .media-placeholder") && !document.querySelector("#isometric video") && !document.querySelector("#isometric .video-toggle")'
-                Assert-Js "Only available PDFs enter the viewer at $width px" 'document.querySelectorAll(".document-row").length === 2 && !document.querySelector("iframe").getAttribute("src").includes("null")'
-                Assert-Js "PDF next selects drawings at $width px" 'document.querySelectorAll(".toolbar-button")[1].click();document.querySelector("iframe").getAttribute("src").includes("comic-cafe-drawings.pdf") && new URLSearchParams(location.search).get("document") === "comic-cafe-drawings" && document.querySelectorAll(".toolbar-button")[1].disabled && document.querySelector("a[download]").getAttribute("download") === "comic-cafe-drawings.pdf"'
+                Assert-Js "Cafe lists all four PDFs in the same navigation at $width px" 'document.querySelectorAll(".document-list .document-row").length === 4 && document.querySelectorAll(".document-row.is-pending").length === 2'
+                Assert-Js "Cafe detail has no separate video or upcoming sections at $width px" '!document.querySelector("#isometric, .upcoming-section, .isometric-stage, video")'
+                Assert-Js "Available PDF loads initially at $width px" '!document.querySelector("iframe").getAttribute("src").includes("null")'
+                Assert-Js "PDF next selects drawings at $width px" 'document.querySelectorAll(".toolbar-button")[1].click();document.querySelector("iframe").getAttribute("src").includes("comic-cafe-drawings.pdf") && new URLSearchParams(location.search).get("document") === "comic-cafe-drawings" && !document.querySelectorAll(".toolbar-button")[1].disabled && document.querySelector("a[download]").getAttribute("download") === "comic-cafe-drawings.pdf"'
                 Assert-Js "PDF previous selects proposal at $width px" 'document.querySelectorAll(".toolbar-button")[0].click();document.querySelector("iframe").getAttribute("src").includes("comic-cafe-proposal.pdf") && document.querySelectorAll(".toolbar-button")[0].disabled && document.querySelectorAll(".document-row")[0].getAttribute("aria-current") === "true"'
+                Assert-Js "Third PDF uses the same viewer for its pending state at $width px" 'document.querySelectorAll(".document-row")[2].click();!!document.querySelector(".pdf-stage .pdf-pending-state") && !document.querySelector("iframe") && document.querySelector(".pdf-title").textContent === window.portfolioProjects[0].documents[2].title && !document.querySelector(".pdf-toolbar a[href]") && document.querySelectorAll(".document-row")[2].getAttribute("aria-current") === "true"'
+                Assert-Js "Fourth PDF remains in the same viewer at $width px" 'document.querySelectorAll(".document-row")[3].click();!!document.querySelector(".pdf-stage .pdf-pending-state") && document.querySelector(".pdf-title").textContent === window.portfolioProjects[0].documents[3].title && document.querySelectorAll(".toolbar-button")[1].disabled'
+                Assert-Js "Returning to an available PDF restores the viewer and download at $width px" 'document.querySelectorAll(".document-row")[0].click();!!document.querySelector("iframe") && !document.querySelector(".pdf-pending-state") && !document.querySelector("a[download]").hidden'
             }
         }
         Open-Page 'projects/detail.html?project=comic-cafe&document=comic-cafe-drawings'
         Assert-Js "PDF deep link selects requested document at $width px" 'document.querySelector("iframe").getAttribute("src").includes("comic-cafe-drawings.pdf")'
+        Open-Page 'projects/detail.html?project=comic-cafe&document=comic-cafe-coloring'
+        Assert-Js "Pending PDF deep link selects the third row at $width px" '!!document.querySelector(".pdf-pending-state") && document.querySelectorAll(".document-row")[2].getAttribute("aria-current") === "true" && !document.querySelector("iframe")'
         Open-Page 'projects/detail.html?project=invalid'
         Assert-Js "Unknown project offers a return link at $width px" '!!document.querySelector("#project-detail h1") && !!document.querySelector("#project-detail a[href=\"../index.html#work\"]") && !document.querySelector("iframe")'
     }
 
-    # Simulate receiving a PDF using an existing local document, without modifying project data on disk.
-    $fixture = Send-Cdp 'Page.addScriptToEvaluateOnNewDocument' @{ source = '(() => { let data; Object.defineProperty(window, "portfolioProjects", {configurable:true, get:()=>data, set:projects=>{ data=projects; const cafe=projects.find(p=>p.id==="comic-cafe"); cafe.documents.find(d=>d.id==="comic-cafe-coloring").file=cafe.documents[1].file; }}); })();' }
+    # Simulate receiving both PDFs using existing local documents, without changing data on disk.
+    $fixture = Send-Cdp 'Page.addScriptToEvaluateOnNewDocument' @{ source = '(() => { let data; Object.defineProperty(window, "portfolioProjects", {configurable:true, get:()=>data, set:projects=>{ data=projects; const cafe=projects.find(p=>p.id==="comic-cafe"); cafe.documents[2].file=cafe.documents[0].file; cafe.documents[3].file=cafe.documents[1].file; }}); })();' }
     Open-Page 'projects/detail.html?project=comic-cafe&document=comic-cafe-coloring'
-    Assert-Js 'Connecting a PDF moves its slot into the viewer' 'document.querySelectorAll(".document-row").length === 3 && document.querySelectorAll(".upcoming-card").length === 1 && document.querySelector(".document-row[aria-current=\"true\"]").textContent.includes("Coloring")'
+    Assert-Js 'Connecting the third PDF enables its existing navigation row' 'document.querySelectorAll(".document-row").length === 4 && !document.querySelector(".document-row.is-pending") && document.querySelector(".document-row[aria-current=\"true\"]").textContent.includes("Coloring") && document.querySelector("iframe").getAttribute("src").includes("comic-cafe-proposal.pdf")'
+    Assert-Js 'Connecting the fourth PDF reuses the same iframe' 'window.testFrame=document.querySelector("iframe");document.querySelectorAll(".document-row")[3].click();document.querySelector("iframe")===window.testFrame && document.querySelector("iframe").getAttribute("src").includes("comic-cafe-drawings.pdf") && document.querySelectorAll(".document-row")[3].getAttribute("aria-current")==="true"'
     $null = Send-Cdp 'Page.removeScriptToEvaluateOnNewDocument' @{ identifier = $fixture.identifier }
 
     # Record a small synthetic clip so hover playback is tested without the user's footage.
@@ -146,8 +152,9 @@ try {
     $videoSource = '(() => { let data; Object.defineProperty(window, "portfolioProjects", {configurable:true, get:()=>data, set:projects=>{data=projects; projects.find(p=>p.id==="comic-cafe").video.file=' + (ConvertTo-Json $videoRelative -Compress) + ';}}); })();'
     $fixture = Send-Cdp 'Page.addScriptToEvaluateOnNewDocument' @{ source = $videoSource }
     Set-Viewport 1440
-    Open-Page 'projects/detail.html?project=comic-cafe'
-    $null = Invoke-Js 'document.querySelector("#isometric").scrollIntoView({behavior:"instant"});new Promise(r=>setTimeout(r,100))'
+    Open-Page 'index.html'
+    $null = Invoke-Js 'document.querySelector("[data-project=\"comic-cafe\"]").scrollIntoView({behavior:"instant"});new Promise(r=>setTimeout(r,100))'
+    Assert-Js 'Video is mounted in the cafe thumbnail only' 'document.querySelectorAll("video").length===1 && !!document.querySelector("[data-project=\"comic-cafe\"] .project-card-visual video")'
     Assert-Js 'Video loads and waits for interaction' 'new Promise(r=>{const v=document.querySelector("video");if(v.readyState>=1)r(v.paused);else {v.addEventListener("loadedmetadata",()=>r(v.paused),{once:true});v.addEventListener("error",()=>r(false),{once:true});}})'
     Assert-Js 'Hover plays muted looping video at half speed' 'document.querySelector(".isometric-stage").dispatchEvent(new PointerEvent("pointerenter"));new Promise(r=>setTimeout(()=>{const v=document.querySelector("video");r(!v.paused && v.muted && v.loop && v.playsInline && v.playbackRate===0.5 && document.querySelector(".video-toggle").getAttribute("aria-pressed")==="true");},200))'
     Assert-Js 'Leaving the video pauses playback' 'document.querySelector(".isometric-stage").dispatchEvent(new PointerEvent("pointerleave"));document.querySelector("video").paused && document.querySelector(".video-toggle").getAttribute("aria-pressed")==="false"'
@@ -157,10 +164,12 @@ try {
     Assert-Js 'Pause button stops playback' 'document.querySelector(".video-toggle").click();document.querySelector("video").paused'
     $null = Send-Cdp 'Emulation.setEmulatedMedia' @{ features = @(@{name='prefers-reduced-motion';value='no-preference'}) }
     Set-Viewport 390
-    Open-Page 'projects/detail.html?project=comic-cafe'
-    $null = Invoke-Js 'document.querySelector("#isometric").scrollIntoView({behavior:"instant"});new Promise(r=>setTimeout(r,100))'
+    Open-Page 'index.html'
+    $null = Invoke-Js 'document.querySelector("[data-project=\"comic-cafe\"]").scrollIntoView({behavior:"instant"});new Promise(r=>setTimeout(r,100))'
     Assert-Js 'Mobile video fits the viewport' 'document.documentElement.scrollWidth <= innerWidth && !!document.querySelector(".video-toggle")'
     Assert-Js 'Mobile play button starts video' 'document.querySelector(".video-toggle").click();new Promise(r=>setTimeout(()=>r(!document.querySelector("video").paused),200))'
+    Open-Page 'projects/detail.html?project=comic-cafe'
+    Assert-Js 'Even a connected video stays out of the project detail' '!document.querySelector("video, .isometric-stage")'
     $null = Send-Cdp 'Page.removeScriptToEvaluateOnNewDocument' @{ identifier = $fixture.identifier }
     if ($script:browserErrors.Count) { $script:failures.Add(($script:browserErrors -join '; ')) }
     if ($script:failures.Count) { throw "$($script:failures.Count) browser checks failed: $($script:failures -join '; ')" }

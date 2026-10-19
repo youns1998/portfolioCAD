@@ -1,37 +1,12 @@
 /* Add a PDF under docs/documents, then register it here. */
 window.portfolioProjects = [
   {
-    id: "two-story-house",
-    title: "2층 단독주택 설계 도면",
-    category: "Architecture / CAD",
-    type: "건축 도면집",
-    description: "배치와 면적 계획부터 평면·입면·단면, 창호 및 구조 상세까지 정리한 2층 주택 도면집입니다.",
-    tools: ["AutoCAD"],
-    scope: "배치 · 평면 · 입면 · 단면 · 상세 · 구조",
-    highlights: [
-      "1층과 2층의 계획안, 평면도, 지붕 평면도를 비교해 볼 수 있습니다.",
-      "네 방향 입면도와 단면도를 통해 외형과 수직 공간을 확인할 수 있습니다.",
-      "창호, 마감, 구조 평면과 부재 자료까지 한 문서에 정리되어 있습니다."
-    ],
-    documents: [
-      {
-        id: "house-drawings",
-        title: "주택 설계 도면집",
-        group: "Architecture / CAD",
-        file: "documents/two-story-house.pdf",
-        pages: 39,
-        firstPage: 9,
-        thumbnail: "documents/thumbnails/two-story-house.jpg"
-      }
-    ]
-  },
-  {
     id: "comic-cafe",
     title: "만화카페 인테리어 계획",
     category: "Interior / CAD",
     type: "인테리어 제안 · 설계 도면",
     description: "이용 동선과 좌석·서가 구성, 조명과 마감을 계획하고 별도의 CAD 도면집으로 구체화한 만화카페 프로젝트입니다.",
-    tools: ["AutoCAD", "PowerPoint"],
+    tools: ["SketchUp", "V-Ray", "AutoCAD", "PowerPoint"],
     scope: "공간 계획 · 동선 · 조명 · 가구 · 평면 · 천장 · 내부 입면",
     highlights: [
       "제안서에 공간 콘셉트, 이용 동선, 조명, 재료와 가구 계획을 담았습니다.",
@@ -77,6 +52,31 @@ window.portfolioProjects = [
         group: "Visualization",
         description: "SketchUp으로 모델링한 공간의 렌더링 PDF를 준비하고 있습니다.",
         file: null
+      }
+    ]
+  },
+  {
+    id: "two-story-house",
+    title: "2층 단독주택 설계 도면",
+    category: "Architecture / CAD",
+    type: "건축 도면집",
+    description: "배치와 면적 계획부터 평면·입면·단면, 창호 및 구조 상세까지 정리한 2층 주택 도면집입니다.",
+    tools: ["AutoCAD"],
+    scope: "배치 · 평면 · 입면 · 단면 · 상세 · 구조",
+    highlights: [
+      "1층과 2층의 계획안, 평면도, 지붕 평면도를 비교해 볼 수 있습니다.",
+      "네 방향 입면도와 단면도를 통해 외형과 수직 공간을 확인할 수 있습니다.",
+      "창호, 마감, 구조 평면과 부재 자료까지 한 문서에 정리되어 있습니다."
+    ],
+    documents: [
+      {
+        id: "house-drawings",
+        title: "주택 설계 도면집",
+        group: "Architecture / CAD",
+        file: "documents/two-story-house.pdf",
+        pages: 39,
+        firstPage: 9,
+        thumbnail: "documents/thumbnails/two-story-house.jpg"
       }
     ]
   },
