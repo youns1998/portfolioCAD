@@ -29,6 +29,14 @@ PowerShell 검증:
 powershell -ExecutionPolicy Bypass -File .\scripts\validate.ps1
 ```
 
+Chrome 또는 Edge가 설치된 Windows에서는 브라우저 회귀 테스트도 실행할 수 있습니다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\test-browser.ps1
+```
+
+320~1440px 화면의 프로젝트 표시·이미지·가로 넘침, 헤더 높이와 메뉴 이동, 보조키 클릭, 모션 감소 설정, PDF 문서 전환·직접 링크를 확인합니다. 필요하면 `-BrowserPath`로 브라우저 실행 파일을 지정합니다. 테스트 프로필은 Git에서 제외된 `.codex-preview/`에 저장됩니다. 이 테스트는 로컬 파일을 사용하며 GitHub Pages 배포 상태는 별도로 확인해야 합니다.
+
 ## PDF 추가
 
 1. 공개 권한과 PDF 안의 연락처, 주소, 고객 정보 등을 확인합니다.

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="WPF">
+  <rect width="64" height="64" rx="16" fill="#e8f0ff"/>
+  <path d="M11 14h42v36H11Zm7 8v20h28V22Z" fill="#2f67c7"/>
+  <path d="M32 22v20M18 32h28" stroke="#79a7f4" stroke-width="3"/>
+  <circle cx="32" cy="32" r="6" fill="#2f67c7" stroke="#fff" stroke-width="2"/>
+</svg>

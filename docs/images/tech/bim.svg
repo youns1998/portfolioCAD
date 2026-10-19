@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="BIM">
+  <rect width="64" height="64" rx="16" fill="#e6f5f1"/>
+  <path d="m32 9 20 11v24L32 55 12 44V20Zm0 8-12 6.5L32 30l12-6.5Zm-13 13v10l9 5V35Zm26 0-9 5v10l9-5Z" fill="#168a78"/>
+  <path d="m20 23.5 12 6.5 12-6.5M32 30v25" fill="none" stroke="#72c6b4" stroke-width="3"/>
+</svg>

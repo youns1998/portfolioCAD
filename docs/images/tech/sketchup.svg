@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="SketchUp">
+  <rect width="64" height="64" rx="16" fill="#f9e8e8"/>
+  <path d="M14 18 30 9l20 7v17l-10 6v10l-16 7-10-6V34l10-6v-6Zm10 12-6 4 7 4 15-8v-7l-10-3v12Zm-4 12v5l5 3 9-4v-5l-9 4Z" fill="#cc343d"/>
+  <path d="m30 9 20 7-10 7-16-5Z" fill="#ed6a71"/>
+</svg>

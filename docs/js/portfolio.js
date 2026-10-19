@@ -55,18 +55,28 @@
       figure.append(node("span", "visual-number", String(index + 1).padStart(2, "0")));
       const copy = node("div", "project-card-copy");
       append(copy, node("p", "eyebrow", project.category), node("h3", "", project.title), node("p", "project-card-description", project.description));
-      const meta = node("dl", "project-card-meta");
-      line(meta, "TYPE", project.type);
-      line(meta, "TOOLS", project.tools?.join(" · "));
-      line(meta, "RESULT", project.documents.length ? project.documents.length + "개 PDF · " + project.documents.reduce((sum, item) => sum + (item.pages || 0), 0) + "쪽" : "GitHub 저장소");
-      copy.append(meta);
       const actions = node("div", "project-actions");
       if (project.documents.length) {
-        actions.append(link("PDF 바로 보기 ↗", detailUrl(project, project.documents[0].id) + "#documents", "button button-dark"));
-        actions.append(link("프로젝트 상세", detailUrl(project), "text-link"));
-      } else {
+        const meta = node("dl", "project-card-meta");
+        line(meta, "TYPE", project.type);
+        line(meta, "TOOLS", project.tools?.join(" · "));
+        line(meta, "RESULT", project.documents.length + "개 PDF · " + project.documents.reduce((sum, item) => sum + (item.pages || 0), 0) + "쪽");
+        copy.append(meta);
         actions.append(link("프로젝트 상세 ↗", detailUrl(project), "button button-dark"));
-        if (project.url) actions.append(link("GitHub 열기 ↗", project.url, "text-link", true));
+      } else {
+        const meta = node("dl", "project-card-meta");
+        line(meta, "TYPE", project.type);
+        line(meta, "TOOLS", project.tools?.join(" · "));
+        copy.append(meta);
+        if (project.highlights?.length) {
+          const features = node("div", "project-card-features");
+          features.append(node("p", "eyebrow", "KEY FEATURES"));
+          const points = node("ul");
+          project.highlights.slice(0, 3).forEach((highlight) => points.append(node("li", "", highlight)));
+          features.append(points);
+          copy.append(features);
+        }
+        if (project.url) actions.append(link("GitHub 열기 ↗", project.url, "button button-dark", true));
       }
       copy.append(actions);
       append(article, figure, copy);
@@ -127,7 +137,7 @@
       frame.title = "PDF 결과물";
       frame.setAttribute("loading", "eager");
       stage.append(frame);
-      append(viewer, toolbar, stage, node("p", "viewer-hint", "PDF 안의 페이지 이동과 확대 기능은 브라우저 PDF 도구 모음에서 사용할 수 있습니다."));
+      append(viewer, toolbar, stage);
       append(layout, list, viewer);
       append(area, bar, layout);
       root.append(area);
@@ -193,20 +203,20 @@
       append(development, points);
       root.append(development);
     }
-    if (project.documents.length) {
-      const notes = node("section", "project-notes");
-      append(notes, node("p", "eyebrow", "PROJECT NOTES"), node("h2", "", "도면에서 볼 수 있는 내용"));
-      const points = node("ul");
-      project.highlights.forEach((highlight) => points.append(node("li", "", highlight)));
-      notes.append(points);
-      root.append(notes);
-    }
   }
 
   const year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
   if (page === "home") renderHome();
   if (page === "detail") renderDetail();
+
+  const header = document.querySelector(".site-header");
+  if (header) {
+    const syncHeaderHeight = () => document.documentElement.style.setProperty("--header-height", header.getBoundingClientRect().height + "px");
+    syncHeaderHeight();
+    if ("ResizeObserver" in window) new ResizeObserver(syncHeaderHeight).observe(header);
+    else window.addEventListener("resize", syncHeaderHeight);
+  }
 
   if (page === "home" && "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const sections = document.querySelectorAll("[data-reveal], .project-card");
@@ -223,4 +233,139 @@
     });
     document.documentElement.classList.add("motion-ready");
   }
+
+  function setupSectionScroll() {
+    if (page !== "home") return;
+    const panels = Array.from(document.querySelectorAll(".scroll-panel"));
+    const precisionPointer = window.matchMedia("(min-width: 901px) and (pointer: fine)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const wheelThreshold = 150;
+    const transitionDuration = 1050;
+    let wheelTotal = 0;
+    let wheelDirection = 0;
+    let lastWheelAt = 0;
+    let animationFrame = 0;
+    let animationActive = false;
+    let controllerActive = false;
+
+    const headerHeight = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) || 0;
+    const panelTop = (panel) => Math.max(0, panel.offsetTop - headerHeight());
+    const panelBottomTarget = (panel) => Math.max(panelTop(panel), panel.offsetTop + panel.offsetHeight - window.innerHeight);
+    const isCompact = (panel) => panel.offsetHeight <= window.innerHeight + 8;
+    const resetWheel = () => {
+      wheelTotal = 0;
+      wheelDirection = 0;
+      lastWheelAt = 0;
+    };
+    const easeInOut = (progress) => progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+    function animateTo(target, hash) {
+      const start = window.scrollY;
+      const distance = target - start;
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+      animationActive = false;
+      if (Math.abs(distance) < 2) {
+        if (hash && location.hash !== hash) history.pushState(null, "", hash);
+        return;
+      }
+      animationActive = true;
+      const startedAt = performance.now();
+      const step = (now) => {
+        const progress = Math.min(1, (now - startedAt) / transitionDuration);
+        window.scrollTo(0, start + distance * easeInOut(progress));
+        if (progress < 1) {
+          animationFrame = requestAnimationFrame(step);
+          return;
+        }
+        animationFrame = 0;
+        animationActive = false;
+        window.scrollTo(0, target);
+        if (hash && location.hash !== hash) history.pushState(null, "", hash);
+      };
+      animationFrame = requestAnimationFrame(step);
+    }
+
+    function currentPanelIndex() {
+      const position = window.scrollY + headerHeight() + 2;
+      const index = panels.findIndex((panel) => position >= panel.offsetTop && position < panel.offsetTop + panel.offsetHeight);
+      return index >= 0 ? index : 0;
+    }
+
+    function destinationFor(index, direction) {
+      const destinationIndex = index + direction;
+      if (destinationIndex < 0 || destinationIndex >= panels.length) return null;
+      const destination = panels[destinationIndex];
+      return direction < 0 && !isCompact(destination) ? panelBottomTarget(destination) : panelTop(destination);
+    }
+
+    function shouldControl(panel, direction) {
+      const tolerance = 4;
+      if (isCompact(panel)) return Math.abs(window.scrollY - panelTop(panel)) <= tolerance;
+      if (direction > 0) return window.scrollY >= panelBottomTarget(panel) - tolerance;
+      return window.scrollY <= panelTop(panel) + tolerance;
+    }
+
+    function onWheel(event) {
+      if (!controllerActive || event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+      if (animationActive) {
+        event.preventDefault();
+        return;
+      }
+      const normalizedDelta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1);
+      if (Math.abs(normalizedDelta) < 1) return;
+      const direction = normalizedDelta > 0 ? 1 : -1;
+      const index = currentPanelIndex();
+      const panel = panels[index];
+      const destination = destinationFor(index, direction);
+      if (destination === null || !shouldControl(panel, direction)) {
+        resetWheel();
+        return;
+      }
+      event.preventDefault();
+      const now = performance.now();
+      if (direction !== wheelDirection || now - lastWheelAt > 280) wheelTotal = 0;
+      wheelDirection = direction;
+      lastWheelAt = now;
+      wheelTotal += Math.abs(normalizedDelta);
+      if (wheelTotal < wheelThreshold) return;
+      resetWheel();
+      animateTo(destination);
+    }
+
+    function onAnchorClick(event) {
+      if (!controllerActive || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      const anchor = event.target instanceof Element ? event.target.closest('a[href^="#"]') : null;
+      if (!anchor || anchor.hasAttribute("download") || (anchor.target && anchor.target !== "_self")) return;
+      const hash = anchor.getAttribute("href");
+      const target = hash === "#top" ? document.querySelector(".hero") : document.getElementById(hash.slice(1));
+      if (!target) return;
+      event.preventDefault();
+      resetWheel();
+      animateTo(panelTop(target), hash);
+    }
+
+    function syncController() {
+      const shouldActivate = precisionPointer.matches && !reducedMotion.matches;
+      if (shouldActivate === controllerActive) return;
+      controllerActive = shouldActivate;
+      document.documentElement.classList.toggle("section-scroll-controlled", shouldActivate);
+      if (!shouldActivate) {
+        if (animationFrame) cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+        animationActive = false;
+        resetWheel();
+      }
+    }
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    document.addEventListener("click", onAnchorClick);
+    precisionPointer.addEventListener?.("change", syncController);
+    reducedMotion.addEventListener?.("change", syncController);
+    syncController();
+  }
+
+  setupSectionScroll();
 })();

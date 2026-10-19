@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="dot NET">
+  <rect width="64" height="64" rx="16" fill="#ece8fb"/>
+  <circle cx="15" cy="43" r="4" fill="#512bd4"/>
+  <path d="M23 20h7l12 20V20h7v31h-7L30 31v20h-7Z" fill="#512bd4"/>
+  <path d="M13 20h4v17h-4Z" fill="#8066df"/>
+</svg>

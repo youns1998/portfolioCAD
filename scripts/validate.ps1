@@ -25,4 +25,21 @@ foreach ($relative in $paths) {
 $hashes = $paths | Where-Object { $_ -match '\.pdf$' } | ForEach-Object { Get-FileHash -LiteralPath (Join-Path $docs $_) -Algorithm SHA256 }
 $duplicates = $hashes | Group-Object Hash | Where-Object Count -gt 1
 if ($duplicates) { throw 'Duplicate PDF contents found.' }
-Write-Host "Validated $($ids.Count) IDs and $($paths.Count) assets."
+$htmlAssets = 0
+foreach ($htmlFile in Get-ChildItem -LiteralPath $docs -Recurse -Filter '*.html') {
+    $html = Get-Content -LiteralPath $htmlFile.FullName -Raw -Encoding UTF8
+    foreach ($match in [regex]::Matches($html, '(?:src|href)="([^"]+)"')) {
+        $reference = $match.Groups[1].Value
+        if ($reference -match '^(?:[a-z][a-z0-9+.-]*:|//|#)') { continue }
+        $relative = [uri]::UnescapeDataString(($reference -split '[?#]')[0])
+        $asset = [IO.Path]::GetFullPath((Join-Path $htmlFile.DirectoryName $relative))
+        if (-not $asset.StartsWith($docs + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Asset outside docs: $reference in $($htmlFile.Name)"
+        }
+        if (-not (Test-Path -LiteralPath $asset -PathType Leaf)) {
+            throw "Missing HTML asset: $reference in $($htmlFile.Name)"
+        }
+        $htmlAssets++
+    }
+}
+Write-Host "Validated $($ids.Count) IDs, $($paths.Count) project assets, and $htmlAssets HTML asset references."

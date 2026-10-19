@@ -8,6 +8,12 @@
 # IDE
 .vscode/
 .idea/
+.project
+.settings/
+
+# Local preview / one-off test artifacts
+.codex-preview/
+docs/.codex-*.html
 
 # OS
 .DS_Store
@@ -16,6 +22,3 @@ Thumbs.db
 # Logs / temp
 *.log
 *.tmp
-
-# Local-only architecture reference material
-docs/projects/project-01/assets/drawings/private/

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AutoCAD">
+  <rect width="64" height="64" rx="16" fill="#fbe9e7"/>
+  <path d="M32 9 51 48l-10 7-4.5-11h-17L15 55 6 48 25 9Zm0 14-7.5 18h15Z" fill="#d83b35"/>
+  <path d="m25 9 7 14v18H18.5L6 48Z" fill="#ef5b52" opacity=".78"/>
+</svg>
