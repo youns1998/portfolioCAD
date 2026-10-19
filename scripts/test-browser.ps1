@@ -96,6 +96,8 @@ try {
         Assert-Js "Home images load at $width px" '[...document.images].every(i => i.complete && i.naturalWidth > 0)'
         Assert-Js "Home fits viewport at $width px" 'document.documentElement.scrollWidth <= innerWidth'
         Assert-Js "Header scroll offset matches height at $width px" 'Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) - document.querySelector("header").getBoundingClientRect().height) < 1'
+        Assert-Js "Cafe lists three upcoming assets at $width px" 'document.querySelectorAll("[data-project=\"comic-cafe\"] .project-upcoming li").length === 3'
+        Assert-Js "Pending video does not create an empty player at $width px" '!document.querySelector("video") && !document.querySelector(".video-toggle")'
     }
 
     Set-Viewport 1440
@@ -118,6 +120,9 @@ try {
             Assert-Js "Detail renders $project at $width px" 'document.querySelector("h1").textContent === window.portfolioProjects.find(p => p.id === new URLSearchParams(location.search).get("project")).title'
             Assert-Js "Detail fits viewport: $project at $width px" 'document.documentElement.scrollWidth <= innerWidth'
             if ($project -eq 'comic-cafe') {
+                Assert-Js "Cafe reserves two PDF slots at $width px" 'document.querySelectorAll(".upcoming-card").length === 2 && !document.querySelector(".upcoming-card a")'
+                Assert-Js "Cafe reserves its isometric video at $width px" '!!document.querySelector("#isometric .media-placeholder") && !document.querySelector("#isometric video") && !document.querySelector("#isometric .video-toggle")'
+                Assert-Js "Only available PDFs enter the viewer at $width px" 'document.querySelectorAll(".document-row").length === 2 && !document.querySelector("iframe").getAttribute("src").includes("null")'
                 Assert-Js "PDF next selects drawings at $width px" 'document.querySelectorAll(".toolbar-button")[1].click();document.querySelector("iframe").getAttribute("src").includes("comic-cafe-drawings.pdf") && new URLSearchParams(location.search).get("document") === "comic-cafe-drawings" && document.querySelectorAll(".toolbar-button")[1].disabled && document.querySelector("a[download]").getAttribute("download") === "comic-cafe-drawings.pdf"'
                 Assert-Js "PDF previous selects proposal at $width px" 'document.querySelectorAll(".toolbar-button")[0].click();document.querySelector("iframe").getAttribute("src").includes("comic-cafe-proposal.pdf") && document.querySelectorAll(".toolbar-button")[0].disabled && document.querySelectorAll(".document-row")[0].getAttribute("aria-current") === "true"'
             }
@@ -127,6 +132,36 @@ try {
         Open-Page 'projects/detail.html?project=invalid'
         Assert-Js "Unknown project offers a return link at $width px" '!!document.querySelector("#project-detail h1") && !!document.querySelector("#project-detail a[href=\"../index.html#work\"]") && !document.querySelector("iframe")'
     }
+
+    # Simulate receiving a PDF using an existing local document, without modifying project data on disk.
+    $fixture = Send-Cdp 'Page.addScriptToEvaluateOnNewDocument' @{ source = '(() => { let data; Object.defineProperty(window, "portfolioProjects", {configurable:true, get:()=>data, set:projects=>{ data=projects; const cafe=projects.find(p=>p.id==="comic-cafe"); cafe.documents.find(d=>d.id==="comic-cafe-coloring").file=cafe.documents[1].file; }}); })();' }
+    Open-Page 'projects/detail.html?project=comic-cafe&document=comic-cafe-coloring'
+    Assert-Js 'Connecting a PDF moves its slot into the viewer' 'document.querySelectorAll(".document-row").length === 3 && document.querySelectorAll(".upcoming-card").length === 1 && document.querySelector(".document-row[aria-current=\"true\"]").textContent.includes("Coloring")'
+    $null = Send-Cdp 'Page.removeScriptToEvaluateOnNewDocument' @{ identifier = $fixture.identifier }
+
+    # Record a small synthetic clip so hover playback is tested without the user's footage.
+    $videoBytes = Invoke-Js 'new Promise((resolve,reject)=>{const canvas=document.createElement("canvas");canvas.width=96;canvas.height=96;const context=canvas.getContext("2d");context.fillStyle="#526d5b";context.fillRect(0,0,96,96);const stream=canvas.captureStream(12);const recorder=new MediaRecorder(stream,{mimeType:"video/webm;codecs=vp8"});const chunks=[];recorder.ondataavailable=e=>chunks.push(e.data);recorder.onerror=reject;recorder.onstop=()=>{stream.getTracks().forEach(t=>t.stop());const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(",")[1]);reader.onerror=reject;reader.readAsDataURL(new Blob(chunks,{type:recorder.mimeType}));};recorder.start();setTimeout(()=>{context.fillStyle="#dce6dd";context.fillRect(0,0,48,96);},100);setTimeout(()=>recorder.stop(),500);})'
+    [IO.File]::WriteAllBytes((Join-Path $profile 'rotation-test.webm'), [Convert]::FromBase64String($videoBytes))
+    $videoRelative = '../.codex-preview/' + (Split-Path $profile -Leaf) + '/rotation-test.webm'
+    $videoSource = '(() => { let data; Object.defineProperty(window, "portfolioProjects", {configurable:true, get:()=>data, set:projects=>{data=projects; projects.find(p=>p.id==="comic-cafe").video.file=' + (ConvertTo-Json $videoRelative -Compress) + ';}}); })();'
+    $fixture = Send-Cdp 'Page.addScriptToEvaluateOnNewDocument' @{ source = $videoSource }
+    Set-Viewport 1440
+    Open-Page 'projects/detail.html?project=comic-cafe'
+    $null = Invoke-Js 'document.querySelector("#isometric").scrollIntoView({behavior:"instant"});new Promise(r=>setTimeout(r,100))'
+    Assert-Js 'Video loads and waits for interaction' 'new Promise(r=>{const v=document.querySelector("video");if(v.readyState>=1)r(v.paused);else {v.addEventListener("loadedmetadata",()=>r(v.paused),{once:true});v.addEventListener("error",()=>r(false),{once:true});}})'
+    Assert-Js 'Hover plays muted looping video at half speed' 'document.querySelector(".isometric-stage").dispatchEvent(new PointerEvent("pointerenter"));new Promise(r=>setTimeout(()=>{const v=document.querySelector("video");r(!v.paused && v.muted && v.loop && v.playsInline && v.playbackRate===0.5 && document.querySelector(".video-toggle").getAttribute("aria-pressed")==="true");},200))'
+    Assert-Js 'Leaving the video pauses playback' 'document.querySelector(".isometric-stage").dispatchEvent(new PointerEvent("pointerleave"));document.querySelector("video").paused && document.querySelector(".video-toggle").getAttribute("aria-pressed")==="false"'
+    $null = Send-Cdp 'Emulation.setEmulatedMedia' @{ features = @(@{name='prefers-reduced-motion';value='reduce'}) }
+    Assert-Js 'Reduced motion prevents hover playback' 'new Promise(r=>setTimeout(()=>{document.querySelector(".isometric-stage").dispatchEvent(new PointerEvent("pointerenter"));setTimeout(()=>r(document.querySelector("video").paused),100);},100))'
+    Assert-Js 'Play button works with reduced motion' 'document.querySelector(".video-toggle").click();new Promise(r=>setTimeout(()=>r(!document.querySelector("video").paused),150))'
+    Assert-Js 'Pause button stops playback' 'document.querySelector(".video-toggle").click();document.querySelector("video").paused'
+    $null = Send-Cdp 'Emulation.setEmulatedMedia' @{ features = @(@{name='prefers-reduced-motion';value='no-preference'}) }
+    Set-Viewport 390
+    Open-Page 'projects/detail.html?project=comic-cafe'
+    $null = Invoke-Js 'document.querySelector("#isometric").scrollIntoView({behavior:"instant"});new Promise(r=>setTimeout(r,100))'
+    Assert-Js 'Mobile video fits the viewport' 'document.documentElement.scrollWidth <= innerWidth && !!document.querySelector(".video-toggle")'
+    Assert-Js 'Mobile play button starts video' 'document.querySelector(".video-toggle").click();new Promise(r=>setTimeout(()=>r(!document.querySelector("video").paused),200))'
+    $null = Send-Cdp 'Page.removeScriptToEvaluateOnNewDocument' @{ identifier = $fixture.identifier }
     if ($script:browserErrors.Count) { $script:failures.Add(($script:browserErrors -join '; ')) }
     if ($script:failures.Count) { throw "$($script:failures.Count) browser checks failed: $($script:failures -join '; ')" }
     Write-Host "Passed $($script:checks) browser checks with no browser errors."

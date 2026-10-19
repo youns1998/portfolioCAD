@@ -38,6 +38,13 @@ window.portfolioProjects = [
       "도면집에서 평면도, 천장도, 내부 입면도와 부분 단면도를 볼 수 있습니다.",
       "두 PDF를 한 프로젝트의 계획 자료와 설계 결과물로 연결했습니다."
     ],
+    video: {
+      id: "comic-cafe-isometric",
+      title: "만화카페 아이소메트릭 회전 영상",
+      file: null,
+      poster: null,
+      playbackRate: 0.5
+    },
     documents: [
       {
         id: "comic-cafe-proposal",
@@ -56,6 +63,20 @@ window.portfolioProjects = [
         pages: 13,
         firstPage: 1,
         thumbnail: "documents/thumbnails/comic-cafe-drawings.jpg"
+      },
+      {
+        id: "comic-cafe-coloring",
+        title: "만화카페 컬러링",
+        group: "Coloring",
+        description: "공간의 색채와 마감 표현을 담은 컬러링 PDF를 준비하고 있습니다.",
+        file: null
+      },
+      {
+        id: "comic-cafe-sketchup-renderings",
+        title: "SketchUp 렌더링",
+        group: "Visualization",
+        description: "SketchUp으로 모델링한 공간의 렌더링 PDF를 준비하고 있습니다.",
+        file: null
       }
     ]
   },

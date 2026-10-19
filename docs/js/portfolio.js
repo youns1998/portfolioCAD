@@ -35,33 +35,98 @@
     parent.append(row);
   };
 
+  function createVideoStage(media, fallbackPoster) {
+    const stage = node("div", "isometric-stage");
+    if (!media.file) {
+      const placeholder = node("div", "media-placeholder");
+      const symbol = node("span", "media-placeholder-symbol", "↻");
+      symbol.setAttribute("aria-hidden", "true");
+      append(placeholder, symbol, node("strong", "", media.title), node("span", "media-status", "영상 준비 중"));
+      stage.append(placeholder);
+      return stage;
+    }
+
+    const video = node("video", "isometric-video");
+    video.src = asset(media.file);
+    video.preload = "metadata";
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.setAttribute("aria-label", media.title);
+    if (media.poster || fallbackPoster) video.poster = asset(media.poster || fallbackPoster);
+    const toggle = node("button", "video-toggle", "회전 재생");
+    toggle.type = "button";
+    toggle.setAttribute("aria-pressed", "false");
+    const note = node("p", "video-note", "마우스를 올리거나 재생 버튼을 눌러 둘러보세요.");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const hoverPointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const syncPlayback = () => {
+      toggle.textContent = video.paused ? "회전 재생" : "회전 일시 정지";
+      toggle.setAttribute("aria-pressed", String(!video.paused));
+    };
+    const pause = () => { video.pause(); syncPlayback(); };
+    const play = () => {
+      video.playbackRate = media.playbackRate || 0.5;
+      video.play().catch(() => { note.textContent = "재생 버튼을 눌러 영상을 확인하세요."; syncPlayback(); });
+    };
+    stage.addEventListener("pointerenter", () => { if (hoverPointer.matches && !reducedMotion.matches) play(); });
+    stage.addEventListener("pointerleave", pause);
+    toggle.addEventListener("click", () => { if (video.paused) play(); else pause(); });
+    video.addEventListener("play", syncPlayback);
+    video.addEventListener("pause", syncPlayback);
+    video.addEventListener("error", () => { pause(); toggle.disabled = true; note.textContent = "영상을 불러올 수 없습니다."; });
+    reducedMotion.addEventListener?.("change", () => { if (reducedMotion.matches) pause(); });
+    document.addEventListener("visibilitychange", () => { if (document.hidden) pause(); });
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => { if (!entries[0].isIntersecting) pause(); });
+      observer.observe(stage);
+    }
+    append(stage, video, note, toggle);
+    return stage;
+  }
+
   function renderHome() {
     const list = document.getElementById("project-list");
     if (!list) return;
     list.replaceChildren();
     projects.forEach((project, index) => {
       const article = node("article", "project-card");
+      article.dataset.project = project.id;
       const figure = node("div", "project-card-visual");
-      const thumbnail = project.documents.find((item) => item.thumbnail)?.thumbnail;
-      if (thumbnail) {
+      const documents = project.documents.filter((item) => item.file);
+      const pendingDocuments = project.documents.filter((item) => !item.file);
+      const thumbnail = documents.find((item) => item.thumbnail)?.thumbnail;
+      if (project.video?.file) {
+        figure.append(createVideoStage(project.video, thumbnail));
+      } else if (thumbnail) {
         const image = node("img");
         image.src = asset(thumbnail);
         image.alt = project.title + " 도면 미리보기";
         image.loading = "lazy";
         figure.append(image);
       } else {
-        append(figure, node("span", "visual-grid"), node("span", "visual-label", project.category));
+        append(figure, node("span", "visual-grid"), node("span", "visual-label", project.video ? "SketchUp / Visualization" : project.category));
       }
       figure.append(node("span", "visual-number", String(index + 1).padStart(2, "0")));
       const copy = node("div", "project-card-copy");
       append(copy, node("p", "eyebrow", project.category), node("h3", "", project.title), node("p", "project-card-description", project.description));
       const actions = node("div", "project-actions");
-      if (project.documents.length) {
+      if (project.documents.length || project.video) {
         const meta = node("dl", "project-card-meta");
         line(meta, "TYPE", project.type);
         line(meta, "TOOLS", project.tools?.join(" · "));
-        line(meta, "RESULT", project.documents.length + "개 PDF · " + project.documents.reduce((sum, item) => sum + (item.pages || 0), 0) + "쪽");
+        if (documents.length) line(meta, "RESULT", documents.length + "개 PDF · " + documents.reduce((sum, item) => sum + (item.pages || 0), 0) + "쪽");
         copy.append(meta);
+        const pendingTitles = pendingDocuments.map((item) => item.title);
+        if (project.video && !project.video.file) pendingTitles.push(project.video.title);
+        if (pendingTitles.length) {
+          const upcoming = node("div", "project-upcoming");
+          append(upcoming, node("p", "eyebrow", "COMING SOON"));
+          const items = node("ul");
+          pendingTitles.forEach((title) => items.append(node("li", "", title)));
+          append(upcoming, items);
+          copy.append(upcoming);
+        }
         actions.append(link("프로젝트 상세 ↗", detailUrl(project), "button button-dark"));
       } else {
         const meta = node("dl", "project-card-meta");
@@ -106,12 +171,26 @@
     append(intro, heading, facts);
     root.replaceChildren(back, intro);
 
-    if (project.documents.length) {
+    if (project.video) {
+      const media = node("section", "isometric-section");
+      media.id = "isometric";
+      const bar = node("div", "section-heading");
+      const title = node("div");
+      append(title, node("p", "eyebrow", "ISOMETRIC / 360°"), node("h2", "", "입체적으로 둘러보기"));
+      append(bar, title, node("p", "", project.video.file ? "천천히 회전하는 아이소메트릭 뷰입니다." : "아이소메트릭 회전 영상을 준비하고 있습니다."));
+      append(media, bar, createVideoStage(project.video));
+      root.append(media);
+    }
+
+    const documents = project.documents.filter((item) => item.file);
+    const pendingDocuments = project.documents.filter((item) => !item.file);
+
+    if (documents.length) {
       const area = node("section", "document-area");
       area.id = "documents";
       const bar = node("div", "section-heading");
       const title = node("div");
-      append(title, node("p", "eyebrow", "DOCUMENTS / " + String(project.documents.length).padStart(2, "0")), node("h2", "", "결과물 보기"));
+      append(title, node("p", "eyebrow", "DOCUMENTS / " + String(documents.length).padStart(2, "0")), node("h2", "", "결과물 보기"));
       append(bar, title, node("p", "", "도면을 선택하면 아래에서 바로 열립니다."));
       const layout = node("div", "document-layout");
       const list = node("nav", "document-list");
@@ -145,7 +224,7 @@
       let selectedIndex = 0;
       const buttons = [];
       let lastGroup = "";
-      project.documents.forEach((item, index) => {
+      documents.forEach((item, index) => {
         if (item.group !== lastGroup) {
           list.append(node("p", "document-group", item.group));
           lastGroup = item.group;
@@ -171,17 +250,17 @@
       });
       function select(index, updateAddress) {
         selectedIndex = index;
-        const item = project.documents[index];
+        const item = documents[index];
         const file = asset(item.file);
         toolbarTitle.textContent = item.title;
-        count.textContent = String(index + 1).padStart(2, "0") + " / " + String(project.documents.length).padStart(2, "0") + (item.pages ? " · " + item.pages + "쪽" : "");
+        count.textContent = String(index + 1).padStart(2, "0") + " / " + String(documents.length).padStart(2, "0") + (item.pages ? " · " + item.pages + "쪽" : "");
         frame.title = item.title + " PDF";
         frame.src = file + "#page=" + (item.firstPage || 1) + "&view=FitH";
         original.href = file;
         download.href = file;
         download.setAttribute("download", item.file.split("/").pop());
         previous.disabled = index === 0;
-        next.disabled = index === project.documents.length - 1;
+        next.disabled = index === documents.length - 1;
         buttons.forEach((button, buttonIndex) => {
           const active = index === buttonIndex;
           button.classList.toggle("active", active);
@@ -193,7 +272,7 @@
       previous.addEventListener("click", () => select(selectedIndex - 1, true));
       next.addEventListener("click", () => select(selectedIndex + 1, true));
       fullscreen.addEventListener("click", () => stage.requestFullscreen?.());
-      const requestedIndex = project.documents.findIndex((item) => item.id === params.get("document"));
+      const requestedIndex = documents.findIndex((item) => item.id === params.get("document"));
       select(requestedIndex >= 0 ? requestedIndex : 0, false);
     } else if (project.url) {
       const development = node("section", "development-detail");
@@ -202,6 +281,24 @@
       project.highlights.forEach((highlight) => points.append(node("li", "", highlight)));
       append(development, points);
       root.append(development);
+    }
+
+    if (pendingDocuments.length) {
+      const pending = node("section", "upcoming-section");
+      const title = node("div", "section-heading");
+      const heading = node("div");
+      append(heading, node("p", "eyebrow", "COMING SOON / PDF"), node("h2", "", "추가로 선보일 자료"));
+      title.append(heading);
+      const grid = node("div", "upcoming-grid");
+      pendingDocuments.forEach((item) => {
+        const card = node("article", "upcoming-card");
+        card.dataset.document = item.id;
+        append(card, node("span", "media-status", "PDF 준비 중"), node("p", "eyebrow", item.group), node("h3", "", item.title));
+        if (item.description) card.append(node("p", "", item.description));
+        grid.append(card);
+      });
+      append(pending, title, grid);
+      root.append(pending);
     }
   }
 

@@ -6,7 +6,7 @@ $data = Get-Content (Join-Path $docs 'data/projects.js') -Raw -Encoding UTF8
 $ids = [regex]::Matches($data, '\bid:\s*"([^"]+)"') | ForEach-Object { $_.Groups[1].Value }
 $duplicateIds = $ids | Group-Object | Where-Object Count -gt 1
 if ($duplicateIds) { throw "Duplicate IDs: $($duplicateIds.Name -join ', ')" }
-$paths = [regex]::Matches($data, '\b(?:file|thumbnail):\s*"([^"]+)"') | ForEach-Object { $_.Groups[1].Value }
+$paths = [regex]::Matches($data, '\b(?:file|thumbnail|poster):\s*"([^"]+)"') | ForEach-Object { $_.Groups[1].Value }
 if (-not $paths) { throw 'No result files are registered.' }
 foreach ($relative in $paths) {
     if ($relative -match '(^[./\\]|\.\.|://)') { throw "Unsafe asset path: $relative" }
