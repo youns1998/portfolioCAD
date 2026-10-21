@@ -51,7 +51,11 @@ Chrome 또는 Edge가 설치된 Windows에서는 브라우저 회귀 테스트�
 powershell -ExecutionPolicy Bypass -File .\scripts\test-browser.ps1
 ```
 
-320~1440px 화면의 프로젝트 표시·이미지·가로 넘침, 헤더 높이와 메뉴 이동, 보조키 클릭, 모션 감소 설정, PDF 문서 전환·직접 링크를 확인합니다. 필요하면 `-BrowserPath`로 브라우저 실행 파일을 지정합니다. 테스트 프로필은 Git에서 제외된 `.codex-preview/`에 저장됩니다. 이 테스트는 로컬 파일을 사용하며 GitHub Pages 배포 상태는 별도로 확인해야 합니다.
+320~1440px 화면의 스타일 적용·프로젝트 표시·이미지·가로 넘침, 헤더 높이와 메뉴 이동, 보조키 클릭, 모션 감소 설정, PDF 문서 전환·직접 링크를 확인합니다. 필요하면 `-BrowserPath`로 브라우저 실행 파일을 지정합니다. 테스트 프로필은 Git에서 제외된 `.codex-preview/`에 저장됩니다. 기본적으로 로컬 파일을 사용하며 `-BaseUrl`을 지정하면 공개 주소에서 같은 검사를 실행합니다. 공개 주소 검사의 영상 테스트는 브라우저 안에서 만든 샘플을 사용하며 서버에 파일을 올리지 않습니다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\test-browser.ps1 -BaseUrl https://youns1998.github.io/portfolioCAD/
+```
 
 ## PDF 추가
 
@@ -84,5 +88,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\test-browser.ps1
 ## 배포
 
 GitHub Pages를 사용한다면 저장소 설정의 **Pages → Build and deployment**에서 **Deploy from a branch**, `main`, `/docs`를 선택합니다. 이후 `main` 푸시가 배포를 갱신합니다. Pages 설정과 실제 배포 성공 여부는 별도로 확인해야 합니다.
+
+홈과 상세 화면의 CSS·프로젝트 데이터·JavaScript 주소에는 같은 `?v=` 배포 버전을 붙입니다. 해당 파일을 수정할 때는 두 HTML의 버전을 함께 갱신해 이전 브라우저 캐시가 새 화면과 섞이지 않게 합니다.
 
 공개 저장소에 올리기 전 PDF의 권리, 개인정보, 미공개 도면 여부를 검토하세요. `docs/`에 포함된 파일은 누구나 직접 URL로 받을 수 있습니다. 원본을 가려야 한다면 원본은 로컬에 보관하고 공개용 사본만 `docs/documents/`에 넣습니다.

@@ -1,7 +1,8 @@
-param([string]$BrowserPath)
+param([string]$BrowserPath, [string]$BaseUrl)
 
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+if ($BaseUrl) { $BaseUrl = $BaseUrl.TrimEnd('/') + '/' }
 if (-not $BrowserPath) {
     $BrowserPath = @(
         "${env:ProgramFiles}\Google\Chrome\Application\chrome.exe",
@@ -50,9 +51,13 @@ function Invoke-Js($Expression) {
 }
 
 function Open-Page($Path) {
-    $parts = $Path -split '\?', 2
-    $url = ([uri](Join-Path $root ('docs/' + $parts[0]))).AbsoluteUri
-    if ($parts.Count -gt 1) { $url += '?' + $parts[1] }
+    if ($BaseUrl) {
+        $url = [uri]::new([uri]$BaseUrl, $Path).AbsoluteUri
+    } else {
+        $parts = $Path -split '\?', 2
+        $url = ([uri](Join-Path $root ('docs/' + $parts[0]))).AbsoluteUri
+        if ($parts.Count -gt 1) { $url += '?' + $parts[1] }
+    }
     $navigation = Send-Cdp 'Page.navigate' @{ url = $url }
     if ($navigation.errorText) { throw $navigation.errorText }
     # Wait until the new document has replaced the previous execution context.
@@ -93,6 +98,7 @@ try {
         Set-Viewport $width
         Open-Page 'index.html'
         Assert-Js "Home renders all projects at $width px" 'document.querySelectorAll(".project-card").length === window.portfolioProjects.length && window.portfolioProjects.length > 0'
+        Assert-Js "Home stylesheet applies its colors and layout at $width px" 'getComputedStyle(document.body).backgroundColor==="rgb(245, 247, 243)" && getComputedStyle(document.querySelector(".project-list")).display==="grid" && getComputedStyle(document.querySelector(".project-card")).borderRadius==="12px"'
         Assert-Js "Drawing and GitHub projects have separate collections at $width px" 'document.querySelectorAll("#drawing-project-list .project-card").length===2 && document.querySelectorAll("#github-project-list .project-card").length===3 && ["cad-productivity-palette","revit-bim-inspector","drawing-file-organizer"].every(id=>!!document.querySelector("#github-project-list .project-card[data-project=\""+id+"\"]"))'
         Assert-Js "Drawing cards open the existing PDF detail at $width px" '[...document.querySelectorAll("#drawing-project-list .project-actions a")].every(a=>a.getAttribute("href").startsWith("projects/detail.html?project=")&&!a.hasAttribute("target"))'
         Assert-Js "Drawing thumbnails are accessible links to their matching detail at $width px" '[...document.querySelectorAll("#drawing-project-list .project-card")].every(card=>{const a=card.querySelector("a.project-card-visual");return a&&a.href===card.querySelector(".project-actions a").href&&a.getAttribute("aria-label").includes(card.querySelector("h4").textContent)&&!a.hasAttribute("target");})'
@@ -188,8 +194,12 @@ try {
 
     # Record a small synthetic clip so hover playback is tested without the user's footage.
     $videoBytes = Invoke-Js 'new Promise((resolve,reject)=>{const canvas=document.createElement("canvas");canvas.width=96;canvas.height=96;const context=canvas.getContext("2d");context.fillStyle="#526d5b";context.fillRect(0,0,96,96);const stream=canvas.captureStream(12);const recorder=new MediaRecorder(stream,{mimeType:"video/webm;codecs=vp8"});const chunks=[];recorder.ondataavailable=e=>chunks.push(e.data);recorder.onerror=reject;recorder.onstop=()=>{stream.getTracks().forEach(t=>t.stop());const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(",")[1]);reader.onerror=reject;reader.readAsDataURL(new Blob(chunks,{type:recorder.mimeType}));};recorder.start();setTimeout(()=>{context.fillStyle="#dce6dd";context.fillRect(0,0,48,96);},100);setTimeout(()=>recorder.stop(),500);})'
-    [IO.File]::WriteAllBytes((Join-Path $profile 'rotation-test.webm'), [Convert]::FromBase64String($videoBytes))
-    $videoRelative = '../.codex-preview/' + (Split-Path $profile -Leaf) + '/rotation-test.webm'
+    if ($BaseUrl) {
+        $videoRelative = 'data:video/webm;base64,' + $videoBytes
+    } else {
+        [IO.File]::WriteAllBytes((Join-Path $profile 'rotation-test.webm'), [Convert]::FromBase64String($videoBytes))
+        $videoRelative = '../.codex-preview/' + (Split-Path $profile -Leaf) + '/rotation-test.webm'
+    }
     $videoSource = '(() => { let data; Object.defineProperty(window, "portfolioProjects", {configurable:true, get:()=>data, set:projects=>{data=projects; projects.find(p=>p.id==="comic-cafe").video.file=' + (ConvertTo-Json $videoRelative -Compress) + ';}}); })();'
     $fixture = Send-Cdp 'Page.addScriptToEvaluateOnNewDocument' @{ source = $videoSource }
     Set-Viewport 1440
