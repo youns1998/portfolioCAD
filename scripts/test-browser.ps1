@@ -93,56 +93,97 @@ try {
         Set-Viewport $width
         Open-Page 'index.html'
         Assert-Js "Home renders all projects at $width px" 'document.querySelectorAll(".project-card").length === window.portfolioProjects.length && window.portfolioProjects.length > 0'
+        Assert-Js "Drawing and GitHub projects have separate collections at $width px" 'document.querySelectorAll("#drawing-project-list .project-card").length===2 && document.querySelectorAll("#github-project-list .project-card").length===3 && ["cad-productivity-palette","revit-bim-inspector","drawing-file-organizer"].every(id=>!!document.querySelector("#github-project-list .project-card[data-project=\""+id+"\"]"))'
+        Assert-Js "Drawing cards open the existing PDF detail at $width px" '[...document.querySelectorAll("#drawing-project-list .project-actions a")].every(a=>a.getAttribute("href").startsWith("projects/detail.html?project=")&&!a.hasAttribute("target"))'
+        Assert-Js "Drawing thumbnails are accessible links to their matching detail at $width px" '[...document.querySelectorAll("#drawing-project-list .project-card")].every(card=>{const a=card.querySelector("a.project-card-visual");return a&&a.href===card.querySelector(".project-actions a").href&&a.getAttribute("aria-label").includes(card.querySelector("h4").textContent)&&!a.hasAttribute("target");})'
+        Assert-Js "GitHub cards link directly to their README at $width px" '[...document.querySelectorAll("#github-project-list .project-card")].every(card=>{const p=window.portfolioProjects.find(p=>p.id===card.dataset.project),a=card.querySelector(".repository-link");return a.href===p.readmeUrl&&a.target==="_blank"&&a.rel.includes("noopener")&&a.rel.includes("noreferrer")&&card.querySelectorAll("a").length===1;})'
+        Assert-Js "Project cards show compact metadata and technology tags at $width px" '[...document.querySelectorAll(".project-card")].every(card=>card.querySelectorAll(".project-card-meta > div").length===2&&card.querySelectorAll(".project-tools li").length>0)'
+        Assert-Js "Project thumbnails remain compact at $width px" '[...document.querySelectorAll(".project-card-visual")].every(el=>el.getBoundingClientRect().height<=300)&&[...document.querySelectorAll("#github-project-list .project-card-visual")].every(el=>el.getBoundingClientRect().height<=220)'
         Assert-Js "Home images load at $width px" '[...document.images].every(i => i.complete && i.naturalWidth > 0)'
+        Assert-Js "Cafe uses its isometric project thumbnail at $width px" 'document.querySelector("[data-project=\"comic-cafe\"] .project-card-visual img").getAttribute("src") === window.portfolioProjects[0].thumbnail'
         Assert-Js "Home fits viewport at $width px" 'document.documentElement.scrollWidth <= innerWidth'
         Assert-Js "Header scroll offset matches height at $width px" 'Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) - document.querySelector("header").getBoundingClientRect().height) < 1'
         Assert-Js "Interior precedes CAD at $width px" 'document.querySelectorAll(".project-card")[0].dataset.project === "comic-cafe" && document.querySelectorAll(".project-card")[1].dataset.project === "two-story-house"'
         Assert-Js "Pending video does not create an empty player at $width px" '!document.querySelector("video") && !document.querySelector(".video-toggle")'
+        Assert-Js "Home uses native scrolling and shows content immediately at $width px" 'getComputedStyle(document.documentElement).scrollBehavior==="auto" && getComputedStyle(document.documentElement).scrollSnapType==="none" && [...document.querySelectorAll(".project-card, .about-grid")].every(el=>getComputedStyle(el).opacity==="1" && getComputedStyle(el).transform==="none")'
+    }
+
+    foreach ($width in @(1440, 390)) {
+        Set-Viewport $width
+        foreach ($project in @('comic-cafe', 'two-story-house')) {
+            Open-Page 'index.html'
+            $point = Invoke-Js ('(()=>{const a=document.querySelector("[data-project=\"' + $project + '\"] a.project-card-visual");a.scrollIntoView({block:"center"});const b=a.getBoundingClientRect();return {x:b.left+b.width/2,y:b.top+b.height/2};})()')
+            $null = Send-Cdp 'Input.dispatchMouseEvent' @{ type = 'mousePressed'; x = $point.x; y = $point.y; button = 'left'; clickCount = 1 }
+            $null = Send-Cdp 'Input.dispatchMouseEvent' @{ type = 'mouseReleased'; x = $point.x; y = $point.y; button = 'left'; clickCount = 1 }
+            $loaded = 'location.pathname.endsWith("/projects/detail.html") && new URLSearchParams(location.search).get("project")==="' + $project + '" && document.readyState==="complete" && !!document.querySelector(".pdf-frame[src]")'
+            for ($attempt = 0; $attempt -lt 100; $attempt++) {
+                Start-Sleep -Milliseconds 100
+                try { if (Invoke-Js $loaded) { break } } catch { if ($attempt -eq 99) { throw } }
+            }
+            Assert-Js "Clicking the $project thumbnail opens its PDF detail at $width px" $loaded
+        }
     }
 
     Set-Viewport 1440
     Open-Page 'index.html'
-    Assert-Js 'Scroll controller is enabled on desktop' 'document.documentElement.classList.contains("section-scroll-controlled")'
+    Assert-Js 'Wheel scrolling is not intercepted' '(() => { const event=new WheelEvent("wheel",{deltaY:180,bubbles:true,cancelable:true});window.dispatchEvent(event);return !event.defaultPrevented; })()'
     foreach ($modifier in @('ctrlKey', 'metaKey', 'shiftKey', 'altKey')) {
-        Assert-Js "Modified navigation click preserves browser action: $modifier" ('(() => { const a = document.querySelector("a[href=\"#about\"]"); let intercepted; document.addEventListener("click", e => {intercepted=e.defaultPrevented;e.preventDefault();}, {once:true}); a.dispatchEvent(new MouseEvent("click", {bubbles:true,cancelable:true,' + $modifier + ':true})); return intercepted === false; })()')
+        Assert-Js "Modified navigation click preserves browser action: $modifier" ('(() => { const a = document.querySelector(".site-header nav a[href=\"#top\"]"); let intercepted; document.addEventListener("click", e => {intercepted=e.defaultPrevented;e.preventDefault();}, {once:true}); a.dispatchEvent(new MouseEvent("click", {bubbles:true,cancelable:true,' + $modifier + ':true})); return intercepted === false; })()')
     }
     Open-Page 'index.html'
     Assert-Js 'Clicking top at the top updates the URL' 'document.querySelector(".wordmark").click(); location.hash === "#top"'
-    Assert-Js 'Desktop navigation reaches its section' 'document.querySelector("a[href=\"#about\"]").click();new Promise(r=>setTimeout(()=>r(location.hash === "#about" && Math.abs(document.querySelector("#about").getBoundingClientRect().top-document.querySelector("header").getBoundingClientRect().bottom)<2),1300))'
+    Assert-Js 'Introduction navigation reaches the profile section without animation' 'document.querySelector(".site-header nav a[href=\"#top\"]").click();new Promise(r=>requestAnimationFrame(()=>r(location.hash === "#top" && Math.abs(document.querySelector(".hero").getBoundingClientRect().top-document.querySelector("header").getBoundingClientRect().bottom)<2)))'
+    Assert-Js 'Navigation initially marks the introduction' 'document.querySelector("nav a[aria-current=\"location\"]").hash==="#top"'
+    Assert-Js 'Project navigation updates the active menu and reading progress' 'document.querySelector("nav a[href=\"#work\"]").click();new Promise(r=>setTimeout(()=>r(document.querySelector("nav a[aria-current=\"location\"]").hash==="#work" && document.querySelector(".reading-progress").style.transform!=="scaleX(0)"),150))'
+    Assert-Js 'Contact stays active at the end of the page' 'document.querySelector("nav a[href=\"#contact\"]").click();new Promise(r=>setTimeout(()=>r(document.querySelector("nav a[aria-current=\"location\"]").hash==="#contact" && document.querySelector(".reading-progress").style.transform==="scaleX(1)"),150))'
+    $null = Invoke-Js 'document.querySelector(".isometric-preview").scrollIntoView({block:"center"});new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))'
+    Assert-Js 'Mouse movement drives the thumbnail effect' '(()=>{const el=document.querySelector(".isometric-preview"),b=el.getBoundingClientRect();el.dispatchEvent(new PointerEvent("pointermove",{pointerType:"mouse",bubbles:true,clientX:b.left+b.width*.8,clientY:b.top+b.height*.3}));return new Promise(r=>requestAnimationFrame(()=>r(el.classList.contains("is-pointer-active")&&parseFloat(el.style.getPropertyValue("--tilt-y"))>0)));})()'
+    Assert-Js 'Leaving a thumbnail clears its pointer effect' '(()=>{const el=document.querySelector(".isometric-preview");el.dispatchEvent(new PointerEvent("pointerleave"));return !el.classList.contains("is-pointer-active")&&!el.style.getPropertyValue("--tilt-y");})()'
+    $null = Invoke-Js 'document.querySelector("[data-project=\"comic-cafe\"] .project-actions a").focus()'
+    $null = Send-Cdp 'Input.dispatchKeyEvent' @{ type = 'keyDown'; key = 'Tab'; code = 'Tab'; windowsVirtualKeyCode = 9; modifiers = 8 }
+    $null = Send-Cdp 'Input.dispatchKeyEvent' @{ type = 'keyUp'; key = 'Tab'; code = 'Tab'; windowsVirtualKeyCode = 9; modifiers = 8 }
+    Assert-Js 'Isometric thumbnail responds to keyboard focus' 'new Promise(r=>setTimeout(()=>r(document.activeElement.matches("a.project-card-visual") && getComputedStyle(document.activeElement).outlineStyle!=="none" && getComputedStyle(document.querySelector(".isometric-preview img")).transform!=="none" && getComputedStyle(document.querySelector(".isometric-preview"),"::after").opacity==="1"),1150))'
     $null = Send-Cdp 'Emulation.setEmulatedMedia' @{ features = @(@{ name = 'prefers-reduced-motion'; value = 'reduce' }) }
-    Assert-Js 'Reduced motion disables custom scroll animation' 'new Promise(r=>setTimeout(()=>r(!document.documentElement.classList.contains("section-scroll-controlled")),100))'
+    Assert-Js 'Reduced motion disables thumbnail motion' 'new Promise(r=>requestAnimationFrame(()=>r(getComputedStyle(document.querySelector(".isometric-preview img")).transform==="none" && getComputedStyle(document.querySelector(".isometric-preview"),"::after").opacity==="0")))'
+    Assert-Js 'Reduced motion prevents JavaScript pointer effects' '(()=>{const el=document.querySelector(".isometric-preview");el.dispatchEvent(new PointerEvent("pointermove",{pointerType:"mouse",bubbles:true,clientX:300,clientY:300}));return new Promise(r=>requestAnimationFrame(()=>r(!el.classList.contains("is-pointer-active")&&!el.style.getPropertyValue("--tilt-y"))));})()'
     $null = Send-Cdp 'Emulation.setEmulatedMedia' @{ features = @(@{ name = 'prefers-reduced-motion'; value = 'no-preference' }) }
 
     foreach ($width in @(1440, 390)) {
         Set-Viewport $width
-        foreach ($project in @('two-story-house', 'comic-cafe', 'cad-productivity-palette')) {
+        foreach ($project in @('two-story-house', 'comic-cafe', 'cad-productivity-palette', 'revit-bim-inspector', 'drawing-file-organizer')) {
             Open-Page ('projects/detail.html?project=' + $project)
             Assert-Js "Detail renders $project at $width px" 'document.querySelector("h1").textContent === window.portfolioProjects.find(p => p.id === new URLSearchParams(location.search).get("project")).title'
             Assert-Js "Detail fits viewport: $project at $width px" 'document.documentElement.scrollWidth <= innerWidth'
+            if ($project -in @('cad-productivity-palette', 'revit-bim-inspector', 'drawing-file-organizer')) {
+                Assert-Js "Development detail links to the correct repository: $project at $width px" 'document.querySelector(".detail-heading a").href===window.portfolioProjects.find(p=>p.id===new URLSearchParams(location.search).get("project")).url && document.querySelectorAll(".development-detail li").length===3'
+            }
             if ($project -eq 'comic-cafe') {
-                Assert-Js "Cafe lists all four PDFs in the same navigation at $width px" 'document.querySelectorAll(".document-list .document-row").length === 4 && document.querySelectorAll(".document-row.is-pending").length === 2'
+                Assert-Js "Cafe lists all four PDFs in the same navigation at $width px" 'document.querySelectorAll(".document-list .document-row").length === 4 && !document.querySelector(".document-row.is-pending")'
                 Assert-Js "Cafe detail has no separate video or upcoming sections at $width px" '!document.querySelector("#isometric, .upcoming-section, .isometric-stage, video")'
                 Assert-Js "Available PDF loads initially at $width px" '!document.querySelector("iframe").getAttribute("src").includes("null")'
                 Assert-Js "PDF next selects drawings at $width px" 'document.querySelectorAll(".toolbar-button")[1].click();document.querySelector("iframe").getAttribute("src").includes("comic-cafe-drawings.pdf") && new URLSearchParams(location.search).get("document") === "comic-cafe-drawings" && !document.querySelectorAll(".toolbar-button")[1].disabled && document.querySelector("a[download]").getAttribute("download") === "comic-cafe-drawings.pdf"'
                 Assert-Js "PDF previous selects proposal at $width px" 'document.querySelectorAll(".toolbar-button")[0].click();document.querySelector("iframe").getAttribute("src").includes("comic-cafe-proposal.pdf") && document.querySelectorAll(".toolbar-button")[0].disabled && document.querySelectorAll(".document-row")[0].getAttribute("aria-current") === "true"'
-                Assert-Js "Third PDF uses the same viewer for its pending state at $width px" 'document.querySelectorAll(".document-row")[2].click();!!document.querySelector(".pdf-stage .pdf-pending-state") && !document.querySelector("iframe") && document.querySelector(".pdf-title").textContent === window.portfolioProjects[0].documents[2].title && !document.querySelector(".pdf-toolbar a[href]") && document.querySelectorAll(".document-row")[2].getAttribute("aria-current") === "true"'
-                Assert-Js "Fourth PDF remains in the same viewer at $width px" 'document.querySelectorAll(".document-row")[3].click();!!document.querySelector(".pdf-stage .pdf-pending-state") && document.querySelector(".pdf-title").textContent === window.portfolioProjects[0].documents[3].title && document.querySelectorAll(".toolbar-button")[1].disabled'
+                Assert-Js "Third PDF opens coloring with original and download links at $width px" 'document.querySelectorAll(".document-row")[2].click();window.testFrame=document.querySelector("iframe");window.testItem=window.portfolioProjects[0].documents[2];window.testFrame.getAttribute("src").startsWith("../"+window.testItem.file+"#page=1") && document.querySelector(".pdf-title").textContent===window.testItem.title && document.querySelectorAll(".document-row")[2].getAttribute("aria-current")==="true" && [...document.querySelectorAll(".pdf-toolbar a")].every(a=>a.getAttribute("href")==="../"+window.testItem.file && !a.hidden) && document.querySelector("a[download]").getAttribute("download")===window.testItem.file.split("/").pop()'
+                Assert-Js "Fourth PDF opens renderings in the same viewer at $width px" 'document.querySelectorAll(".document-row")[3].click();window.testItem=window.portfolioProjects[0].documents[3];document.querySelector("iframe")===window.testFrame && window.testFrame.getAttribute("src").startsWith("../"+window.testItem.file+"#page=1") && document.querySelector(".pdf-title").textContent===window.testItem.title && document.querySelectorAll(".toolbar-button")[1].disabled && [...document.querySelectorAll(".pdf-toolbar a")].every(a=>a.getAttribute("href")==="../"+window.testItem.file && !a.hidden) && document.querySelector("a[download]").getAttribute("download")===window.testItem.file.split("/").pop()'
                 Assert-Js "Returning to an available PDF restores the viewer and download at $width px" 'document.querySelectorAll(".document-row")[0].click();!!document.querySelector("iframe") && !document.querySelector(".pdf-pending-state") && !document.querySelector("a[download]").hidden'
             }
         }
         Open-Page 'projects/detail.html?project=comic-cafe&document=comic-cafe-drawings'
         Assert-Js "PDF deep link selects requested document at $width px" 'document.querySelector("iframe").getAttribute("src").includes("comic-cafe-drawings.pdf")'
         Open-Page 'projects/detail.html?project=comic-cafe&document=comic-cafe-coloring'
-        Assert-Js "Pending PDF deep link selects the third row at $width px" '!!document.querySelector(".pdf-pending-state") && document.querySelectorAll(".document-row")[2].getAttribute("aria-current") === "true" && !document.querySelector("iframe")'
+        Assert-Js "Coloring PDF deep link selects the third row at $width px" '!document.querySelector(".pdf-pending-state") && document.querySelectorAll(".document-row")[2].getAttribute("aria-current") === "true" && document.querySelector("iframe").getAttribute("src").startsWith("../"+window.portfolioProjects[0].documents[2].file+"#page=1")'
+        Open-Page 'projects/detail.html?project=comic-cafe&document=comic-cafe-sketchup-renderings'
+        Assert-Js "Rendering PDF deep link selects the fourth row at $width px" 'document.querySelectorAll(".document-row")[3].getAttribute("aria-current") === "true" && document.querySelector("iframe").getAttribute("src").startsWith("../"+window.portfolioProjects[0].documents[3].file+"#page=1")'
         Open-Page 'projects/detail.html?project=invalid'
         Assert-Js "Unknown project offers a return link at $width px" '!!document.querySelector("#project-detail h1") && !!document.querySelector("#project-detail a[href=\"../index.html#work\"]") && !document.querySelector("iframe")'
     }
 
-    # Simulate receiving both PDFs using existing local documents, without changing data on disk.
-    $fixture = Send-Cdp 'Page.addScriptToEvaluateOnNewDocument' @{ source = '(() => { let data; Object.defineProperty(window, "portfolioProjects", {configurable:true, get:()=>data, set:projects=>{ data=projects; const cafe=projects.find(p=>p.id==="comic-cafe"); cafe.documents[2].file=cafe.documents[0].file; cafe.documents[3].file=cafe.documents[1].file; }}); })();' }
+    # Keep coverage for future documents that have not been supplied yet.
+    $fixture = Send-Cdp 'Page.addScriptToEvaluateOnNewDocument' @{ source = '(() => { let data; Object.defineProperty(window, "portfolioProjects", {configurable:true, get:()=>data, set:projects=>{ data=projects; const cafe=projects.find(p=>p.id==="comic-cafe"); cafe.documents[2].file=null; cafe.documents[3].file=null; }}); })();' }
     Open-Page 'projects/detail.html?project=comic-cafe&document=comic-cafe-coloring'
-    Assert-Js 'Connecting the third PDF enables its existing navigation row' 'document.querySelectorAll(".document-row").length === 4 && !document.querySelector(".document-row.is-pending") && document.querySelector(".document-row[aria-current=\"true\"]").textContent.includes("Coloring") && document.querySelector("iframe").getAttribute("src").includes("comic-cafe-proposal.pdf")'
-    Assert-Js 'Connecting the fourth PDF reuses the same iframe' 'window.testFrame=document.querySelector("iframe");document.querySelectorAll(".document-row")[3].click();document.querySelector("iframe")===window.testFrame && document.querySelector("iframe").getAttribute("src").includes("comic-cafe-drawings.pdf") && document.querySelectorAll(".document-row")[3].getAttribute("aria-current")==="true"'
+    Assert-Js 'Missing third PDF shows a pending state in its existing navigation row' 'document.querySelectorAll(".document-row").length===4 && document.querySelectorAll(".document-row.is-pending").length===2 && !!document.querySelector(".pdf-pending-state") && !document.querySelector("iframe") && !document.querySelector(".pdf-toolbar a[href]")'
+    Assert-Js 'Missing fourth PDF keeps the pending state in the same viewer' 'document.querySelectorAll(".document-row")[3].click();!!document.querySelector(".pdf-pending-state") && document.querySelectorAll(".document-row")[3].getAttribute("aria-current")==="true" && document.querySelectorAll(".toolbar-button")[1].disabled'
+    Assert-Js 'Available PDF restores the iframe after a pending document' 'document.querySelectorAll(".document-row")[0].click();document.querySelector("iframe").getAttribute("src").includes("comic-cafe-proposal.pdf") && !document.querySelector(".pdf-pending-state") && !document.querySelector("a[download]").hidden'
     $null = Send-Cdp 'Page.removeScriptToEvaluateOnNewDocument' @{ identifier = $fixture.identifier }
 
     # Record a small synthetic clip so hover playback is tested without the user's footage.
@@ -155,6 +196,7 @@ try {
     Open-Page 'index.html'
     $null = Invoke-Js 'document.querySelector("[data-project=\"comic-cafe\"]").scrollIntoView({behavior:"instant"});new Promise(r=>setTimeout(r,100))'
     Assert-Js 'Video is mounted in the cafe thumbnail only' 'document.querySelectorAll("video").length===1 && !!document.querySelector("[data-project=\"comic-cafe\"] .project-card-visual video")'
+    Assert-Js 'Compact thumbnail keeps the video control visible' '(()=>{const b=document.querySelector(".video-toggle").getBoundingClientRect(),p=document.querySelector(".isometric-stage").parentElement.getBoundingClientRect();return b.bottom<=p.bottom&&b.top>=p.top&&b.right<=p.right;})()'
     Assert-Js 'Video loads and waits for interaction' 'new Promise(r=>{const v=document.querySelector("video");if(v.readyState>=1)r(v.paused);else {v.addEventListener("loadedmetadata",()=>r(v.paused),{once:true});v.addEventListener("error",()=>r(false),{once:true});}})'
     Assert-Js 'Hover plays muted looping video at half speed' 'document.querySelector(".isometric-stage").dispatchEvent(new PointerEvent("pointerenter"));new Promise(r=>setTimeout(()=>{const v=document.querySelector("video");r(!v.paused && v.muted && v.loop && v.playsInline && v.playbackRate===0.5 && document.querySelector(".video-toggle").getAttribute("aria-pressed")==="true");},200))'
     Assert-Js 'Leaving the video pauses playback' 'document.querySelector(".isometric-stage").dispatchEvent(new PointerEvent("pointerleave"));document.querySelector("video").paused && document.querySelector(".video-toggle").getAttribute("aria-pressed")==="false"'
@@ -167,6 +209,7 @@ try {
     Open-Page 'index.html'
     $null = Invoke-Js 'document.querySelector("[data-project=\"comic-cafe\"]").scrollIntoView({behavior:"instant"});new Promise(r=>setTimeout(r,100))'
     Assert-Js 'Mobile video fits the viewport' 'document.documentElement.scrollWidth <= innerWidth && !!document.querySelector(".video-toggle")'
+    Assert-Js 'Mobile thumbnail keeps the video control visible' '(()=>{const b=document.querySelector(".video-toggle").getBoundingClientRect(),p=document.querySelector(".isometric-stage").parentElement.getBoundingClientRect();return b.bottom<=p.bottom&&b.top>=p.top&&b.right<=p.right;})()'
     Assert-Js 'Mobile play button starts video' 'document.querySelector(".video-toggle").click();new Promise(r=>setTimeout(()=>r(!document.querySelector("video").paused),200))'
     Open-Page 'projects/detail.html?project=comic-cafe'
     Assert-Js 'Even a connected video stays out of the project detail' '!document.querySelector("video, .isometric-stage")'

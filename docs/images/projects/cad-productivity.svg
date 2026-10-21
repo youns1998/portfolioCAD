@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" fill="none">
+  <title>CAD Productivity · 도면과 명령을 연결하는 그래픽</title>
+  <defs>
+    <linearGradient id="bg" x1="40" y1="0" x2="600" y2="400" gradientUnits="userSpaceOnUse"><stop stop-color="#E4ECDD"/><stop offset="1" stop-color="#C8D8C2"/></linearGradient>
+    <linearGradient id="panel" x1="105" y1="80" x2="465" y2="330" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#F4F7F0"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" stroke="#758D71" stroke-opacity=".13"/></pattern>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="200%"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#354E32" flood-opacity=".14"/></filter>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h640v400H0z"/>
+  <path fill="url(#grid)" d="M0 0h640v400H0z"/>
+  <circle cx="312" cy="210" r="164" stroke="#819C79" stroke-opacity=".3"/>
+  <circle cx="312" cy="210" r="126" stroke="#819C79" stroke-opacity=".16"/>
+  <g filter="url(#shadow)" transform="rotate(-5 300 210)">
+    <rect x="91" y="80" width="398" height="250" rx="12" fill="url(#panel)"/>
+    <rect x="109" y="98" width="362" height="214" rx="5" stroke="#C9D5C3"/>
+    <path d="M148 142h244v123H148z" stroke="#405D3E" stroke-width="3"/>
+    <path d="M222 142v79h95v44M148 221h44m125-79v39h75M258 221v44" stroke="#405D3E" stroke-width="2.5"/>
+    <path d="M192 221a30 30 0 0 1 30-30m95-10a26 26 0 0 1 26 26" stroke="#8DA484" stroke-width="1.5"/>
+    <path d="M164 158h41v42h-41zM333 224h42v25h-42zM241 159h58v33h-58z" fill="#DDE8D6" stroke="#9CB391"/>
+    <path d="M148 126h244M148 119v14m244-14v14M132 142v123m-7-123h14m-14 123h14" stroke="#9AAD91"/>
+    <path d="m155 123-7 3 7 3m230-6 7 3-7 3M129 149l3-7 3 7m-6 109 3 7 3-7" stroke="#9AAD91"/>
+    <path d="M117 289h83m-41-9v18" stroke="#A4B69A" stroke-width="1.5"/>
+    <text x="247" y="119" fill="#6D8562" font-family="Arial,sans-serif" font-size="9" letter-spacing="2">DRAW / EDIT / CHECK</text>
+  </g>
+  <g filter="url(#shadow)" transform="rotate(5 475 220)">
+    <rect x="414" y="130" width="132" height="162" rx="10" fill="#294631"/>
+    <rect x="430" y="149" width="8" height="8" rx="2" fill="#AAC598"/>
+    <path d="M446 153h70" stroke="#A9C19D" stroke-width="3" stroke-linecap="round"/>
+    <rect x="429" y="175" width="101" height="30" rx="5" fill="#39583E"/>
+    <path d="M443 185v10m-5-5h10" stroke="#D2E2C4" stroke-width="1.5"/>
+    <text x="459" y="194" fill="#E9F0E3" font-family="Arial,sans-serif" font-size="10">MOVE</text>
+    <rect x="429" y="212" width="101" height="30" rx="5" fill="#39583E"/>
+    <path d="M439 221h8v9h-8zm4-3h8v9" stroke="#D2E2C4"/>
+    <text x="459" y="231" fill="#E9F0E3" font-family="Arial,sans-serif" font-size="10">COPY</text>
+    <path d="M430 262h100" stroke="#5B7856"/>
+    <circle cx="435" cy="275" r="3" fill="#B8D79B"/><path d="M447 275h52" stroke="#8EAD80" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <path d="M60 319v24h24m472-268h24v24" stroke="#819A75" stroke-width="1.5"/>
+  <circle cx="102" cy="65" r="3" fill="#6D8D5F"/>
+</svg>

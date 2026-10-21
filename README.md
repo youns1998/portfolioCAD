@@ -6,11 +6,25 @@
 
 | 프로젝트 | 자료 |
 | --- | --- |
-| 만화카페 인테리어 계획 | 계획 제안서 PDF 28쪽, 설계 도면집 PDF 13쪽 |
+| 만화카페 인테리어 계획 | 계획 제안서 PDF 28쪽, 설계 도면집 PDF 13쪽, 컬러링 PDF 3쪽, SketchUp 렌더링 PDF 6쪽 |
 | 2층 단독주택 설계 도면 | 도면집 PDF 39쪽 |
 | CAD Productivity Palette | [공개 GitHub 저장소](https://github.com/youns1998/cad-productivity-palette) |
+| Revit BIM Inspector | [Revit 모델 정보 점검 도구](https://github.com/youns1998/revit-bim-portfolio), 샘플 검사·화면·CSV·API 빌드 확인 |
+| Drawing File Organizer | [Python 도면 파일 정리 도구](https://github.com/youns1998/drawing-file-organizer), 13개 검사와 예제 복사 실행 확인 |
 
-만화카페의 왼쪽 문서 목록은 제안서, 설계 도면, 컬러링, SketchUp 렌더링 순서입니다. 준비 중인 3·4번 자료도 같은 목록에 표시되며 선택하면 기존 뷰어 안에 준비 상태를 안내합니다. 홈의 PDF 수와 페이지 수에는 실제 파일만 집계합니다. 아이소메트릭 영상은 홈의 만화카페 썸네일에만 표시합니다.
+만화카페의 왼쪽 문서 목록은 제안서, 설계 도면, 컬러링, SketchUp 렌더링 순서이며 모두 같은 뷰어에서 열립니다. 홈에는 PDF 4개·총 50쪽으로 표시하고, 만화카페 썸네일에는 `docs/documents/1.아이소 확정.png`를 사용합니다.
+
+홈은 브라우저 기본 스크롤을 사용하며 섹션 스냅, 스크롤 가로채기, 스크롤 등장 애니메이션을 적용하지 않습니다. 아이소메트리 썸네일에는 마우스 오버·키보드 포커스 시 기울기와 빛 반사 효과를 적용합니다. 모션 감소 설정에서는 이 효과의 움직임을 중지합니다.
+
+메인은 도면 프로젝트 2개와 GitHub 프로젝트 3개를 별도 영역으로 구분합니다. 도면은 2열, GitHub는 3열 카드로 표시하고 화면이 좁아지면 열 수를 줄입니다. 도면 썸네일은 최대 300px, 코딩 썸네일은 최대 220px로 조정했습니다. GitHub 카드는 전체를 클릭할 수 있으며 `readmeUrl`의 GitHub README 파일을 새 창에서 바로 엽니다. 코딩 썸네일은 `docs/images/projects/`의 직접 작성한 SVG 그래픽입니다.
+
+JavaScript로 현재 메뉴와 읽기 진행률을 표시하고, 마우스 위치에 따라 카드 조명과 이미지 기울기를 조정합니다. 포인터 효과는 정밀 마우스 환경에서만 작동하며 모션 감소 설정, 스크롤, 포인터 이탈 시 초기화합니다. 모든 콘텐츠는 처음부터 표시합니다.
+
+프로젝트 상세는 간단한 소개, 작업 기간·진행 형태·사용 도구·작업 범위와 기존 PDF 뷰어로 구성합니다. 별도 작업 개요나 사진 링크는 두지 않습니다. `duration`과 `context`에는 본인이 확인한 기간과 진행 형태를 기록합니다. Revit·BIM은 학습 중인 기술로 표시하며 [별도 저장소](https://github.com/youns1998/revit-bim-portfolio)에 작업 기록을 준비했습니다.
+
+GitHub 개발 프로젝트는 총 3개입니다. 각 저장소의 구현 범위에 맞춰 `highlights`와 `visual`을 작성하며, `verification`에 실행으로 확인한 범위를 기록합니다. Revit 모델링은 학습 중이며 Revit 도구의 실제 호스트 실행은 아직 확인하지 않았습니다. Python 도구는 도면 파일 단위로 분류·비교하며 DWG·PDF 내부의 설계 적합성을 판정하지 않습니다.
+
+여러 저장소의 역할과 검증 명령은 [저장소 작업 안내](REPOSITORIES.md)에 정리했습니다.
 
 ## 구성
 
@@ -49,7 +63,9 @@ powershell -ExecutionPolicy Bypass -File .\scripts\test-browser.ps1
 
 문서 목록과 상세 화면은 같은 데이터를 사용합니다. 새 PDF마다 HTML이나 뷰어 코드를 수정할 필요가 없습니다. 목록 순서는 `documents` 배열 순서입니다.
 
-만화카페의 `comic-cafe-coloring`, `comic-cafe-sketchup-renderings` 항목은 이미 등록되어 있습니다. PDF를 받은 뒤 해당 항목의 `file`에 실제 경로를 지정하고 `pages`, `firstPage`, `thumbnail`을 필요에 따라 추가하면 같은 3·4번 메뉴에서 PDF가 열립니다. 문서 수·쪽수는 실제 자료를 기준으로 입력합니다.
+만화카페의 `comic-cafe-coloring`은 `documents/컬러링.pdf`(3쪽), `comic-cafe-sketchup-renderings`는 `documents/원본.pdf`(6쪽)에 연결되어 있습니다. 각 문서의 첫 페이지 미리보기도 `documents/thumbnails/`에 등록되어 있습니다. 문서 수·쪽수는 실제 자료를 기준으로 입력합니다.
+
+프로젝트의 `thumbnail`에 이미지 경로를 지정하면 홈 대표 이미지로 우선 사용합니다. `thumbnailAlt`에는 이미지 설명을 입력합니다. 프로젝트 대표 이미지가 없으면 문서 썸네일을 사용합니다.
 
 ## 아이소메트릭 영상 연결
 

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" fill="none">
+  <title>Drawing Organizer · 도면 파일 분류와 보고서 흐름을 표현한 그래픽</title>
+  <defs>
+    <linearGradient id="bg" x1="70" y1="20" x2="580" y2="400" gradientUnits="userSpaceOnUse"><stop stop-color="#F4ECDD"/><stop offset="1" stop-color="#E9D8BC"/></linearGradient>
+    <linearGradient id="folder" x1="190" y1="160" x2="420" y2="330" gradientUnits="userSpaceOnUse"><stop stop-color="#DBAC68"/><stop offset="1" stop-color="#BE8A45"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" stroke="#A88552" stroke-opacity=".1"/></pattern>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="230%"><feDropShadow dx="0" dy="13" stdDeviation="15" flood-color="#755225" flood-opacity=".16"/></filter>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h640v400H0z"/>
+  <path fill="url(#grid)" d="M0 0h640v400H0z"/>
+  <circle cx="315" cy="210" r="151" stroke="#B2976A" stroke-opacity=".2"/>
+  <g filter="url(#shadow)">
+    <path d="M177 180v-33a12 12 0 0 1 12-12h63l20 22h124a12 12 0 0 1 12 12v119H177V180Z" fill="#C5995A"/>
+    <g transform="rotate(-12 237 170)"><rect x="185" y="85" width="98" height="136" rx="8" fill="#FCFAF4"/><path d="M201 153h64m-64 14h64m-64 14h41" stroke="#C8C2AD" stroke-width="2"/><rect x="200" y="102" width="42" height="23" rx="4" fill="#E5EDDF"/><text x="210" y="117" fill="#5E7D58" font-family="Arial,sans-serif" font-size="10" font-weight="bold">DWG</text></g>
+    <g transform="rotate(3 300 170)"><rect x="256" y="73" width="98" height="136" rx="8" fill="#FCFAF4"/><path d="M272 141h64m-64 14h64m-64 14h41" stroke="#C8C2AD" stroke-width="2"/><rect x="271" y="90" width="42" height="23" rx="4" fill="#F0DDD4"/><text x="282" y="105" fill="#A76951" font-family="Arial,sans-serif" font-size="10" font-weight="bold">PDF</text></g>
+    <g transform="rotate(15 363 170)"><rect x="329" y="96" width="98" height="136" rx="8" fill="#FCFAF4"/><path d="M345 164h64m-64 14h64m-64 14h41" stroke="#C8C2AD" stroke-width="2"/><rect x="344" y="113" width="42" height="23" rx="4" fill="#DAE7E9"/><text x="355" y="128" fill="#547E86" font-family="Arial,sans-serif" font-size="10" font-weight="bold">DXF</text></g>
+    <path d="M158 194h252a9 9 0 0 1 9 11l-20 101a12 12 0 0 1-12 10H184a12 12 0 0 1-12-10l-23-101a9 9 0 0 1 9-11Z" fill="url(#folder)"/>
+    <path d="M171 210h232" stroke="#F5D3A1" stroke-width="1.5"/>
+    <rect x="198" y="246" width="113" height="32" rx="5" fill="#F4E3C8" fill-opacity=".85"/>
+    <text x="214" y="266" fill="#86602E" font-family="Arial,sans-serif" font-size="10" letter-spacing="2">DRAWINGS</text>
+  </g>
+  <path d="M430 240h30v-54h24m-24 54h24m-24 0v54h24" stroke="#A78A5D" stroke-width="1.5" stroke-dasharray="4 5"/>
+  <g fill="#FCF9F1" stroke="#C5AF8A"><rect x="483" y="172" width="77" height="28" rx="6"/><rect x="483" y="226" width="77" height="28" rx="6"/><rect x="483" y="280" width="77" height="28" rx="6"/></g>
+  <g fill="#816942" font-family="Arial,sans-serif" font-size="9" letter-spacing="1"><text x="500" y="190">PROJECT</text><text x="503" y="244">LATEST</text><text x="505" y="298">REPORT</text></g>
+  <path d="M76 280v26h26m448-218h26v26" stroke="#B69B71" stroke-width="1.5"/>
+  <circle cx="121" cy="130" r="4" fill="#BD9A61"/><circle cx="520" cy="130" r="3" fill="#BD9A61"/>
+</svg>
