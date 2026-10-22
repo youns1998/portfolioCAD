@@ -103,7 +103,9 @@ try {
         Assert-Js "Drawing cards open the existing PDF detail at $width px" '[...document.querySelectorAll("#drawing-project-list .project-actions a")].every(a=>a.getAttribute("href").startsWith("projects/detail.html?project=")&&!a.hasAttribute("target"))'
         Assert-Js "Drawing thumbnails are accessible links to their matching detail at $width px" '[...document.querySelectorAll("#drawing-project-list .project-card")].every(card=>{const a=card.querySelector("a.project-card-visual");return a&&a.href===card.querySelector(".project-actions a").href&&a.getAttribute("aria-label").includes(card.querySelector("h4").textContent)&&!a.hasAttribute("target");})'
         Assert-Js "GitHub cards link directly to their README at $width px" '[...document.querySelectorAll("#github-project-list .project-card")].every(card=>{const p=window.portfolioProjects.find(p=>p.id===card.dataset.project),a=card.querySelector(".repository-link");return a.href===p.readmeUrl&&a.target==="_blank"&&a.rel.includes("noopener")&&a.rel.includes("noreferrer")&&card.querySelectorAll("a").length===1;})'
-        Assert-Js "Project cards show compact metadata and technology tags at $width px" '[...document.querySelectorAll(".project-card")].every(card=>card.querySelectorAll(".project-card-meta > div").length===2&&card.querySelectorAll(".project-tools li").length>0)'
+        Assert-Js "Primary projects show metadata and technology tags at $width px" '[...document.querySelectorAll(".project-collection--primary .project-card")].every(card=>card.querySelectorAll(".project-card-meta > div").length===2&&card.querySelectorAll(".project-tools li").length>0)'
+        Assert-Js "Architecture is primary and development stays compact at $width px" 'document.body.dataset.focus==="architecture" && document.querySelector(".project-collection").querySelector("#drawing-project-list")!==null && document.querySelectorAll("#github-project-list .project-card--supporting").length===3 && !document.querySelector("#github-project-list .project-card-visual, #planned-project-list")'
+        Assert-Js "All architecture documents have direct preview links at $width px" 'document.querySelectorAll(".drawing-document-link").length===5 && [...document.querySelectorAll(".drawing-document-link")].every(a=>new URL(a.href).searchParams.has("document"))'
         Assert-Js "Project thumbnails remain compact at $width px" '[...document.querySelectorAll(".project-card-visual")].every(el=>el.getBoundingClientRect().height<=300)&&[...document.querySelectorAll("#github-project-list .project-card-visual")].every(el=>el.getBoundingClientRect().height<=220)'
         Assert-Js "Home images load at $width px" '[...document.images].every(i => i.complete && i.naturalWidth > 0)'
         Assert-Js "Cafe uses its isometric project thumbnail at $width px" 'document.querySelector("[data-project=\"comic-cafe\"] .project-card-visual img").getAttribute("src") === window.portfolioProjects[0].thumbnail'
@@ -145,7 +147,7 @@ try {
     $null = Invoke-Js 'document.querySelector(".isometric-preview").scrollIntoView({block:"center"});new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))'
     Assert-Js 'Mouse movement drives the thumbnail effect' '(()=>{const el=document.querySelector(".isometric-preview"),b=el.getBoundingClientRect();el.dispatchEvent(new PointerEvent("pointermove",{pointerType:"mouse",bubbles:true,clientX:b.left+b.width*.8,clientY:b.top+b.height*.3}));return new Promise(r=>requestAnimationFrame(()=>r(el.classList.contains("is-pointer-active")&&parseFloat(el.style.getPropertyValue("--tilt-y"))>0)));})()'
     Assert-Js 'Leaving a thumbnail clears its pointer effect' '(()=>{const el=document.querySelector(".isometric-preview");el.dispatchEvent(new PointerEvent("pointerleave"));return !el.classList.contains("is-pointer-active")&&!el.style.getPropertyValue("--tilt-y");})()'
-    $null = Invoke-Js 'document.querySelector("[data-project=\"comic-cafe\"] .project-actions a").focus()'
+    $null = Invoke-Js 'document.querySelector("[data-project=\"comic-cafe\"] .drawing-document-link").focus()'
     $null = Send-Cdp 'Input.dispatchKeyEvent' @{ type = 'keyDown'; key = 'Tab'; code = 'Tab'; windowsVirtualKeyCode = 9; modifiers = 8 }
     $null = Send-Cdp 'Input.dispatchKeyEvent' @{ type = 'keyUp'; key = 'Tab'; code = 'Tab'; windowsVirtualKeyCode = 9; modifiers = 8 }
     Assert-Js 'Isometric thumbnail responds to keyboard focus' 'new Promise(r=>setTimeout(()=>r(document.activeElement.matches("a.project-card-visual") && getComputedStyle(document.activeElement).outlineStyle!=="none" && getComputedStyle(document.querySelector(".isometric-preview img")).transform!=="none" && getComputedStyle(document.querySelector(".isometric-preview"),"::after").opacity==="1"),1150))'
@@ -224,6 +226,15 @@ try {
     Open-Page 'projects/detail.html?project=comic-cafe'
     Assert-Js 'Even a connected video stays out of the project detail' '!document.querySelector("video, .isometric-stage")'
     $null = Send-Cdp 'Page.removeScriptToEvaluateOnNewDocument' @{ identifier = $fixture.identifier }
+    foreach ($width in @(1440,390)) {
+        Set-Viewport $width
+        Open-Page 'index.html'
+        $shot = Send-Cdp 'Page.captureScreenshot' @{ format = 'png'; captureBeyondViewport = $true }
+        [IO.File]::WriteAllBytes((Join-Path $root ('.codex-preview/home-' + $width + '.png')), [Convert]::FromBase64String($shot.data))
+        $null = Invoke-Js 'document.querySelector("#work").scrollIntoView();new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))'
+        $shot = Send-Cdp 'Page.captureScreenshot' @{ format = 'png' }
+        [IO.File]::WriteAllBytes((Join-Path $root ('.codex-preview/work-' + $width + '.png')), [Convert]::FromBase64String($shot.data))
+    }
     if ($script:browserErrors.Count) { $script:failures.Add(($script:browserErrors -join '; ')) }
     if ($script:failures.Count) { throw "$($script:failures.Count) browser checks failed: $($script:failures -join '; ')" }
     Write-Host "Passed $($script:checks) browser checks with no browser errors."

@@ -3,6 +3,8 @@
 
   const projects = Array.isArray(window.portfolioProjects) ? window.portfolioProjects : [];
   const page = document.body.dataset.page;
+  const software = document.body.dataset.focus === "software";
+  const isSoftwareProject = (project) => project.kind !== "architecture" && Boolean(project.url) && !project.documents.length;
   const asset = (path) => (page === "detail" ? "../" : "") + path;
   const detailUrl = (project, documentId) => {
     const params = new URLSearchParams({ project: project.id });
@@ -82,10 +84,21 @@
     drawings.replaceChildren();
     repositories.replaceChildren();
     projects.forEach((project) => {
-      const isCode = Boolean(project.url) && !project.documents.length;
+      const isCode = isSoftwareProject(project);
       const list = isCode ? repositories : drawings;
       const article = node("article", "project-card " + (isCode ? "project-card--code" : "project-card--drawing"));
       article.dataset.project = project.id;
+      if (isCode !== software) {
+        article.classList.add("project-card--supporting");
+        const copy = node("div", "project-card-copy");
+        append(copy, node("p", "eyebrow", project.category), node("h4", "project-card-title", project.title), node("p", "project-card-description", project.description));
+        const open = link("", project.readmeUrl || project.url, "project-open-link repository-link", true);
+        open.setAttribute("aria-label", project.title + (isCode ? " GitHub README 보기 (새 창)" : " 건축 포트폴리오에서 보기 (새 창)"));
+        append(open, node("span", "", isCode ? "GitHub README 보기" : "건축 포트폴리오에서 보기"), node("span", "project-open-arrow", "↗"));
+        append(article, copy, open);
+        list.append(article);
+        return;
+      }
       const figure = !isCode && !project.video?.file
         ? link("", detailUrl(project), "project-card-visual drawing-thumbnail-link")
         : node("div", "project-card-visual");
@@ -124,6 +137,11 @@
       tools.setAttribute("aria-label", "사용 도구");
       (project.tools || []).forEach((tool) => tools.append(node("li", "", tool)));
       copy.append(tools);
+      if (isCode) {
+        const highlights = node("ul", "project-highlights");
+        (project.highlights || []).forEach((text) => highlights.append(node("li", "", text)));
+        append(copy, highlights, node("p", "project-verification", project.verification));
+      }
       const actions = node("div", "project-actions");
       const meta = node("dl", "project-card-meta");
       line(meta, "기간", project.duration);
@@ -138,9 +156,33 @@
       copy.append(actions);
       append(article, figure, copy);
       list.append(article);
+      if (!isCode && documents.length) {
+        const index = node("nav", "drawing-document-index");
+        index.setAttribute("aria-label", project.title + " 자료 바로 보기");
+        documents.forEach((item) => {
+          const entry = link("", detailUrl(project, item.id), "drawing-document-link");
+          if (item.thumbnail) {
+            const image = node("img");
+            image.src = asset(item.thumbnail);
+            image.alt = "";
+            image.loading = "lazy";
+            entry.append(image);
+          }
+          append(entry, node("strong", "", item.title), node("span", "", item.group + " · " + item.pages + "쪽 ↗"));
+          index.append(entry);
+        });
+        copy.insertBefore(index, actions);
+      }
     });
     document.getElementById("drawing-project-count").textContent = String(drawings.childElementCount).padStart(2, "0") + " PROJECTS";
     document.getElementById("github-project-count").textContent = String(repositories.childElementCount).padStart(2, "0") + " REPOSITORIES";
+    const planned = document.getElementById("planned-project-list");
+    if (planned) (window.portfolioPlannedProjects || []).forEach((project) => {
+      const article = node("article", "planned-project");
+      article.dataset.planned = project.id;
+      append(article, node("p", "eyebrow", "PLANNED / " + project.area), node("h4", "", project.title), node("p", "", project.description), node("span", "planned-status", "기획 전 · 결과물 준비 중"));
+      planned.append(article);
+    });
   }
 
   function renderDetail() {
@@ -157,7 +199,7 @@
     const intro = node("section", "detail-intro");
     const heading = node("div", "detail-heading");
     append(heading, node("p", "eyebrow", project.category), node("h1", "", project.title), node("p", "detail-lead", project.description));
-    if (project.url) heading.append(link("GitHub에서 코드 보기 ↗", project.url, "button button-dark", true));
+    if (project.url) heading.append(link(project.kind === "architecture" ? "건축 포트폴리오에서 자료 보기 ↗" : "GitHub에서 코드 보기 ↗", project.url, "button button-dark", true));
     const facts = node("dl", "detail-facts");
     line(facts, "유형", project.type);
     line(facts, "작업 기간", project.duration);
@@ -277,9 +319,10 @@
       select(requestedIndex >= 0 ? requestedIndex : 0, false);
     } else if (project.url) {
       const development = node("section", "development-detail");
-      append(development, node("p", "eyebrow", "PROJECT DETAILS"), node("h2", "", "주요 개발 내용"));
+      append(development, node("p", "eyebrow", "PROJECT DETAILS"), node("h2", "", project.kind === "architecture" ? "건축 포트폴리오에서 이어 보기" : "주요 개발 내용"));
       const points = node("ul");
-      project.highlights.forEach((highlight) => points.append(node("li", "", highlight)));
+      (project.highlights || []).forEach((highlight) => points.append(node("li", "", highlight)));
+      if (project.kind === "architecture") development.append(node("p", "detail-lead", "설계 도면과 시각화 자료는 건축 포트폴리오에서 소개합니다. 위 링크에서 전체 자료를 확인할 수 있습니다."));
       append(development, points);
       root.append(development);
     }

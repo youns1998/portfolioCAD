@@ -278,3 +278,54 @@ dd { margin:0; font-size:.9rem; line-height:1.7; }
   .project-card--code.is-pointer-active .project-card-visual img, .project-card:hover .project-open-arrow { transform:none; }
   .hero-aside:hover .hero-portrait-frame { transform:rotate(-2deg); }
 }
+
+/* The same visual language, with an explicit primary and supporting discipline. */
+.skip-link { position:fixed; z-index:100; left:16px; top:12px; padding:10px 16px; background:var(--ink); color:#fff; transform:translateY(-160%); }
+.skip-link:focus { transform:none; }
+.tech-stack-grid--focused { grid-template-columns:minmax(0,1fr); max-width:960px; }
+.tech-stack-grid--focused .tech-tags { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.about-copy .supporting-skill { margin:22px 0 0; font-size:.85rem; }
+.drawing-document-index { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; width:100%; margin:8px 0 22px; }
+.drawing-document-link { display:flex; flex-direction:column; gap:5px; min-width:0; padding:10px; border:1px solid var(--line); border-radius:6px; text-decoration:none; }
+.drawing-document-link:hover { background:var(--paper); border-color:var(--accent); }
+.drawing-document-link img { width:100%; height:105px; object-fit:contain; background:var(--paper); }
+.drawing-document-link strong { font-size:.75rem; font-weight:600; word-break:keep-all; }
+.drawing-document-link span { font-size:.62rem; color:var(--muted); }
+.project-list--supporting { grid-template-columns:1fr; gap:0; }
+.project-card--supporting { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:24px; padding:22px 0; background:transparent; border:0; border-bottom:1px solid var(--line); border-radius:0; box-shadow:none; overflow:visible; }
+.project-card--supporting .project-card-copy { padding:0; }
+.project-card--supporting .project-card-copy > .eyebrow { margin:0 0 5px; }
+.project-card--supporting .project-card-title { margin:0 0 5px; font-size:1.05rem; }
+.project-card--supporting .project-card-description { margin:0; min-height:0; max-width:80ch; font-size:.8rem; }
+.project-card--supporting > .project-open-link { width:auto; font-size:.72rem; white-space:nowrap; }
+.project-card--supporting .repository-link::after { border-radius:0; }
+.project-card--supporting:hover, .project-card--supporting:focus-within { box-shadow:none; }
+.project-highlights { margin:0 0 16px; padding-left:17px; color:var(--muted); font-size:.78rem; line-height:1.85; }
+.project-verification { margin:0 0 20px; padding-left:12px; border-left:2px solid #a3b8a8; color:var(--muted); font-size:.72rem; line-height:1.8; }
+.planned-note { color:var(--muted); font-size:.85rem; margin:-8px 0 24px; }
+.planned-project-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+.planned-project { min-width:0; min-height:240px; display:flex; flex-direction:column; align-items:start; padding:28px; border:1px dashed #a3b8a8; border-radius:var(--radius); background:rgba(255,255,255,.35); }
+.planned-project .eyebrow { margin-bottom:18px; font-size:.62rem; }
+.planned-project h4 { margin:0 0 12px; font-size:1.25rem; word-break:keep-all; }
+.planned-project > p:not(.eyebrow) { margin:0 0 26px; color:var(--muted); font-size:.85rem; word-break:keep-all; }
+.planned-status { margin-top:auto; padding:4px 10px; border:1px solid var(--line); border-radius:4px; font-size:.68rem; color:var(--muted); }
+.counterpart-section { display:flex; align-items:center; justify-content:space-between; gap:36px; padding-block:64px; }
+.counterpart-section .eyebrow { margin-bottom:12px; }
+.counterpart-section h2 { margin:0 0 12px; font-size:clamp(1.3rem,2vw,1.8rem); letter-spacing:-.03em; word-break:keep-all; }
+.counterpart-section p:not(.eyebrow) { margin:0; color:var(--muted); font-size:.85rem; max-width:70ch; }
+.counterpart-section > a { flex:none; font-size:.8rem; }
+@media (max-width:1100px) {
+  .tech-stack-grid--focused .tech-tags { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:700px) {
+  .project-card--supporting { grid-template-columns:1fr; gap:14px; }
+  .project-card--supporting > .project-open-link { justify-content:start; gap:16px; }
+  .planned-project-list { grid-template-columns:1fr; }
+  .counterpart-section { flex-direction:column; align-items:start; gap:24px; padding-block:48px; }
+}
+@media (max-width:600px) {
+  .tech-stack-grid--focused .tech-tags { grid-template-columns:1fr; }
+  .drawing-document-link img { height:85px; }
+  .planned-project { padding:24px; }
+  .collection-heading { flex-wrap:wrap; gap:12px; }
+}
