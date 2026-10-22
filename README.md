@@ -1,6 +1,6 @@
 # 최윤성 포트폴리오
 
-건축·인테리어 설계 결과물을 중심으로 소개하는 정적 포트폴리오입니다. 콘텐츠 비중은 건축 약 80%·개발 보조 약 20%이며, 개발 중심 소개는 별도 [portfolioSW](https://github.com/youns1998/portfolioSW)로 분리했습니다. [이원화 기준](PORTFOLIO_SPLIT.md)을 참고하세요. `docs/`가 배포 루트이며 프레임워크나 빌드 도구가 필요하지 않습니다.
+건축·인테리어 설계 결과물을 중심으로 소개하는 정적 포트폴리오입니다. 콘텐츠 비중은 건축 약 80%·개발 보조 약 20%이며, 개발 도구는 각 프로젝트의 GitHub README로 직접 연결합니다. [이원화 기준](PORTFOLIO_SPLIT.md)을 참고하세요. `docs/`가 배포 루트이며 프레임워크나 빌드 도구가 필요하지 않습니다.
 
 현재 등록된 결과물:
 
@@ -9,7 +9,7 @@
 | 만화카페 인테리어 계획 | 계획 제안서 PDF 28쪽, 설계 도면집 PDF 13쪽, 컬러링 PDF 3쪽, SketchUp 렌더링 PDF 6쪽 |
 | 2층 단독주택 설계 도면 | 도면집 PDF 39쪽 |
 | CAD Productivity Palette | [공개 GitHub 저장소](https://github.com/youns1998/cad-productivity-palette) |
-| Revit BIM Inspector | [Revit 모델 정보 점검 도구](https://github.com/youns1998/revit-bim-portfolio), 샘플 검사·화면·CSV·API 빌드 확인 |
+| Revit BIM Inspector | [Revit API 학습용 개발 프로젝트](https://github.com/youns1998/revit-bim-portfolio), 샘플 검사·화면·CSV·API 빌드 확인, Revit 내부 실행 미확인 |
 | Drawing File Organizer | [Python 도면 파일 정리 도구](https://github.com/youns1998/drawing-file-organizer), 13개 검사와 예제 복사 실행 확인 |
 
 만화카페의 왼쪽 문서 목록은 제안서, 설계 도면, 컬러링, SketchUp 렌더링 순서이며 모두 같은 뷰어에서 열립니다. 홈에는 PDF 4개·총 50쪽으로 표시하고, 만화카페 썸네일에는 `docs/documents/1.아이소 확정.png`를 사용합니다.
@@ -20,9 +20,9 @@
 
 JavaScript로 현재 메뉴와 읽기 진행률을 표시하고, 마우스 위치에 따라 카드 조명과 이미지 기울기를 조정합니다. 포인터 효과는 정밀 마우스 환경에서만 작동하며 모션 감소 설정, 스크롤, 포인터 이탈 시 초기화합니다. 모든 콘텐츠는 처음부터 표시합니다.
 
-프로젝트 상세는 간단한 소개, 작업 기간·진행 형태·사용 도구·작업 범위와 기존 PDF 뷰어로 구성합니다. 별도 작업 개요나 사진 링크는 두지 않습니다. `duration`과 `context`에는 본인이 확인한 기간과 진행 형태를 기록합니다. Revit·BIM은 학습 중인 기술로 표시하며 [별도 저장소](https://github.com/youns1998/revit-bim-portfolio)에 작업 기록을 준비했습니다.
+프로젝트 상세는 간단한 소개, 작업 기간·진행 형태·사용 도구·작업 범위와 기존 PDF 뷰어로 구성합니다. 별도 작업 개요나 사진 링크는 두지 않습니다. `duration`과 `context`에는 본인이 확인한 기간과 진행 형태를 기록합니다. 주요 사용 기술은 AutoCAD·SketchUp으로 소개합니다. Revit·BIM은 기초 학습 단계로 안내하며, [별도 저장소](https://github.com/youns1998/revit-bim-portfolio)는 Revit API 학습용 개발 프로젝트로 소개합니다.
 
-GitHub 개발 프로젝트는 총 3개입니다. 각 저장소의 구현 범위에 맞춰 `highlights`와 `visual`을 작성하며, `verification`에 실행으로 확인한 범위를 기록합니다. Revit 모델링은 학습 중이며 Revit 도구의 실제 호스트 실행은 아직 확인하지 않았습니다. Python 도구는 도면 파일 단위로 분류·비교하며 DWG·PDF 내부의 설계 적합성을 판정하지 않습니다.
+GitHub 개발 프로젝트는 총 3개입니다. 각 저장소의 구현 범위에 맞춰 `highlights`와 `visual`을 작성하며, `verification`에 실행으로 확인한 범위를 기록합니다. Revit·BIM은 기초 학습 단계이며 Revit 도구의 실제 호스트 실행은 아직 확인하지 않았습니다. Python 도구는 도면 파일 단위로 분류·비교하며 DWG·PDF 내부의 설계 적합성을 판정하지 않습니다.
 
 여러 저장소의 역할과 검증 명령은 [저장소 작업 안내](REPOSITORIES.md)에 정리했습니다.
 
