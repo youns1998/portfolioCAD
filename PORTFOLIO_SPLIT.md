@@ -27,3 +27,5 @@ Spring·GIS 작업은 SW의 `window.portfolioPlannedProjects`에만 있습니다
 샘플 데이터 검사, API 빌드와 실제 CAD/Revit 내부 실행은 구분합니다. 기존 `verification`에 기록된 범위를 넘어 실행했다고 표현하지 않습니다.
 
 배포 버전 쿼리 `?v=`는 CSS·데이터·JS 변경 시 두 HTML에서 함께 갱신합니다. 배포는 각 저장소의 `main` 브랜치 `/docs` 설정을 사용합니다.
+
+SW는 먼저 Go Live로 확인한 뒤 Pages를 설정합니다. 공개 전 CAD의 교차 링크는 SW 저장소를 가리킵니다. SW 공개 배포가 확인되면 CAD의 링크를 `https://youns1998.github.io/portfolioSW/`, 문구를 `소프트웨어 포트폴리오 보기`로 갱신합니다.
