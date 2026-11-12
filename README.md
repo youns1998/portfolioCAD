@@ -9,7 +9,7 @@
 | 만화카페 인테리어 계획 | 6주 · 계획 제안서 PDF 28쪽, 설계 도면집 PDF 13쪽, 컬러링 PDF 3쪽, SketchUp 렌더링 PDF 6쪽 |
 | 2층 단독주택 설계 도면 | 6주 · CAD 도면집 PDF 39쪽 → 같은 설계를 바탕으로 작성한 Revit 시트 PDF 17쪽 |
 | CAD Productivity Palette | [README](https://github.com/youns1998/cad-productivity-palette/blob/main/README.md) — AutoCAD 도킹 팔레트 |
-| RevitAuto | [README](https://github.com/youns1998/RevitAuto/blob/main/README.md) — Python·pyRevit 기반 CSV 시트 생성·뷰 배치·목록 출력 플러그인, Python 검사 통과, Revit 내부 실행 미확인 |
+| RevitAuto | [README](https://github.com/youns1998/RevitAuto/blob/main/README.md) — Python·pyRevit 기반 이름 목록 시트 생성·뷰 배치·상세 CSV/JSON/PDF 출력, Python·IronPython 검사 통과, 실제 Revit 상세 출력 미확인 |
 
 만화카페의 왼쪽 문서 목록은 제안서, 설계 도면, 컬러링, SketchUp 렌더링 순서이며 모두 같은 뷰어에서 열립니다. 홈에는 PDF 4개·총 50쪽으로 표시하고, 만화카페 썸네일에는 `docs/documents/1.아이소 확정.png`를 사용합니다.
 

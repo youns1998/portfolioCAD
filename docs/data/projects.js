@@ -140,19 +140,19 @@ window.portfolioProjects = [
     type: "Python 기반 Revit 플러그인",
     duration: "진행 중",
     context: "Revit API 학습 · 개인 개발",
-    description: "CSV 시트 일괄 생성, 뷰 자동 배치와 시트 목록 출력을 묶은 Python 기반 pyRevit 플러그인입니다.",
+    description: "이름 목록으로 시트를 만들고 뷰를 자동 배치하며, 시트·뷰 내부 정보를 CSV·JSON으로 내보내는 Python 기반 pyRevit 플러그인입니다.",
     tools: ["Python", "pyRevit", "Revit 2026 API"],
-    scope: "CSV 시트 일괄 생성 · 뷰 자동 배치 · 시트 목록 출력",
-    verification: "Python 자동 검사 24개 통과(트랜잭션은 대체 API 검사). Revit 내부 실행은 미확인입니다.",
+    scope: "이름 목록·번호 CSV 시트 생성 · 뷰 자동 배치 · 상세 CSV·JSON · 선택 PDF",
+    verification: "Python 자동 검사·IronPython 한글·ZIP 회귀 검사 통과. 수집·트랜잭션은 대체 API 검사이며 실제 Revit 상세 출력은 미확인입니다.",
     visual: {
       caption: "REVIT / PYTHON · PYREVIT",
       title: "REVIT AUTO",
-      items: ["CSV → 시트", "뷰 → 시트 배치", "시트 목록 CSV"]
+      items: ["이름 목록 → 시트", "뷰 → 시트 배치", "상세 CSV·JSON·PDF"]
     },
     highlights: [
-      "미리보기·중복 번호 검사 후 시트 일괄 생성",
+      "이름 한 열·번호 두 열 CSV와 자동 번호 시트 생성",
       "선택한 뷰마다 새 시트를 생성하고 중앙 배치",
-      "시트 번호·이름을 UTF-8 CSV로 내보내기"
+      "시트·뷰·요소·주석·파라미터를 CSV·JSON ZIP으로 출력"
     ],
     url: "https://github.com/youns1998/RevitAuto",
     documents: []
