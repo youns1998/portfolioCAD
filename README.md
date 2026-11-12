@@ -7,22 +7,21 @@
 | 프로젝트 | 자료 |
 | --- | --- |
 | 만화카페 인테리어 계획 | 계획 제안서 PDF 28쪽, 설계 도면집 PDF 13쪽, 컬러링 PDF 3쪽, SketchUp 렌더링 PDF 6쪽 |
-| 2층 단독주택 설계 도면 | 도면집 PDF 39쪽 |
-| CAD Productivity Palette | [공개 GitHub 저장소](https://github.com/youns1998/cad-productivity-palette) |
-| Revit BIM Inspector | [Revit API 학습용 개발 프로젝트](https://github.com/youns1998/revit-bim-portfolio), 샘플 검사·화면·CSV·API 빌드 확인, Revit 내부 실행 미확인 |
-| Drawing File Organizer | [Python 도면 파일 정리 도구](https://github.com/youns1998/drawing-file-organizer), 13개 검사와 예제 복사 실행 확인 |
+| 2층 단독주택 설계 도면 | CAD 도면집 PDF 39쪽 → 같은 설계를 바탕으로 작성한 Revit 시트 PDF 17쪽 |
+| CAD Productivity Palette | [README](https://github.com/youns1998/cad-productivity-palette/blob/main/README.md) — AutoCAD 도킹 팔레트 |
+| RevitAuto | [README](https://github.com/youns1998/RevitAuto/blob/main/README.md) — CSV 시트 생성·뷰 배치·목록 출력 리본, 자동 검사 17개와 API 빌드 확인, Revit 내부 실행 미확인 |
 
 만화카페의 왼쪽 문서 목록은 제안서, 설계 도면, 컬러링, SketchUp 렌더링 순서이며 모두 같은 뷰어에서 열립니다. 홈에는 PDF 4개·총 50쪽으로 표시하고, 만화카페 썸네일에는 `docs/documents/1.아이소 확정.png`를 사용합니다.
 
 홈은 브라우저 기본 스크롤을 사용하며 섹션 스냅, 스크롤 가로채기, 스크롤 등장 애니메이션을 적용하지 않습니다. 아이소메트리 썸네일에는 마우스 오버·키보드 포커스 시 기울기와 빛 반사 효과를 적용합니다. 모션 감소 설정에서는 이 효과의 움직임을 중지합니다.
 
-메인은 설계 프로젝트 2개를 주력 카드로 표시하고 제안서·도면·컬러링·렌더링 PDF 5개의 미리보기와 직접 링크를 제공합니다. GitHub 도구 3개는 썸네일 없이 간결한 보조 목록으로 표시하고 `readmeUrl`의 GitHub README를 새 창에서 엽니다. 설계 카드는 2열에서 모바일 1열로 전환합니다.
+메인은 설계 프로젝트 2개를 주력 카드로 표시하고 제안서·도면·컬러링·렌더링·Revit 시트 PDF 6개(총 106쪽)의 미리보기와 직접 링크를 제공합니다. 2층 단독주택의 문서 순서는 CAD 도면집 → Revit 시트이며 홈에는 PDF 2개·총 56쪽으로 표시합니다. GitHub 도구는 CAD Productivity Palette와 RevitAuto 두 항목만 썸네일 없이 간결한 보조 목록으로 표시하고 `readmeUrl`의 GitHub README를 새 창에서 엽니다. 설계 카드는 2열에서 모바일 1열로 전환합니다.
 
 JavaScript로 현재 메뉴와 읽기 진행률을 표시하고, 마우스 위치에 따라 카드 조명과 이미지 기울기를 조정합니다. 포인터 효과는 정밀 마우스 환경에서만 작동하며 모션 감소 설정, 스크롤, 포인터 이탈 시 초기화합니다. 모든 콘텐츠는 처음부터 표시합니다.
 
-프로젝트 상세는 간단한 소개, 작업 기간·진행 형태·사용 도구·작업 범위와 기존 PDF 뷰어로 구성합니다. 별도 작업 개요나 사진 링크는 두지 않습니다. `duration`과 `context`에는 본인이 확인한 기간과 진행 형태를 기록합니다. 주요 사용 기술은 AutoCAD·SketchUp으로 소개합니다. Revit·BIM은 기초 학습 단계로 안내하며, [별도 저장소](https://github.com/youns1998/revit-bim-portfolio)는 Revit API 학습용 개발 프로젝트로 소개합니다.
+프로젝트 상세는 간단한 소개, 작업 기간·진행 형태·사용 도구·작업 범위와 기존 PDF 뷰어로 구성합니다. 별도 작업 개요나 사진 링크는 두지 않습니다. `duration`과 `context`에는 본인이 확인한 기간과 진행 형태를 기록합니다. 주요 사용 기술은 AutoCAD·SketchUp이며 Revit 모델링·시트 작성 학습을 함께 소개합니다. 주택 프로젝트의 `3주`는 기존 CAD 작업 기간이며 Revit 학습 기간을 별도로 추정하지 않았습니다.
 
-GitHub 개발 프로젝트는 총 3개입니다. 각 저장소의 구현 범위에 맞춰 `highlights`와 `visual`을 작성하며, `verification`에 실행으로 확인한 범위를 기록합니다. Revit·BIM은 기초 학습 단계이며 Revit 도구의 실제 호스트 실행은 아직 확인하지 않았습니다. Python 도구는 도면 파일 단위로 분류·비교하며 DWG·PDF 내부의 설계 적합성을 판정하지 않습니다.
+GitHub 개발 프로젝트는 총 2개입니다. 각 저장소의 구현 범위에 맞춰 `highlights`와 `visual`을 작성하며, `verification`에 실행으로 확인한 범위를 기록합니다. RevitAuto는 공개한 Revit 시트와 별개인 자동화 학습 프로젝트이며 실제 Revit 호스트 실행은 아직 확인하지 않았습니다.
 
 여러 저장소의 역할과 검증 명령은 [저장소 작업 안내](REPOSITORIES.md)에 정리했습니다.
 
@@ -68,6 +67,8 @@ powershell -ExecutionPolicy Bypass -File .\scripts\test-browser.ps1 -BaseUrl htt
 문서 목록과 상세 화면은 같은 데이터를 사용합니다. 새 PDF마다 HTML이나 뷰어 코드를 수정할 필요가 없습니다. 목록 순서는 `documents` 배열 순서입니다.
 
 만화카페의 `comic-cafe-coloring`은 `documents/컬러링.pdf`(3쪽), `comic-cafe-sketchup-renderings`는 `documents/원본.pdf`(6쪽)에 연결되어 있습니다. 각 문서의 첫 페이지 미리보기도 `documents/thumbnails/`에 등록되어 있습니다. 문서 수·쪽수는 실제 자료를 기준으로 입력합니다.
+
+단독주택의 `house-revit-sheets`는 `documents/레빗시트.pdf`(17쪽)에 연결되어 있습니다. 같은 프로젝트의 `house-drawings` 바로 다음에 등록해 기존 CAD 설계에서 Revit 시트로 이어지는 흐름을 유지합니다.
 
 프로젝트의 `thumbnail`에 이미지 경로를 지정하면 홈 대표 이미지로 우선 사용합니다. `thumbnailAlt`에는 이미지 설명을 입력합니다. 프로젝트 대표 이미지가 없으면 문서 썸네일을 사용합니다.
 

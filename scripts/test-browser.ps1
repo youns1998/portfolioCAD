@@ -1,4 +1,4 @@
-param([string]$BrowserPath, [string]$BaseUrl)
+﻿param([string]$BrowserPath, [string]$BaseUrl)
 
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
@@ -99,13 +99,13 @@ try {
         Open-Page 'index.html'
         Assert-Js "Home renders all projects at $width px" 'document.querySelectorAll(".project-card").length === window.portfolioProjects.length && window.portfolioProjects.length > 0'
         Assert-Js "Home stylesheet applies its colors and layout at $width px" 'getComputedStyle(document.body).backgroundColor==="rgb(245, 247, 243)" && getComputedStyle(document.querySelector(".project-list")).display==="grid" && getComputedStyle(document.querySelector(".project-card")).borderRadius==="12px"'
-        Assert-Js "Drawing and GitHub projects have separate collections at $width px" 'document.querySelectorAll("#drawing-project-list .project-card").length===2 && document.querySelectorAll("#github-project-list .project-card").length===3 && ["cad-productivity-palette","revit-bim-inspector","drawing-file-organizer"].every(id=>!!document.querySelector("#github-project-list .project-card[data-project=\""+id+"\"]"))'
+        Assert-Js "Drawing and GitHub projects have separate collections at $width px" 'document.querySelectorAll("#drawing-project-list .project-card").length===2 && document.querySelectorAll("#github-project-list .project-card").length===2 && ["cad-productivity-palette","revit-auto"].every(id=>!!document.querySelector("#github-project-list .project-card[data-project=\""+id+"\"]"))'
         Assert-Js "Drawing cards open the existing PDF detail at $width px" '[...document.querySelectorAll("#drawing-project-list .project-actions a")].every(a=>a.getAttribute("href").startsWith("projects/detail.html?project=")&&!a.hasAttribute("target"))'
         Assert-Js "Drawing thumbnails are accessible links to their matching detail at $width px" '[...document.querySelectorAll("#drawing-project-list .project-card")].every(card=>{const a=card.querySelector("a.project-card-visual");return a&&a.href===card.querySelector(".project-actions a").href&&a.getAttribute("aria-label").includes(card.querySelector("h4").textContent)&&!a.hasAttribute("target");})'
         Assert-Js "GitHub cards link directly to their README at $width px" '[...document.querySelectorAll("#github-project-list .project-card")].every(card=>{const p=window.portfolioProjects.find(p=>p.id===card.dataset.project),a=card.querySelector(".repository-link");return a.href===p.readmeUrl&&a.target==="_blank"&&a.rel.includes("noopener")&&a.rel.includes("noreferrer")&&card.querySelectorAll("a").length===1;})'
         Assert-Js "Primary projects show metadata and technology tags at $width px" '[...document.querySelectorAll(".project-collection--primary .project-card")].every(card=>card.querySelectorAll(".project-card-meta > div").length===2&&card.querySelectorAll(".project-tools li").length>0)'
-        Assert-Js "Architecture is primary and development stays compact at $width px" 'document.body.dataset.focus==="architecture" && document.querySelector(".project-collection").querySelector("#drawing-project-list")!==null && document.querySelectorAll("#github-project-list .project-card--supporting").length===3 && !document.querySelector("#github-project-list .project-card-visual, #planned-project-list")'
-        Assert-Js "All architecture documents have direct preview links at $width px" 'document.querySelectorAll(".drawing-document-link").length===5 && [...document.querySelectorAll(".drawing-document-link")].every(a=>new URL(a.href).searchParams.has("document"))'
+        Assert-Js "Architecture is primary and development stays compact at $width px" 'document.body.dataset.focus==="architecture" && document.querySelector(".project-collection").querySelector("#drawing-project-list")!==null && document.querySelectorAll("#github-project-list .project-card--supporting").length===2 && !document.querySelector("#github-project-list .project-card-visual, #planned-project-list")'
+        Assert-Js "All architecture documents have direct preview links at $width px" 'document.querySelectorAll(".drawing-document-link").length===6 && [...document.querySelectorAll(".drawing-document-link")].every(a=>new URL(a.href).searchParams.has("document"))'
         Assert-Js "Project thumbnails remain compact at $width px" '[...document.querySelectorAll(".project-card-visual")].every(el=>el.getBoundingClientRect().height<=300)&&[...document.querySelectorAll("#github-project-list .project-card-visual")].every(el=>el.getBoundingClientRect().height<=220)'
         Assert-Js "Home images load at $width px" '[...document.images].every(i => i.complete && i.naturalWidth > 0)'
         Assert-Js "Cafe uses its isometric project thumbnail at $width px" 'document.querySelector("[data-project=\"comic-cafe\"] .project-card-visual img").getAttribute("src") === window.portfolioProjects[0].thumbnail'
@@ -158,12 +158,17 @@ try {
 
     foreach ($width in @(1440, 390)) {
         Set-Viewport $width
-        foreach ($project in @('two-story-house', 'comic-cafe', 'cad-productivity-palette', 'revit-bim-inspector', 'drawing-file-organizer')) {
+        foreach ($project in @('two-story-house', 'comic-cafe', 'cad-productivity-palette', 'revit-auto')) {
             Open-Page ('projects/detail.html?project=' + $project)
             Assert-Js "Detail renders $project at $width px" 'document.querySelector("h1").textContent === window.portfolioProjects.find(p => p.id === new URLSearchParams(location.search).get("project")).title'
             Assert-Js "Detail fits viewport: $project at $width px" 'document.documentElement.scrollWidth <= innerWidth'
-            if ($project -in @('cad-productivity-palette', 'revit-bim-inspector', 'drawing-file-organizer')) {
+            if ($project -in @('cad-productivity-palette', 'revit-auto')) {
                 Assert-Js "Development detail links to the correct repository: $project at $width px" 'document.querySelector(".detail-heading a").href===window.portfolioProjects.find(p=>p.id===new URLSearchParams(location.search).get("project")).url && document.querySelectorAll(".development-detail li").length===3'
+            }
+            if ($project -eq 'two-story-house') {
+                Assert-Js "House CAD drawings precede Revit sheets at $width px" 'document.querySelectorAll(".document-row").length===2 && document.querySelectorAll(".document-row")[0].dataset.document==="house-drawings" && document.querySelectorAll(".document-row")[1].dataset.document==="house-revit-sheets"'
+                Assert-Js "House Revit PDF opens with original and download links at $width px" 'document.querySelectorAll(".toolbar-button")[1].click();window.housePdf=window.portfolioProjects.find(p=>p.id==="two-story-house").documents[1];document.querySelector("iframe").getAttribute("src").startsWith("../"+window.housePdf.file+"#page=1") && document.querySelectorAll(".document-row")[1].getAttribute("aria-current")==="true" && [...document.querySelectorAll(".pdf-toolbar a")].every(a=>a.getAttribute("href")==="../"+window.housePdf.file) && document.querySelector("a[download]").getAttribute("download")===window.housePdf.file.split("/").pop()'
+                Assert-Js "House PDF previous returns to CAD at $width px" 'document.querySelectorAll(".toolbar-button")[0].click();document.querySelector("iframe").getAttribute("src").includes("two-story-house.pdf") && document.querySelectorAll(".toolbar-button")[0].disabled'
             }
             if ($project -eq 'comic-cafe') {
                 Assert-Js "Cafe lists all four PDFs in the same navigation at $width px" 'document.querySelectorAll(".document-list .document-row").length === 4 && !document.querySelector(".document-row.is-pending")'
@@ -182,6 +187,8 @@ try {
         Assert-Js "Coloring PDF deep link selects the third row at $width px" '!document.querySelector(".pdf-pending-state") && document.querySelectorAll(".document-row")[2].getAttribute("aria-current") === "true" && document.querySelector("iframe").getAttribute("src").startsWith("../"+window.portfolioProjects[0].documents[2].file+"#page=1")'
         Open-Page 'projects/detail.html?project=comic-cafe&document=comic-cafe-sketchup-renderings'
         Assert-Js "Rendering PDF deep link selects the fourth row at $width px" 'document.querySelectorAll(".document-row")[3].getAttribute("aria-current") === "true" && document.querySelector("iframe").getAttribute("src").startsWith("../"+window.portfolioProjects[0].documents[3].file+"#page=1")'
+        Open-Page 'projects/detail.html?project=two-story-house&document=house-revit-sheets'
+        Assert-Js "House Revit deep link selects the second document at $width px" 'document.querySelectorAll(".document-row")[1].getAttribute("aria-current")==="true" && document.querySelector(".pdf-title").textContent===window.portfolioProjects.find(p=>p.id==="two-story-house").documents[1].title'
         Open-Page 'projects/detail.html?project=invalid'
         Assert-Js "Unknown project offers a return link at $width px" '!!document.querySelector("#project-detail h1") && !!document.querySelector("#project-detail a[href=\"../index.html#work\"]") && !document.querySelector("iframe")'
     }

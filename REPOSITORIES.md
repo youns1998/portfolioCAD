@@ -4,10 +4,9 @@
 | --- | --- | --- |
 | [portfolioCAD](https://github.com/youns1998/portfolioCAD) | 소개·프로젝트 카드·상세 화면 | `powershell -File scripts/validate.ps1`, `powershell -File scripts/test-browser.ps1` |
 | [cad-productivity-palette](https://github.com/youns1998/cad-productivity-palette) | AutoCAD 도킹 팔레트 | `dotnet build -c Release` |
-| [revit-bim-portfolio](https://github.com/youns1998/revit-bim-portfolio) | Revit 모델 정보 점검·WPF 화면·CSV | `dotnet build BimInspector.sln -c Release`, `dotnet run --project tests/BimInspector.Checks -c Release` |
-| [drawing-file-organizer](https://github.com/youns1998/drawing-file-organizer) | Python 도면 파일 분류·리비전·중복 점검 | `python -m unittest discover -s tests -v` |
+| [RevitAuto](https://github.com/youns1998/RevitAuto) | Revit 리본·CSV 시트 일괄 생성·뷰 배치·시트 목록 출력 | `dotnet build RevitAuto.sln -c Release`, `dotnet run --project tests/RevitAuto.Checks -c Release` |
 
-각 명령은 해당 저장소 폴더에서 실행합니다. 로컬에서는 네 저장소를 같은 상위 폴더에 두면 이동하기 쉽습니다.
+각 명령은 해당 저장소 폴더에서 실행합니다. 로컬에서는 세 저장소를 같은 상위 폴더에 두면 이동하기 쉽습니다. CAD 포트폴리오의 도구 링크는 CAD Productivity Palette와 RevitAuto의 README 두 개로 유지합니다.
 
 수정 시 먼저 도구 저장소의 기능과 검사를 갱신하고, 실행으로 확인한 뒤 `portfolioCAD/docs/data/projects.js`의 설명과 확인 범위를 맞춥니다.
 `visual`은 카드의 설명용 그래픽이며 앱 화면 캡처를 의미하지 않습니다. 상세 화면의 GitHub 링크에서 소스와 검증 결과를 확인합니다.
