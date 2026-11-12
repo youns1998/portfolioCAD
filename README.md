@@ -8,14 +8,14 @@
 | --- | --- |
 | 만화카페 인테리어 계획 | 6주 · 계획 제안서 PDF 28쪽, 설계 도면집 PDF 13쪽, 컬러링 PDF 3쪽, SketchUp 렌더링 PDF 6쪽 |
 | 2층 단독주택 설계 도면 | 6주 · CAD 도면집 PDF 39쪽 → 같은 설계를 바탕으로 작성한 Revit 시트 PDF 17쪽 |
-| CAD Productivity Palette | [README](https://github.com/youns1998/cad-productivity-palette/blob/main/README.md) — AutoCAD 도킹 팔레트 |
-| RevitAuto | [README](https://github.com/youns1998/RevitAuto/blob/main/README.md) — Python·pyRevit 기반 이름 목록 시트 생성·뷰 배치·상세 CSV/JSON/PDF 출력, Python·IronPython 검사 통과, 실제 Revit 상세 출력 미확인 |
+| CAD Productivity Palette | [README](https://github.com/youns1998/cad-productivity-palette) — AutoCAD 도킹 팔레트 |
+| RevitAuto | [README](https://github.com/youns1998/RevitAuto) — Python·pyRevit 기반 이름 목록 시트 생성·뷰 배치·상세 CSV/JSON/PDF 출력, Python·IronPython 검사 통과, 실제 Revit 상세 출력 미확인 |
 
 만화카페의 왼쪽 문서 목록은 제안서, 설계 도면, 컬러링, SketchUp 렌더링 순서이며 모두 같은 뷰어에서 열립니다. 홈에는 PDF 4개·총 50쪽으로 표시하고, 만화카페 썸네일에는 `docs/documents/1.아이소 확정.png`를 사용합니다.
 
 홈은 브라우저 기본 스크롤을 사용하며 섹션 스냅, 스크롤 가로채기, 스크롤 등장 애니메이션을 적용하지 않습니다. 아이소메트리 썸네일에는 마우스 오버·키보드 포커스 시 기울기와 빛 반사 효과를 적용합니다. 모션 감소 설정에서는 이 효과의 움직임을 중지합니다.
 
-메인은 설계 프로젝트 2개를 주력 카드로 표시하고 제안서·도면·컬러링·렌더링·Revit 시트 PDF 6개(총 106쪽)의 미리보기와 직접 링크를 제공합니다. 2층 단독주택의 문서 순서는 CAD 도면집 → Revit 시트이며 홈에는 PDF 2개·총 56쪽으로 표시합니다. GitHub 도구는 CAD Productivity Palette와 RevitAuto 두 항목만 썸네일 없이 간결한 보조 목록으로 표시하고 `readmeUrl`의 GitHub README를 새 창에서 엽니다. 설계 카드는 2열에서 모바일 1열로 전환합니다.
+메인은 설계 프로젝트 2개를 주력 카드로 표시하고 제안서·도면·컬러링·렌더링·Revit 시트 PDF 6개(총 106쪽)의 미리보기와 직접 링크를 제공합니다. 2층 단독주택의 문서 순서는 CAD 도면집 → Revit 시트이며 홈에는 PDF 2개·총 56쪽으로 표시합니다. GitHub 도구는 CAD Productivity Palette와 RevitAuto 두 항목만 썸네일 없이 간결한 보조 목록으로 표시합니다. 버튼의 ‘GitHub README 보기’ 문구는 유지하고, `readmeUrl`에는 저장소 첫 화면 주소를 지정해 새 창에서 엽니다. 설계 카드는 2열에서 모바일 1열로 전환합니다.
 
 JavaScript로 현재 메뉴와 읽기 진행률을 표시하고, 마우스 위치에 따라 카드 조명과 이미지 기울기를 조정합니다. 포인터 효과는 정밀 마우스 환경에서만 작동하며 모션 감소 설정, 스크롤, 포인터 이탈 시 초기화합니다. 모든 콘텐츠는 처음부터 표시합니다.
 
