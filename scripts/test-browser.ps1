@@ -112,6 +112,9 @@ try {
         Assert-Js "Home fits viewport at $width px" 'document.documentElement.scrollWidth <= innerWidth'
         Assert-Js "Header scroll offset matches height at $width px" 'Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height")) - document.querySelector("header").getBoundingClientRect().height) < 1'
         Assert-Js "Interior precedes CAD at $width px" 'document.querySelectorAll(".project-card")[0].dataset.project === "comic-cafe" && document.querySelectorAll(".project-card")[1].dataset.project === "two-story-house"'
+        Assert-Js "Design projects both show six weeks at $width px" 'window.portfolioProjects.filter(p=>p.documents.length).every(p=>p.duration==="6주") && [...document.querySelectorAll("#drawing-project-list .project-card-meta")].every(el=>el.textContent.includes("6주"))'
+        Assert-Js "Revit appears with the design technologies at $width px" '!!document.querySelector(".tech-tags img[src=\"images/tech/revit.svg\"]") && !document.querySelector(".learning-note, .supporting-skill")'
+        Assert-Js "Plugin heading and Python description are current at $width px" 'document.querySelector("#github-projects-title").textContent==="직접 개발한 플러그인" && window.portfolioProjects.find(p=>p.id==="revit-auto").tools.includes("Python")'
         Assert-Js "Pending video does not create an empty player at $width px" '!document.querySelector("video") && !document.querySelector(".video-toggle")'
         Assert-Js "Home uses native scrolling and shows content immediately at $width px" 'getComputedStyle(document.documentElement).scrollBehavior==="auto" && getComputedStyle(document.documentElement).scrollSnapType==="none" && [...document.querySelectorAll(".project-card, .about-grid")].every(el=>getComputedStyle(el).opacity==="1" && getComputedStyle(el).transform==="none")'
     }

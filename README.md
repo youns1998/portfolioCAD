@@ -6,10 +6,10 @@
 
 | 프로젝트 | 자료 |
 | --- | --- |
-| 만화카페 인테리어 계획 | 계획 제안서 PDF 28쪽, 설계 도면집 PDF 13쪽, 컬러링 PDF 3쪽, SketchUp 렌더링 PDF 6쪽 |
-| 2층 단독주택 설계 도면 | CAD 도면집 PDF 39쪽 → 같은 설계를 바탕으로 작성한 Revit 시트 PDF 17쪽 |
+| 만화카페 인테리어 계획 | 6주 · 계획 제안서 PDF 28쪽, 설계 도면집 PDF 13쪽, 컬러링 PDF 3쪽, SketchUp 렌더링 PDF 6쪽 |
+| 2층 단독주택 설계 도면 | 6주 · CAD 도면집 PDF 39쪽 → 같은 설계를 바탕으로 작성한 Revit 시트 PDF 17쪽 |
 | CAD Productivity Palette | [README](https://github.com/youns1998/cad-productivity-palette/blob/main/README.md) — AutoCAD 도킹 팔레트 |
-| RevitAuto | [README](https://github.com/youns1998/RevitAuto/blob/main/README.md) — CSV 시트 생성·뷰 배치·목록 출력 리본, 자동 검사 17개와 API 빌드 확인, Revit 내부 실행 미확인 |
+| RevitAuto | [README](https://github.com/youns1998/RevitAuto/blob/main/README.md) — Python·pyRevit 기반 CSV 시트 생성·뷰 배치·목록 출력 플러그인, Python 검사 통과, Revit 내부 실행 미확인 |
 
 만화카페의 왼쪽 문서 목록은 제안서, 설계 도면, 컬러링, SketchUp 렌더링 순서이며 모두 같은 뷰어에서 열립니다. 홈에는 PDF 4개·총 50쪽으로 표시하고, 만화카페 썸네일에는 `docs/documents/1.아이소 확정.png`를 사용합니다.
 
@@ -19,7 +19,7 @@
 
 JavaScript로 현재 메뉴와 읽기 진행률을 표시하고, 마우스 위치에 따라 카드 조명과 이미지 기울기를 조정합니다. 포인터 효과는 정밀 마우스 환경에서만 작동하며 모션 감소 설정, 스크롤, 포인터 이탈 시 초기화합니다. 모든 콘텐츠는 처음부터 표시합니다.
 
-프로젝트 상세는 간단한 소개, 작업 기간·진행 형태·사용 도구·작업 범위와 기존 PDF 뷰어로 구성합니다. 별도 작업 개요나 사진 링크는 두지 않습니다. `duration`과 `context`에는 본인이 확인한 기간과 진행 형태를 기록합니다. 주요 사용 기술은 AutoCAD·SketchUp이며 Revit 모델링·시트 작성 학습을 함께 소개합니다. 주택 프로젝트의 `3주`는 기존 CAD 작업 기간이며 Revit 학습 기간을 별도로 추정하지 않았습니다.
+프로젝트 상세는 간단한 소개, 작업 기간·진행 형태·사용 도구·작업 범위와 기존 PDF 뷰어로 구성합니다. 별도 작업 개요나 사진 링크는 두지 않습니다. `duration`과 `context`에는 본인이 확인한 기간과 진행 형태를 기록합니다. 만화카페와 단독주택의 작업 기간은 각각 6주입니다. ‘설계와 시각화’에는 AutoCAD·SketchUp·Revit 아이콘을 나란히 표시하며, 별도의 학습 안내·보조 개발 문단은 두지 않습니다. 도구 영역 제목은 ‘직접 개발한 플러그인’입니다.
 
 GitHub 개발 프로젝트는 총 2개입니다. 각 저장소의 구현 범위에 맞춰 `highlights`와 `visual`을 작성하며, `verification`에 실행으로 확인한 범위를 기록합니다. RevitAuto는 공개한 Revit 시트와 별개인 자동화 학습 프로젝트이며 실제 Revit 호스트 실행은 아직 확인하지 않았습니다.
 

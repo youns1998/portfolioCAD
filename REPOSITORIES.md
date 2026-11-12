@@ -4,7 +4,7 @@
 | --- | --- | --- |
 | [portfolioCAD](https://github.com/youns1998/portfolioCAD) | 소개·프로젝트 카드·상세 화면 | `powershell -File scripts/validate.ps1`, `powershell -File scripts/test-browser.ps1` |
 | [cad-productivity-palette](https://github.com/youns1998/cad-productivity-palette) | AutoCAD 도킹 팔레트 | `dotnet build -c Release` |
-| [RevitAuto](https://github.com/youns1998/RevitAuto) | Revit 리본·CSV 시트 일괄 생성·뷰 배치·시트 목록 출력 | `dotnet build RevitAuto.sln -c Release`, `dotnet run --project tests/RevitAuto.Checks -c Release` |
+| [RevitAuto](https://github.com/youns1998/RevitAuto) | Python·pyRevit 리본·CSV 시트 생성·뷰 배치·목록 출력 | `python scripts/check.py`, `powershell -File scripts/install-extension.ps1` |
 
 각 명령은 해당 저장소 폴더에서 실행합니다. 로컬에서는 세 저장소를 같은 상위 폴더에 두면 이동하기 쉽습니다. CAD 포트폴리오의 도구 링크는 CAD Productivity Palette와 RevitAuto의 README 두 개로 유지합니다.
 
