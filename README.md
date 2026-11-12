@@ -11,6 +11,8 @@
 | CAD Productivity Palette | [README](https://github.com/youns1998/cad-productivity-palette) — AutoCAD 도킹 팔레트 |
 | RevitAuto | [README](https://github.com/youns1998/RevitAuto) — Python·pyRevit 기반 이름 목록 시트 생성·뷰 배치·상세 CSV/JSON/PDF 출력, Python·IronPython 검사 통과, 실제 Revit 상세 출력 미확인 |
 
+Revit 원본 모델은 개인 자산으로 비공개 보관하며, 포트폴리오에는 시트 PDF만 공개합니다. `.rvt`·`.rfa`·`.rte` 등 Revit 원본 자료는 `.gitignore`로 제외합니다. 로컬 원본을 삭제하는 설정은 아닙니다.
+
 만화카페의 왼쪽 문서 목록은 제안서, 설계 도면, 컬러링, SketchUp 렌더링 순서이며 모두 같은 뷰어에서 열립니다. 홈에는 PDF 4개·총 50쪽으로 표시하고, 만화카페 썸네일에는 `docs/documents/1.아이소 확정.png`를 사용합니다.
 
 홈은 브라우저 기본 스크롤을 사용하며 섹션 스냅, 스크롤 가로채기, 스크롤 등장 애니메이션을 적용하지 않습니다. 아이소메트리 썸네일에는 마우스 오버·키보드 포커스 시 기울기와 빛 반사 효과를 적용합니다. 모션 감소 설정에서는 이 효과의 움직임을 중지합니다.

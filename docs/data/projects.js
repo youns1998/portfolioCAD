@@ -71,6 +71,7 @@ window.portfolioProjects = [
     title: "2층 단독주택 설계 도면",
     category: "Architecture / CAD · Revit",
     type: "건축 도면집 · Revit 시트",
+    sourcePolicy: "Revit 원본 모델은 비공개로 보관하며, 시트 PDF만 공개합니다.",
     duration: "6주",
     context: "국비 교육 · 개인 프로젝트",
     description: "2층 단독주택의 설계 도면을 작성하고, 같은 도면을 바탕으로 Revit 모델링과 시트 구성을 학습했습니다.",

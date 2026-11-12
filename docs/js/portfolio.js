@@ -206,6 +206,7 @@
     line(facts, "진행 형태", project.context);
     line(facts, "사용 도구", project.tools?.join(" · "));
     line(facts, "작업 범위", project.scope);
+    line(facts, "원본 자료", project.sourcePolicy);
     line(facts, "확인 범위", project.verification);
     append(intro, heading, facts);
     root.replaceChildren(back, intro);
