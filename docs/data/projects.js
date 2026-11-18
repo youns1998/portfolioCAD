@@ -97,10 +97,10 @@ window.portfolioProjects = [
         title: "주택 Revit 시트",
         group: "Architecture / Revit · BIM",
         description: "기존 2층 단독주택 설계 도면을 바탕으로 작성한 Revit 학습 결과물",
-        file: "documents/레빗시트.pdf",
-        pages: 17,
+        file: "documents/최윤성 레빗 시트.pdf",
+        pages: 19,
         firstPage: 1,
-        thumbnail: "documents/thumbnails/house-revit-sheets.png"
+        thumbnail: "documents/thumbnails/house-revit-sheets-20261118.png"
       }
     ]
   },
