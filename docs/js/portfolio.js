@@ -379,7 +379,7 @@
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const precisionPointer = window.matchMedia("(hover: hover) and (pointer: fine)");
     const resets = [];
-    document.querySelectorAll(".hero-aside, .project-card, .project-card-visual, .tech-group").forEach((surface) => {
+    document.querySelectorAll(".project-card, .project-card-visual, .tech-group").forEach((surface) => {
       let pointerFrame = 0;
       let pointerX = 0;
       let pointerY = 0;
